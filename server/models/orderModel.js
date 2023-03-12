@@ -3,21 +3,18 @@ const { Schema } = mongoose;
 
 const orderSchema = new Schema({
     customer_id: {
-        type: String,
-        //type: Schema.Types.ObjectId,
-        //ref: "User",
+        type: Schema.Types.ObjectId,
+        ref: "User",
         required: [true, "Order must have Customer ID"],
     },
     staff_id: {
-        type: String,
-        // type: Schema.Types.ObjectId,
-        // ref: "User",     
+        type: Schema.Types.ObjectId,
+        ref: "User",     
     },
     order_detail: [{
         product_id: {
-            type: String,
-            // type: Schema.Types.ObjectId,
-            // ref: "Product",
+            type: Schema.Types.ObjectId,
+            ref: "Product",
             required: [true, "Order Detail must have Product ID"],
         },
         quantity: {
