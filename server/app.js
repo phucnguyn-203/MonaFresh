@@ -16,7 +16,7 @@ app.use(express.json({ limit: "50mb" }));
 
 //ROUTER
 app.use("/api/v1/categories", categoryRouter);
-app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/carts", cartRouter);
 
 app.use(globalErrorHandler);
 module.exports = app;
