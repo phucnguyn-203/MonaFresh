@@ -5,6 +5,7 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
 //IMPORT ROUTES
 const categoryRouter = require("./routes/categoryRoutes");
+const cartRouter = require("./routes/cartRouter");
 
 const orderRouter = require("./routes/orderRoutes");
 
@@ -20,6 +21,7 @@ app.use(express.json({ limit: "50mb" }));
 
 //ROUTER
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/carts", cartRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/products", productRouter);
 
