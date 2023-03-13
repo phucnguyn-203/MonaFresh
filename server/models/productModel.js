@@ -46,17 +46,16 @@ const productSchema = new Schema({
         type: Number,
         required: [true, "Sản phẩm phải có số lượng"],
     },
-    feedback: 
-    {
-        type: [String],
-        required: [true, "Sản phẩm phải có feedback"],
+    // feedback: 
+    // {
+    //     type: [String],
+    //     required: [true, "Sản phẩm phải có feedback"],
 
-    },
-    category:
-    {
-        type: String,
-        required: [true, "Sản phẩm phải có category"],
-
+    // },
+    category: 
+    { 
+        type: Schema.Types.ObjectId, 
+        ref: "Category"
     },
     isActive: {
         type: Boolean,
