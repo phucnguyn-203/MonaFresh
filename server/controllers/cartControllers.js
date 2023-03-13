@@ -10,26 +10,26 @@ exports.getAllCart = catchAsync(async (req, res) => {
 });
 
 exports.getOneCart = catchAsync(async (req, res) => {
-    const carts = await Cart.findById(req.params.id);
+    const cart = await Cart.findById(req.params.id);
     res.status(200).json({
         status: "success",
-        data: carts,
+        data: cart,
     });
 });
 
 exports.createCart = catchAsync(async (req, res) => {
-    const carts = await Cart.create(req.body);
+    const cart = await Cart.create(req.body);
     res.status(201).json({
         status: "success",
-        data: carts,
+        data: cart,
     });
 });
 
 exports.updateCart = catchAsync(async (req, res) => {
-    const carts = await Cart.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const cart = await Cart.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     res.status(200).json({
         status: "success",
-        data: carts,
+        data: cart,
     });
 });
 

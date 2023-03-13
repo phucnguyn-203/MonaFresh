@@ -6,11 +6,12 @@ const productSchema = new Schema({
         type: String,
         required: [true, "Sản phẩm phải có tên"],
         unique: true,
+        trim: true,
     },
     description: {
         type: String,
         required: [true, "Sản phẩm phải có mô tả"],
-        unique: true,
+        trim: true,
     },
     price: {
         type: Number,
@@ -18,11 +19,12 @@ const productSchema = new Schema({
     },
     percentageDiscount: {
         type: Number,
+        min: 0,
+        max: 100,
     },
     thumbnail: {
         type: String,
         required: [true, "Sản phẩm phải có ảnh đại diện"],
-        unique: true,
     },
     images: {
         type: [String],
@@ -32,19 +34,11 @@ const productSchema = new Schema({
         type: Number,
         required: [true, "Sản phẩm phải có rating"],
     },
-    quantity: {
-        type: Number,
-        required: [true, "Sản phẩm phải có số lượng"],
-    },
-    // feedback:
-    // {
-    //     type: [String],
-    //     required: [true, "Sản phẩm phải có feedback"],
-
-    // },
+    quantity: Number,
     category: {
         type: Schema.Types.ObjectId,
         ref: "Category",
+        required: true,
     },
     isActive: {
         type: Boolean,

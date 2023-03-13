@@ -5,12 +5,9 @@ const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
 //IMPORT ROUTES
 const categoryRouter = require("./routes/categoryRoutes");
-const cartRouter = require("./routes/cartRouter");
-
+const cartRouter = require("./routes/cartRoutes");
 const orderRouter = require("./routes/orderRoutes");
-
 const productRouter = require("./routes/productRoutes");
-
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));

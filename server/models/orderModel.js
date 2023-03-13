@@ -2,26 +2,28 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-    customer_id: {
+    customer: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: [true, "Order must have Customer ID"],
     },
-    staff_id: {
+    staff: {
         type: Schema.Types.ObjectId,
-        ref: "User",     
+        ref: "User",
     },
-    order_detail: [{
-        product_id: {
-            type: Schema.Types.ObjectId,
-            ref: "Product",
-            required: [true, "Order Detail must have Product ID"],
+    orderDetail: [
+        {
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: "Product",
+                required: [true, "Order Detail must have Product ID"],
+            },
+            quantity: {
+                type: Number,
+                required: [true, "Order Detail must have Quantity"],
+            },
         },
-        quantity: {
-            type: Number,
-            required: [true, "Order Detail must have Quantity"],
-        },
-    }],
+    ],
     total: {
         type: Number,
         required: [true, "Order Detail must have Total"],
@@ -38,15 +40,14 @@ const orderSchema = new Schema({
         type: String,
         required: [true, "Order Detail must have Payment Method"],
     },
-    createAt: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },
-    updateAt: {
+    updatedAt: {
         type: Date,
-    }
-
-})
+    },
+});
 
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
