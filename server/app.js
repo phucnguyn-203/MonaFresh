@@ -8,6 +8,7 @@ const categoryRouter = require("./routes/categoryRoutes");
 const cartRouter = require("./routes/cartRoutes");
 const orderRouter = require("./routes/orderRoutes");
 const productRouter = require("./routes/productRoutes");
+const inventoryRouter = require("./routes/inventoryRoutes");
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
@@ -21,6 +22,7 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/carts", cartRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/inventorys", inventoryRouter);
 
 app.use(globalErrorHandler);
 module.exports = app;
