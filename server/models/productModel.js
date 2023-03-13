@@ -2,60 +2,49 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
-    name:
-    {
+    name: {
         type: String,
         required: [true, "Sản phẩm phải có tên"],
         unique: true,
     },
-    description:
-    {
+    description: {
         type: String,
         required: [true, "Sản phẩm phải có mô tả"],
         unique: true,
     },
-    price:
-    {
+    price: {
         type: Number,
         required: [true, "Sản phẩm phải có giá"],
-        
-    }, percentageDiscount:
-    {
-        type: Number,
-
     },
-    thumbnail:
-    {
+    percentageDiscount: {
+        type: Number,
+    },
+    thumbnail: {
         type: String,
         required: [true, "Sản phẩm phải có ảnh đại diện"],
         unique: true,
     },
-    images:
-    {
+    images: {
         type: [String],
-        required: [true, "Sản phẩm phải có ảnh"]
+        required: [true, "Sản phẩm phải có ảnh"],
     },
-    rating:
-    {
+    rating: {
         type: Number,
         required: [true, "Sản phẩm phải có rating"],
-
     },
-    quantity: 
-    {
+    quantity: {
         type: Number,
         required: [true, "Sản phẩm phải có số lượng"],
     },
-    // feedback: 
+    // feedback:
     // {
     //     type: [String],
     //     required: [true, "Sản phẩm phải có feedback"],
 
     // },
-    category: 
-    { 
-        type: Schema.Types.ObjectId, 
-        ref: "Category"
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
     },
     isActive: {
         type: Boolean,
