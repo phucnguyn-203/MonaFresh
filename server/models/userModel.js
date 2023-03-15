@@ -35,6 +35,7 @@ const userSchema = new Schema(
         phone: {
             type: String,
             required: [true, "User must have phone number"],
+            unique: true,
         },
         role: {
             type: String,
