@@ -5,7 +5,7 @@ const categorySchema = new Schema(
     {
         name: {
             type: String,
-            required: [true, "Tên danh mục không được để trống"],
+            required: [true, "Vui lòng cung cấp đầy đủ tên của danh mục"],
             unique: true,
         },
         isActive: {
