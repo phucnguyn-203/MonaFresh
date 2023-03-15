@@ -9,7 +9,7 @@ const DB = process.env.DB_HOST.replace("<password>", process.env.DB_PASSWORD);
 mongoose
     .connect(DB)
     .then(() => {
-        console.log("Database connected");
+        console.log("Database connection successful!");
     })
     .catch((err) => {
         console.log(err);
