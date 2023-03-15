@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const categorySchema = new Schema({
-    name: {
-        type: String,
-        required: [true, "Category must have a name"],
-        unique: true,
+const categorySchema = new Schema(
+    {
+        name: {
+            type: String,
+            required: [true, "Tên danh mục không được để trống"],
+            unique: true,
+        },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
     },
-    isActive: {
-        type: Boolean,
-        default: true,
+    {
+        timestamps: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
+);
 
 const Category = mongoose.model("Category", categorySchema);
 module.exports = Category;
