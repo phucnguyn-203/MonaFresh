@@ -31,14 +31,19 @@ const orderSchema = new Schema({
     status: {
         type: String,
         required: [true, "Vui lòng nhập trạng thái của đơn hàng"],
+        enum: ["Chờ xác nhận", "Đã xác nhận", "Đang giao", "Đã giao", "Đã huỷ", "Trả hàng"],
+        default: "Chờ xác nhận",
     },
     payment_status: {
         type: String,
         required: [true, "Vui lòng nhập trạng thái thanh toán của đơn hàng"],
+        enum: ["Chưa thanh toán", "Đã thanh toán"],
+        default: "Chưa thanh toán",
     },
     payment_method: {
         type: String,
         required: [true, "Vui lòng nhập phương thức thanh toán của đơn hàng"],
+        enum: ["Cod", "Online"],
     },
     createdAt: {
         type: Date,
