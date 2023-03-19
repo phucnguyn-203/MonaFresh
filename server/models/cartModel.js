@@ -7,11 +7,11 @@ const cartSchema = new Schema({
             product: {
                 type: Schema.Types.ObjectId,
                 ref: "Product",
-                required: true,
+                required: [true, "Vui lòng nhập ID của sản phẩm"],
             },
             quantity: {
                 type: Number,
-                required: true,
+                required: [true, "Vui lòng nhập số lượng sản phẩm"],
             },
             total: {
                 type: Number,
@@ -22,7 +22,7 @@ const cartSchema = new Schema({
     customer: {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true,
+        required: [true, "Vui lòng nhập ID của khách hàng"],
         unique: true,
     },
     createdAt: {
