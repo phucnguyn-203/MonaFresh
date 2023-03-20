@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { STATUS } = require("../utils/Constant");
+const { PAYMENT_STATUS } = require("../utils/Constant");
+const { PAYMENT_METHOD } = require("../utils/Constant");
 
 const orderSchema = new Schema({
     customer: {
@@ -29,21 +32,21 @@ const orderSchema = new Schema({
         required: true,
     },
     status: {
-        type: String,
+        type: Number,
         required: [true, "Vui lòng nhập trạng thái của đơn hàng"],
-        enum: ["Chờ xác nhận", "Đã xác nhận", "Đang giao", "Đã giao", "Đã huỷ", "Trả hàng"],
-        default: "Chờ xác nhận",
+        enum: [STATUS.PENDING, STATUS.CONFIRMED, STATUS.DELIVERING, STATUS.DELIVERED, STATUS.CANCELED, STATUS.RETURNS],
+        default: STATUS.PENDING,
     },
     payment_status: {
-        type: String,
+        type: Number,
         required: [true, "Vui lòng nhập trạng thái thanh toán của đơn hàng"],
-        enum: ["Chưa thanh toán", "Đã thanh toán"],
-        default: "Chưa thanh toán",
+        enum: [PAYMENT_STATUS.UNPAID, PAYMENT_STATUS.PAID],
+        default: PAYMENT_STATUS.UNPAID,
     },
     payment_method: {
-        type: String,
+        type: Number,
         required: [true, "Vui lòng nhập phương thức thanh toán của đơn hàng"],
-        enum: ["Cod", "Online"],
+        enum: [PAYMENT_METHOD.ONL, PAYMENT_METHOD.COD],
     },
     createdAt: {
         type: Date,
