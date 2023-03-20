@@ -19,7 +19,7 @@ export default function Sidebar({ tabActive, onClickTab }) {
             <div className="cursor-pointer">
                 <img src={Logo} alt="logo" />
             </div>
-            <div className="grow mt-8">
+            <div className={`${styles.navbar} grow mt-8`}>
                 <NavItem
                     title="Tổng Quan"
                     icon={<IconDashboard />}
