@@ -11,6 +11,7 @@ const orderRouter = require("./routes/orderRoutes");
 const productRouter = require("./routes/productRoutes");
 // const feedbackRouter = require("./routes/feedbackRoutes");
 const userRouter = require("./routes/userRoutes");
+const uploadFile = require("./routes/uploadFilesRoutes");
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
@@ -29,6 +30,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/products", productRouter);
 // app.use("/api/v1/feedbacks", feedbackRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/uploadfile", uploadFile);
 
 app.use(globalErrorHandler);
 module.exports = app;
