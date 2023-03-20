@@ -52,15 +52,25 @@ feedbackSchema.statics.calcAverageRatings = async function (productId) {
         },
     ]);
 
-    await Product.findByIdAndUpdate(productId, {
-        ratingsAverage: stats[0].averageRatings,
-        ratingsQuantity: stats[0].numberRatings,
-    });
+    if (stats.length > 0) {
+        await Product.findByIdAndUpdate(productId, {
+            ratingsAverage: stats[0].averageRatings,
+            ratingsQuantity: stats[0].numberRatings,
+        });
+    } else {
+        await Product.findByIdAndUpdate(productId, {
+            ratingsAverage: 0,
+            ratingsQuantity: 0,
+        });
+    }
 };
 
-feedbackSchema.pre("save", function (next) {
+feedbackSchema.post("save", function () {
     this.constructor.calcAverageRatings(this.product);
-    next();
+});
+
+feedbackSchema.post(/^findOneAnd/, function (doc) {
+    doc.constructor.calcAverageRatings(doc.product);
 });
 
 const Feedback = mongoose.model("Feedback", feedbackSchema);
