@@ -9,12 +9,29 @@
 }
 
 .navbar {
-    overflow: auto;
-    overflow: -moz-scrollbars-none;
-    -ms-overflow-style: none;
+    overflow-y: scroll;
+    /* overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none; */
 }
 
-.navbar::-webkit-scrollbar{
+/* .navbar::-webkit-scrollbar{
     width: 0 !important;
     display: none; 
+} */
+/* width */
+.navbar::-webkit-scrollbar {
+    width: 5px;
+}
+  
+  /* Track */
+.navbar::-webkit-scrollbar-track {
+   /* box-shadow: inset 0 0 5px grey;
+   border-radius: 10px; */
+}
+  
+  /* Handle */
+.navbar::-webkit-scrollbar-thumb {
+    /* background: red; */
+    background: rgba(26, 165, 100, 0.144);
+    border-radius: 10px;
 }
