@@ -3,9 +3,9 @@ import styles from "./styles.module.css";
 import Header from "../header";
 export default function Content({ children }) {
     return (
-        <div className="content">
+        <div className={styles.content}>
             <Header />
-            <main>{children}</main>
+            <main className={`${styles.main} bg-bgPrimary`}>{children}</main>
         </div>
     );
 }
