@@ -9,29 +9,31 @@
 }
 
 .navbar {
-    overflow-y: scroll;
+    overflow-y: hidden;
     /* overflow: -moz-scrollbars-none;
     -ms-overflow-style: none; */
 }
-
+.navbar:hover{
+    overflow-y: scroll;
+}
 /* .navbar::-webkit-scrollbar{
     width: 0 !important;
     display: none; 
 } */
 /* width */
 .navbar::-webkit-scrollbar {
-    width: 5px;
+    width: 6px;
 }
   
   /* Track */
-.navbar::-webkit-scrollbar-track {
-   /* box-shadow: inset 0 0 5px grey;
-   border-radius: 10px; */
-}
+/* .navbar::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 5px grey;
+   border-radius: 10px;
+} */
   
   /* Handle */
 .navbar::-webkit-scrollbar-thumb {
-    /* background: red; */
-    background: rgba(26, 165, 100, 0.144);
+    background: #9ef57e7e;
+    /* background: rgba(145, 145, 145, 0.116); */
     border-radius: 10px;
 }
