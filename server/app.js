@@ -11,14 +11,13 @@ const orderRouter = require("./routes/orderRoutes");
 const productRouter = require("./routes/productRoutes");
 // const feedbackRouter = require("./routes/feedbackRoutes");
 const userRouter = require("./routes/userRoutes");
-const uploadFile = require("./routes/uploadFilesRoutes");
-
+const uploadFileRouter = require("./routes/uploadFileRoutes");
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
 }
 
-//COOKIE PERSER
+//COOKIE PARSER
 app.use(cookieParser());
 
 //BODY PARSER
@@ -31,7 +30,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/products", productRouter);
 // app.use("/api/v1/feedbacks", feedbackRouter);
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/uploadfile", uploadFile);
+app.use("/api/v1/upload", uploadFileRouter);
 
 app.use(globalErrorHandler);
 module.exports = app;
