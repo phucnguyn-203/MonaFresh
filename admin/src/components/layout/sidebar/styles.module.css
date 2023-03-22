@@ -33,7 +33,7 @@
   
   /* Handle */
 .navbar::-webkit-scrollbar-thumb {
-    background: #9ef57e7e;
+    background: #A7A7A733;
     /* background: rgba(145, 145, 145, 0.116); */
     border-radius: 10px;
 }

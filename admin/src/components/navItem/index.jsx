@@ -1,15 +1,19 @@
+import { NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
 
-export default function NavItem({ title, icon, isActive, onClick }) {
+export default function NavItem({ title, icon, path }) {
+    const Icon = icon;
     return (
-        <div
-            className={`${styles.navItem} ${
+        <NavLink
+            to={path}
+            className={({ isActive }) =>
                 isActive ? "text-textPrimary" : "text-textSecondary"
-            }`}
-            onClick={onClick}
+            }
         >
-            <div className="text-xl">{icon}</div>
-            <p className="ml-4 font-semibold text-sm">{title}</p>
-        </div>
+            <div className={`${styles.navItem}`}>
+                <div className="text-xl">{<Icon />}</div>
+                <p className="ml-4 font-semibold text-sm">{title}</p>
+            </div>
+        </NavLink>
     );
 }
