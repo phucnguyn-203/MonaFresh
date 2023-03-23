@@ -48,14 +48,14 @@ const userSchema = new Schema(
             default: true,
             select: false,
         },
-        deliveryAddress: [
+        address: [
             {
+                name: String,
+                phone: String,
                 province: String,
                 district: String,
                 ward: String,
                 note: String,
-                name: String,
-                phone: String,
             },
         ],
     },
