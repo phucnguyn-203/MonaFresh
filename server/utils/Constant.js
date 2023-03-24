@@ -16,3 +16,9 @@ exports.PAYMENT_METHOD = {
     ONL: 1, //Thanh toán online
     COD: 2, //Thanh toán khi nhận hàng
 };
+
+exports.USER_ROLES = {
+    ADMIN: 1,
+    CUSTOMER: 2,
+    STAFF: 3,
+};

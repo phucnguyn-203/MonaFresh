@@ -2,51 +2,54 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const bcrypt = require("bcrypt");
 const validator = require("validator");
+const { USER_ROLES } = require("../utils/Constant");
 
 const userSchema = new Schema(
     {
         name: {
             type: String,
-            required: [true, "User must have a name"],
+            required: [true, "Vui lòng nhập tên của bạn"],
         },
         email: {
             type: String,
-            required: [true, "Please provide us your email"],
+            required: [true, "Vui lòng nhập email của bạn"],
             unique: true,
             lowercase: true,
-            validate: [validator.isEmail, "Invalid email"],
+            validate: [validator.isEmail, "Email không hợp lệ"],
         },
         password: {
             type: String,
             required: true,
-            minLength: [8, "Password length must be greater than 8 characters or equal"],
+            minLength: [8, "Độ dài mật khẩu nên lớn hơn hoặc bằng 8 kí tự"],
             select: false,
         },
         passwordConfirm: {
             type: String,
-            required: [true, "please confirm your password"],
+            required: [true, "Vui lòng nhập lại mật khẩu"],
             validate: {
                 validator: function (val) {
                     return val === this.password;
                 },
-                message: "Confirm password is not same password field",
+                message: "Mật khẩu không khớp",
             },
         },
         phone: {
             type: String,
-            required: [true, "User must have phone number"],
+            required: [true, "Vui lòng nhập số điện thoại của bạn"],
             unique: true,
         },
         role: {
-            type: String,
-            enum: ["customer", "admin", "staff"],
-            default: "customer",
+            type: Number,
+            enum: [USER_ROLES.ADMIN, USER_ROLES.CUSTOMER, USER_ROLES.STAFF],
+            default: USER_ROLES.CUSTOMER,
         },
-        photo: String,
+        photo: {
+            type: String,
+            default: "https://res.cloudinary.com/dp6iurtza/image/upload/v1679667323/qfjekmarkicryiaksnvu.png",
+        },
         isActive: {
             type: Boolean,
             default: true,
-            select: false,
         },
         address: [
             {
