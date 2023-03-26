@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const sendToken = require("../utils/sendToken");
+const sendEmail = require("../utils/email");
+const crypto = require("crypto");
 
 const jwt = require("jsonwebtoken");
 
@@ -38,11 +40,11 @@ exports.signup = catchAsync(async (req, res) => {
 exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
-        return next(new AppError("Please provide us your email and password", 400));
+        return next(new AppError("Vui lòng nhập email và mật khẩu", 400));
     }
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.correctPassword(password, user.password))) {
-        return next(new AppError("Email or Password is incorrect", 401));
+        return next(new AppError("Email hoặc mật khẩu không đúng", 401));
     }
     sendToken(res, {
         name: "accessToken",
@@ -66,7 +68,7 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.checkLogin = catchAsync(async (req, res, next) => {
     const { accessToken } = req.cookies;
     if (!accessToken) {
-        return next(new AppError("Unauthorized. You are not login. Please login to get access", 401));
+        return next(new AppError("Bạn chưa đăng nhập. Vui lòng đăng nhập để truy cập", 401));
     }
 
     const decoded = await jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET_KEY);
@@ -80,7 +82,7 @@ exports.checkLogin = catchAsync(async (req, res, next) => {
 exports.getNewAccessToken = catchAsync(async (req, res, next) => {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
-        return next(new AppError("Unauthorized. You are not loin. Please login to get access", 401));
+        return next(new AppError("Bạn chưa đăng nhập. Vui lòng đăng nhập để truy cập", 401));
     }
     const decoded = await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
     sendToken(res, {
@@ -91,6 +93,76 @@ exports.getNewAccessToken = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         data: null,
+    });
+});
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+    const { email } = req.body;
+    if (!email) {
+        return next(new AppError("Vui lòng điền Email của bạn", 400));
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        return next(new AppError("Email không tồn tại", 404));
+    }
+
+    const resetToken = user.createPasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    const resetURL = `${req.protocol}://${req.get("host")}/api/v1/users/resetPassword/${resetToken}`;
+    const message = `Mật khẩu của bạn có thể được đặt lại bằng click vào đường dẫn này: ${resetURL} .Đường dẫn sẽ có hiệu lực trong 10 phút. Nếu bạn không yêu cầu đặt lại mật khẩu vui lòng bỏ qua email này`;
+    try {
+        await sendEmail({
+            to: email,
+            subject: "Đặt lại mật khẩu của bạn(hiệu lực trong 10 phút)",
+            message,
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Một email đặt lại mật khẩu đã được gửi tới địa chỉ email của bạn",
+        });
+    } catch (err) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+        return next(new AppError("Xảy ra lỗi trong quá trình gửi email. Hãy thử lại sau", 500));
+    }
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+    const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } });
+    if (!user) {
+        return next(new AppError("Đường dẫn không hợp lệ hoặc đã hết hạn", 400));
+    }
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+    res.status(200).json({
+        status: "success",
+        message: "Mật khẩu được cập nhật thành công",
+    });
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    const { currentPassword } = req.body;
+    if (!currentPassword) {
+        return next(new AppError("Vui lòng nhập mật khẩu hiện tại", 400));
+    }
+    const user = await User.findById(req.user._id).select("+password");
+    if (!(await user.correctPassword(currentPassword, user.password))) {
+        return next(new AppError("Mật khẩu hiện tại không đúng, vui lòng thử lại", 400));
+    }
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    await user.save();
+
+    res.status(200).json({
+        status: "success",
+        message: "Mật khẩu được cập nhật thành công",
     });
 });
 
