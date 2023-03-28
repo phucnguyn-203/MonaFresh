@@ -1,11 +1,20 @@
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const sendToken = require("../utils/sendToken");
 const sendEmail = require("../utils/email");
-const crypto = require("crypto");
 
-const jwt = require("jsonwebtoken");
+const filterObject = (object, ...allowFields) => {
+    const newObject = {};
+    Object.keys(object).forEach((el) => {
+        if (allowFields.includes(el)) {
+            newObject[el] = object[el];
+        }
+    });
+    return newObject;
+};
 
 const signAccessToken = (_id, role) => {
     return jwt.sign({ _id, role }, process.env.ACCESS_TOKEN_SECRET_KEY, {
@@ -163,6 +172,25 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         message: "Mật khẩu được cập nhật thành công",
+    });
+});
+
+exports.updateMe = catchAsync(async (req, res, next) => {
+    const filterBody = filterObject(req.body, "name", "email", "phone", "photo");
+    const updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, { new: true, runValidators: true });
+    res.status(200).json({
+        status: "success",
+        data: {
+            user: updateUser,
+        },
+    });
+});
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+    await User.findByIdAndUpdate(req.user._id, { isActive: false });
+    res.status(204).json({
+        status: "success",
+        data: null,
     });
 });
 

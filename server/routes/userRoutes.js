@@ -9,6 +9,8 @@ const {
     forgotPassword,
     resetPassword,
     updatePassword,
+    updateMe,
+    deleteMe,
     logout,
 } = require("../controllers/userControllers");
 
@@ -18,7 +20,9 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/forgotPassword", forgotPassword);
 router.patch("/resetPassword/:token", resetPassword);
-router.post("/updatePassword", authenticate, updatePassword);
+router.patch("/updatePassword", authenticate, updatePassword);
+router.patch("/updateMe", authenticate, updateMe);
+router.delete("/deleteMe", authenticate, deleteMe);
 router.get("/check-login", checkLogin);
 router.get("/get-new-accessToken", getNewAccessToken);
 router.get("/logout", logout);

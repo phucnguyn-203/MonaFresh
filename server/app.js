@@ -11,6 +11,7 @@ const orderRouter = require("./routes/orderRoutes");
 const productRouter = require("./routes/productRoutes");
 // const feedbackRouter = require("./routes/feedbackRoutes");
 const userRouter = require("./routes/userRoutes");
+const addressRouter = require("./routes/addressRoutes");
 const uploadFileRouter = require("./routes/uploadFileRoutes");
 
 if (process.env.NODE_ENV === "development") {
@@ -30,6 +31,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/products", productRouter);
 // app.use("/api/v1/feedbacks", feedbackRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/upload", uploadFileRouter);
 
 app.use(globalErrorHandler);
