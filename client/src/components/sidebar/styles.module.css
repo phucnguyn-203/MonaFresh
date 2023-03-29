@@ -1,0 +1,18 @@
+.list {
+  border: 1.9px dotted #ececec;
+}
+.list li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  cursor: pointer;
+  border-top: 1px dotted #ececec;
+}
+.list li:nth-child(2n + 1) {
+  background-color: #f8f8f8;
+}
+.list li:hover {
+  background-color: #6abd45;
+  color: #fff;
+}

@@ -1,14 +1,14 @@
-import Main from "../../components/layout/main";
+import Main from "../../components/main";
 import styles from "./styles.module.css";
-import ShopPageTitle from "../../components/layout/shopPageTitle";
-import Sidebar from "../../components/layout/sidebar";
-import ListProducts from "../../components/layout/listProducts";
+import ShopPageTitle from "../../components/shopPageTitle";
+import Sidebar from "../../components/sidebar";
+import ListProducts from "../../components/listProducts";
 
 export default function Shop() {
-  return (
-    <div className={styles.app}>
-      <ShopPageTitle currentPage="CỬA HÀNG" />
-      <Main sidebar={<Sidebar />} listProducts={<ListProducts />} />
-    </div>
-  );
+    return (
+        <div className={styles.app}>
+            <ShopPageTitle currentPage="CỬA HÀNG" />
+            <Main sidebar={<Sidebar />} listProducts={<ListProducts />} />
+        </div>
+    );
 }
