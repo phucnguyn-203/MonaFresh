@@ -1,0 +1,17 @@
+.footer {
+  width: 100%;
+  background-color: #252932;
+}
+.container {
+  display: flex;
+  width: 1240px;
+  margin: 0 auto;
+}
+.list li {
+  padding: 6px 0;
+  cursor: pointer;
+  font-size: 15px;
+}
+.list li a:hover {
+  color: #6abd45;
+}
