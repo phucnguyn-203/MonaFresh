@@ -1,12 +1,11 @@
 .footer {
-  width: 100%;
+  height: var(--footer-height);
   background-color: #252932;
-}
-.container {
   display: flex;
-  width: 1240px;
-  margin: 0 auto;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
 .list li {
   padding: 6px 0;
   cursor: pointer;

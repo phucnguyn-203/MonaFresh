@@ -9,7 +9,7 @@
   cursor: pointer;
   border-top: 1px dotted #ececec;
 }
-.list li:nth-child(2n + 1) {
+.list li:nth-child(odd) {
   background-color: #f8f8f8;
 }
 .list li:hover {

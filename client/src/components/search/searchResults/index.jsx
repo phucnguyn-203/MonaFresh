@@ -1,4 +1,4 @@
-import ResultItem from "../resultItem";
+import ResultItem from "../ResultItem";
 
 export default function SearchResult() {
     return (

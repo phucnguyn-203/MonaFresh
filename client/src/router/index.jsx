@@ -5,10 +5,10 @@ import {
     Route,
 } from "react-router-dom";
 
-import Root from "../pages/root";
-import Home from "../pages/home";
-import Shop from "../pages/shop";
-import About from "../pages/about";
+import Root from "../pages/Root";
+import Home from "../pages/Home";
+import Shop from "../pages/Shop";
+import About from "../pages/About";
 
 const router = createBrowserRouter(
     createRoutesFromElements(

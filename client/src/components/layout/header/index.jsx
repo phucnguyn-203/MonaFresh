@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
-import styles from "./styles.module.css";
-import Logo from "../../../assets/logo.png";
 import { IconCart } from "../../icons";
+import logo from "../../../assets/logo.png";
 import navigation from "../../../utils/nav";
-import SearchBar from "../../search/searchBar";
-import ProfileAvatar from "../../profileAvatar";
+import SearchBar from "../../search/SearchBar";
+import ProfileAvatar from "../../ProfileAvatar";
+import styles from "./styles.module.css";
 
 export default function Header() {
     const [isLogin, setIsLogin] = useState(false);
     return (
         <header className={styles.header}>
             {/*desktop & tablet*/}
-            <div className="hidden md:flex w-full h-full items-center justify-around">
+            <div className="container flex h-full items-center justify-between">
                 <Link to="">
                     <img
-                        src={Logo}
+                        src={logo}
                         className="w-[250px] h-[47px] object-cover"
                         alt="logo"
                     />
@@ -38,8 +38,6 @@ export default function Header() {
                         ))}
                     </ul>
                     <SearchBar />
-                    {/* <SearchResult /> */}
-
                     <div className="relative flex items-center justify-center cursor-pointer">
                         <IconCart />
                         <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">

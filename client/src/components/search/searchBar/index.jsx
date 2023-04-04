@@ -1,5 +1,5 @@
 import { IconSearch } from "../../icons";
-import SearchResult from "../searchResults";
+import SearchResult from "../SearchResults";
 
 export default function SearchBar() {
     return (
