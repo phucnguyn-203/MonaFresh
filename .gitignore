@@ -8,4 +8,5 @@
 /server/.DS_Store
 /admin/.DS_Store
 /client/.DS_Store
+/client/.next
 /server/api.http
