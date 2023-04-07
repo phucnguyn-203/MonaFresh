@@ -5,8 +5,8 @@ export default function IconPrevious() {
             viewBox="0 0 11 11"
             x="0"
             y="0"
-            height="12px"
-            width="12px"
+            height="100%"
+            width="100%"
             className="shopee-svg-icon icon-arrow-left"
         >
             <g>

@@ -9,7 +9,7 @@ export default function Pagination() {
                 className={`flex justify-center items-center my-[30px] h-[30px]  ${styles.pagination}`}
             >
                 <li>
-                    <button className="text-base px-[10px]">
+                    <button className="text-base px-[10px] h-3 ">
                         <IconPrevious />
                     </button>
                 </li>
@@ -26,7 +26,7 @@ export default function Pagination() {
                     <a>...</a>
                 </li>
                 <li>
-                    <button className="text-base px-[10px]">
+                    <button className="text-base px-[10px] h-3">
                         <IconNext />
                     </button>
                 </li>

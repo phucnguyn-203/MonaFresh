@@ -23,7 +23,7 @@ export default function ProductItem({ thumbnail, name, price }) {
                     {formatCurrency(price)}
                 </div>
                 <div>
-                    <button className="bg-[#6abd45] text-white px-5 py-3 text-xs hover:bg-lime-600 rounded-md">
+                    <button className="bg-primary text-white px-5 py-3 text-xs hover:bg-lime-600 rounded-md">
                         THÊM VÀO GIỎ HÀNG
                     </button>
                 </div>

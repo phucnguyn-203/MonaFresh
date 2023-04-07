@@ -55,7 +55,7 @@ export default function About() {
                         hiện tại và cả tương lai sau này.{" "}
                     </p>
                     <div className="my-8">
-                        <Image src={AboutMona} />
+                        <Image src={AboutMona} alt="about" />
                     </div>
                     <p>
                         Chúng tôi tự hào giới thiệu đến quý khách hàng những sản

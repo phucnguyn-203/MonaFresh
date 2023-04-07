@@ -6,9 +6,9 @@ export default function Products() {
     return (
         <div className="w-3/4 ">
             <div className="grid grid-cols-4 gap-4 mb-[30px]">
-                {products.map(({ name, price, thumbnail }, index) => (
+                {products.map(({ id, name, price, thumbnail }) => (
                     <ProductItem
-                        key={index}
+                        key={id}
                         name={name}
                         price={price}
                         thumbnail={thumbnail}

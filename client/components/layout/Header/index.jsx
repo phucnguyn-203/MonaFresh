@@ -6,7 +6,7 @@ import { IconCart } from "@/components/icons";
 import logo from "@/public/assets/img/logo.png";
 import navigation from "@/utils/nav";
 import SearchBar from "@/components/search/SearchBar";
-import ProfileAvatar from "@/components/ProfileAvatar";
+import Profile from "@/components/Profile";
 import styles from "./styles.module.css";
 
 export default function Header() {
@@ -50,7 +50,7 @@ export default function Header() {
                         </div>
                     </div>
                     {isLogin ? (
-                        <ProfileAvatar />
+                        <Profile />
                     ) : (
                         <div className="text-textHeaderPrimary text-sm">
                             <Link className="hover:text-black" href="/login">

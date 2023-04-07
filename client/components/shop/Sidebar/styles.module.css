@@ -1,5 +1,5 @@
 .list {
-  border: 1.9px dotted #ececec;
+  border: 1.9px solid #ececec;
 }
 .list li {
   padding-top: 10px;
@@ -7,7 +7,7 @@
   padding-left: 20px;
   padding-right: 20px;
   cursor: pointer;
-  border-top: 1px dotted #ececec;
+  border-top: 1px solid #ececec;
 }
 .list li:nth-child(odd) {
   background-color: #f8f8f8;

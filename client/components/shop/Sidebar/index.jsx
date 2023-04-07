@@ -9,7 +9,7 @@ export default function Sidebar() {
     const [cost, setCost] = useState([0, 1000000]);
     return (
         <div className="w-1/4 pb-[30px] gap-x-1">
-            <aside>
+            <aside className="shadow-lg">
                 <div className="w-full  p-[20px] bg-[#6abd45] text-white text-lg font-semibold rounded-t-lg">
                     <span>DANH MỤC SẢN PHẨM</span>
                 </div>
@@ -25,7 +25,7 @@ export default function Sidebar() {
                 </div>
             </aside>
 
-            <aside>
+            <aside className="shadow-xl">
                 <div className="w-full  p-[20px] bg-[#6abd45] text-white text-lg font-semibold rounded-t-lg">
                     <span>LỌC THEO GIÁ</span>
                 </div>

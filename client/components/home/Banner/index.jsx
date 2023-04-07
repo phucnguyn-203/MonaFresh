@@ -25,7 +25,7 @@ export default function Banner() {
                 </div>
                 <Link
                     href="/shop"
-                    className="text-lg bg-[#6abd45] px-8 py-3 mt-3 rounded-lg uppercase hover:bg-opacity-90 transition-all"
+                    className="text-lg bg-[#6abd45] px-8 py-3 mt-3 rounded-lg uppercase hover:bg-lime-600 transition-all"
                 >
                     Mua ngay
                 </Link>

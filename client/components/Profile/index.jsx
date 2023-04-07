@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Avatar from "@/public/assets/img/avatar.png";
 
-export default function ProfileAvatar() {
+export default function Profile() {
     const [isDropdown, setIsDropdown] = useState();
     const profile = useRef(null);
 
