@@ -1,0 +1,119 @@
+
+
+.containerCheckbox {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-right: 10px;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .containerCheckbox .checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .containerCheckbox .checkbox ~ .checkmark {
+    /* background-color: #bee6ad; */
+    background-color: whitesmoke;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .containerCheckbox .checkbox:checked ~ .checkmark {
+    background-color: #6abd45;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .containerCheckbox .checkbox:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .containerCheckbox .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+/* .checkbox {
+    height: 20px;
+    width: 20px;
+    margin-right: 20px;
+} */
+
+
+
+
+
+
+.qty {
+    max-width: 40px;
+    width: 40px;
+    text-align: center;
+    border-radius: 0 !important;
+    appearance: textfield;
+    font-size: 1em;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    background-color: #fff;
+    color: #333;
+    transition: color .3s, border .3s, background .3s, opacity .3s;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-width: 1px 0px;
+    padding: 0;
+    height: 2.507em;
+
+}
+
+
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+
