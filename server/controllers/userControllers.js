@@ -5,6 +5,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 const sendToken = require("../utils/sendToken");
 const sendEmail = require("../utils/email");
+const Cart = require("../models/cartModel");
 
 const filterObject = (object, ...allowFields) => {
     const newObject = {};
@@ -36,7 +37,10 @@ exports.signup = catchAsync(async (req, res) => {
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
     });
-
+    await Cart.create({
+        customer: newUser._id,
+        items: [],
+    });
     newUser.password = undefined;
     res.status(201).json({
         status: "success",

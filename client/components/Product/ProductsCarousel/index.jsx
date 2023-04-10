@@ -1,10 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import ProductItem from "../ProductItem";
-import {
-    SlickArrowNext,
-    SlickArrowPrev,
-} from "@/components/shared/SlickArrows";
+import { SlickArrowNext, SlickArrowPrev } from "@/components/shared/SlickArrows";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.module.css";
@@ -48,12 +45,13 @@ export default function ProductsCarousel({ products }) {
     return (
         <React.Fragment>
             <Slider {...settings}>
-                {products.map(({ id, name, price, thumbnail }) => (
+                {products.map(({ id, name, price, thumbnail, percentageDiscount }) => (
                     <ProductItem
                         key={id}
                         name={name}
                         price={price}
                         thumbnail={thumbnail}
+                        percentageDiscount={percentageDiscount}
                     />
                 ))}
             </Slider>

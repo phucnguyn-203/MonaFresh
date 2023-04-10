@@ -1,0 +1,121 @@
+
+
+
+
+.information {
+    font-family: system-ui !important;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 0 0.75em;
+    height: 2.507em;
+    font-size: .97em;
+    border-radius: 0;
+    min-height: 45px;
+    max-width: 100%;
+    width: 100%;
+    vertical-align: middle;
+    background-color: #fff;
+    color: #333;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    transition: color .3s, border .3s, background .3s, opacity .3s;
+    margin-bottom: 1em;
+    touch-action: manipulation;
+    overflow: visible;
+    font: inherit;
+}
+
+.information:hover{
+    box-shadow: inset 0 -1.8em 1em 0 rgba(0,0,0,0);
+}
+.information:focus {
+    box-shadow: 0 0 5px #ccc;
+    opacity: 1 !important;
+    outline: 0;
+    color: #333;
+    background-color: #fff;
+}
+
+
+.li:first-child {
+    border-bottom: 1px solid #ececec;
+    padding-bottom: 10px;
+}
+
+
+
+.containerRadio {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 5px;
+    margin-bottom: 25px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .containerRadio .radio {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .containerRadio:hover .radio ~ .checkmark {
+    background-color: #8ce665b9;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .containerRadio .radio:checked ~ .checkmark {
+    background-color: #6abd45;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .containerRadio .radio:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .containerRadio .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+
+
+
+
+
