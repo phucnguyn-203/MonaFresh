@@ -1,13 +1,5 @@
 import React from "react";
-import {
-    Banner,
-    TopCategories,
-    TopProducts,
-    Promotion,
-    NewProducts,
-    DiscountProducts,
-} from "@/components/home";
-import { products } from "@/api/data";
+import { Banner, TopCategories, TopProducts, Promotion, NewProducts, DiscountProducts } from "@/components/home";
 
 export default function Home() {
     return (

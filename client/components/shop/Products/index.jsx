@@ -9,6 +9,7 @@ export default function Products() {
                 {products.map(({ id, name, price, thumbnail, percentageDiscount }) => (
                     <ProductItem
                         key={id}
+                        id={id}
                         name={name}
                         price={price}
                         thumbnail={thumbnail}

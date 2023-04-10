@@ -28,9 +28,7 @@ export default function TopCategories() {
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_1} alt="" className="" />
-                        <div
-                            className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}
-                        >
+                        <div className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}>
                             <Image src={Cate_1_hover} alt="" />
                         </div>
                     </div>
@@ -43,9 +41,7 @@ export default function TopCategories() {
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_2} alt="" className="" />
-                        <div
-                            className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}
-                        >
+                        <div className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}>
                             <Image src={Cate_2_hover} alt="" />
                         </div>
                     </div>
@@ -58,9 +54,7 @@ export default function TopCategories() {
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_3} alt="" className="" />
-                        <div
-                            className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}
-                        >
+                        <div className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}>
                             <Image src={Cate_3_hover} alt="" />
                         </div>
                     </div>
@@ -73,9 +67,7 @@ export default function TopCategories() {
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_4} alt="" className="" />
-                        <div
-                            className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}
-                        >
+                        <div className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}>
                             <Image src={Cate_4_hover} alt="" />
                         </div>
                     </div>
@@ -88,9 +80,7 @@ export default function TopCategories() {
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_5} alt="" className="" />
-                        <div
-                            className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}
-                        >
+                        <div className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}>
                             <Image src={Cate_5_hover} alt="" />
                         </div>
                     </div>
@@ -103,9 +93,7 @@ export default function TopCategories() {
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_6} alt="" className="" />
-                        <div
-                            className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}
-                        >
+                        <div className={`${styles.overlay} absolute top-0 left-0 right-0 bottom-0 w-full h-full z-10`}>
                             <Image src={Cate_6_hover} alt="" />
                         </div>
                     </div>

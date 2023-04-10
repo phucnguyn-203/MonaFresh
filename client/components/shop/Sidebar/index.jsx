@@ -15,9 +15,7 @@ export default function Sidebar() {
                 </div>
 
                 <div className="mb-[30px] ">
-                    <ul
-                        className={`text-black font-semibold  border-solid ${styles.list}`}
-                    >
+                    <ul className={`text-black font-semibold  border-solid ${styles.list}`}>
                         {categories.map((item) => (
                             <li key={item.id}>{item.title}</li>
                         ))}
@@ -68,10 +66,7 @@ export default function Sidebar() {
                                         currency: "VND",
                                     }).format(cost[0])}
                                 </span>
-                                <span className="text-xs font-semibold">
-                                    {" "}
-                                    -{" "}
-                                </span>
+                                <span className="text-xs font-semibold"> - </span>
                                 <span className="text-xs font-semibold">
                                     {new Intl.NumberFormat("vi-VN", {
                                         style: "currency",

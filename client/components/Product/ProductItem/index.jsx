@@ -2,10 +2,9 @@ import Link from "next/link";
 import formatCurrency from "@/utils/formatCurrency";
 import styles from "./styles.module.css";
 
-
-export default function ProductItem({ thumbnail, name, price, percentageDiscount }) {
+export default function ProductItem({ id, thumbnail, name, price, percentageDiscount }) {
     return (
-        <Link href="/" className={`${styles.product} shadow-lg hover:shadow-gray-500`}>
+        <Link href={`/shop/${id}`} className={`${styles.product} shadow-lg hover:shadow-gray-500`}>
             {percentageDiscount ? (
                 <div
                     className={`bg-primary absolute min-w-[40px] h-[25px] right-0 text-white px-[4px] ${styles.labelProduct}`}

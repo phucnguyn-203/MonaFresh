@@ -13,9 +13,7 @@ export default function Breadcrumb({ breadcrumb }) {
                         <Link
                             href={path}
                             className={
-                                router.pathname === path
-                                    ? "text-inherit font-bold uppercase"
-                                    : "text-inherit uppercase"
+                                router.pathname === path ? "text-inherit font-bold uppercase" : "text-inherit uppercase"
                             }
                         >
                             {title}

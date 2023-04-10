@@ -27,9 +27,7 @@ export default function Promotion() {
     ];
     return (
         <div className="mt-20">
-            <h1 className="text-[#1C1C1C] text-center text-3xl font-bold mb-12">
-                Chương trình khuyến mãi
-            </h1>
+            <h1 className="text-[#1C1C1C] text-center text-3xl font-bold mb-12">Chương trình khuyến mãi</h1>
             <div className="grid grid-cols-4 gap-x-4">
                 {data.map(({ url, path }) => (
                     <div key={url.src} className="overflow-hidden">
