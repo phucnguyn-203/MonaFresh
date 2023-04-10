@@ -2,6 +2,7 @@ import Link from "next/link";
 import formatCurrency from "@/utils/formatCurrency";
 import styles from "./styles.module.css";
 
+
 export default function ProductItem({ thumbnail, name, price, percentageDiscount }) {
     return (
         <Link href="/" className={`${styles.product} shadow-lg hover:shadow-gray-500`}>
