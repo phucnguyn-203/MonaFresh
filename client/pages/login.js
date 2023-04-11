@@ -53,7 +53,7 @@ function Login() {
                             Ghi nhớ đăng nhập
                         </p>
                     </div>
-                    <a href="#" className="text-sm underline italic text-teal-800 flex-start mr-0  ml-12 ">
+                    <a href="forget" className="text-sm underline italic text-teal-800 flex-start mr-0  ml-12 ">
                         Quên mật khẩu?
                     </a>
                 </div>
