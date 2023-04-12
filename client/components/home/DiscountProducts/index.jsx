@@ -5,7 +5,7 @@ import { products } from "@/api/data";
 
 export default function DiscountProducts() {
     return (
-        <div className="mt-20 bg-white p-7 rounded-xl">
+        <div className="mt-20 bg-white p-7 rounded-xl" data-aos="fade-up">
             <h1 className="text-[#1C1C1C] text-center text-3xl font-bold mb-12">Sản phẩm giảm giá</h1>
             <div className="mb-10">
                 <ProductsCarousel products={products} />

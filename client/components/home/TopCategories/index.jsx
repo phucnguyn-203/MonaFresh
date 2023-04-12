@@ -21,10 +21,10 @@ import styles from "./styles.module.css";
 export default function TopCategories() {
     return (
         <React.Fragment>
-            <h1 className="text-[#1C1C1C] text-center text-3xl font-bold pt-[50px] pb-[40px]">
+            <h1 className="text-[#1C1C1C] text-center text-3xl font-bold pt-[50px] pb-[40px]" data-aos="fade-up">
                 Mua sản phẩm được lựa chọn từ vườn
             </h1>
-            <div className="flex flex-row justify-between items-center content-center">
+            <div className="flex flex-row justify-between items-center content-center" data-aos="fade-up">
                 <div className="">
                     <div className={styles.parent}>
                         <Image src={Cate_1} alt="" className="" />
