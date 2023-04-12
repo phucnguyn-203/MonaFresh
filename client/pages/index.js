@@ -1,5 +1,14 @@
 import React from "react";
-import { Banner, TopCategories, TopProducts, Promotion, NewProducts, DiscountProducts } from "@/components/home";
+import {
+    Banner,
+    TopCategories,
+    TopProducts,
+    Promotion,
+    NewProducts,
+    DiscountProducts,
+    Certificateds,
+    CustomerPolicy,
+} from "@/components/home";
 
 export default function Home() {
     return (
@@ -8,10 +17,12 @@ export default function Home() {
             <div className="container">
                 <TopCategories />
                 <Promotion />
+                <CustomerPolicy />
                 <TopProducts />
                 <NewProducts />
                 <DiscountProducts />
             </div>
+            <Certificateds />
         </React.Fragment>
     );
 }
