@@ -1,0 +1,31 @@
+.item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    margin: 20px 0;
+    padding: 0 25px;
+}
+.inputItem {
+    width: 66.666667%;
+    border-radius: 6px;
+    background-color: #f4f5f7;
+    border: 1px dotted #d3cfcf;
+    padding: 10px;
+}
+.inputItem:focus {
+    outline: none;
+    background-color: transparent;
+}
+
+.effect {
+    animation: modalAnimation ease 0.4s;
+}
+@keyframes modalAnimation {
+    from {
+        transform: translateX(150px);
+    }
+    to {
+        transform: translateX(0px);
+    }
+}
