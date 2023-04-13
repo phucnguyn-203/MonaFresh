@@ -36,3 +36,11 @@ body {
 .slick-prev:before, .slick-next:before {
   content: "" !important;
 }
+
+.productSliderNav .slick-current img{
+  border: 2px solid var(--primary-color) !important ;
+}
+
+.react-start {
+  display: inline;
+}

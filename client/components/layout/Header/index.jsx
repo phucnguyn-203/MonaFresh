@@ -18,7 +18,7 @@ export default function Header() {
             {/*desktop & tablet*/}
             <div className="container flex h-full items-center justify-between">
                 <Link href="/">
-                    <Image src={logo} className="w-[250px] h-[47px] object-cover" alt="logo" />
+                    <Image src={logo} className="w-[250px] h-[47px] object-cover" alt="logo" priority />
                 </Link>
                 <div className="flex items-center gap-8">
                     <ul className="flex items-center gap-8">
@@ -37,12 +37,12 @@ export default function Header() {
                         ))}
                     </ul>
                     <SearchBar />
-                    <div className="relative flex items-center justify-center cursor-pointer">
+                    <Link href="/cart" className="relative flex items-center justify-center cursor-pointer">
                         <IconCart />
                         <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">
                             <p className="text-xs text-white font-semibold">2</p>
                         </div>
-                    </div>
+                    </Link>
                     {isLogin ? (
                         <Profile />
                     ) : (

@@ -11,7 +11,7 @@ export default function Footer() {
             <div className="container flex gap-x-6 py-[80px] flex-1">
                 <div className="w-1/4 flex flex-col justify-between">
                     <Link href="/" className="px-[15px] w-[270px] h-[51px] text-xl">
-                        <Image src={logo} alt="logo" />
+                        <Image src={logo} alt="logo" priority />
                     </Link>
                     <div className="px-[15px]">
                         <ul>

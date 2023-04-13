@@ -7,9 +7,9 @@ export default function ProductItem({ id, thumbnail, name, price, percentageDisc
         <Link href={`/shop/${id}`} className={`${styles.product} shadow-lg hover:shadow-gray-500`}>
             {percentageDiscount ? (
                 <div
-                    className={`bg-primary absolute min-w-[40px] h-[25px] right-0 text-white px-[4px] ${styles.labelProduct}`}
+                    className={`bg-primary absolute top-0 right-0 text-white w-12 h-6 text-center ${styles.labelProduct}`}
                 >
-                    <p>{` -${percentageDiscount * 100}%`}</p>
+                    <p>{`-${percentageDiscount * 100}%`}</p>
                 </div>
             ) : null}
 

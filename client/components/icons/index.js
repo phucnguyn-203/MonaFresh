@@ -7,5 +7,5 @@ export { default as IconPhone } from "./phone";
 export { default as IconEmail } from "./email";
 export { default as IconFacebook } from "./facebook";
 export { default as IconInstagram } from "./instagram";
-export { default as IconPaypal } from "./paypal";
-export { default as IconTechcombank } from "./techcombank";
+export { default as IconCash } from "./cash";
+export { default as IconCard } from "./card";

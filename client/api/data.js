@@ -30,6 +30,14 @@ const products = [
             "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
         category: 3,
         // percentageDiscount: 0.2,
+        images: [
+            "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+            "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/12/12805-277401657617210-1657617210--400x400.jpg",
+            "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8736-278031623999476-1623999476--400x400.jpg",
+            "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8737-409491623999484-1623999484--400x400.jpg",
+            "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+            "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+        ],
     },
     {
         id: 2,

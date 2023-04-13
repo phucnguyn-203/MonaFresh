@@ -2,7 +2,7 @@
     display: block;
     overflow: hidden;
     background-color: #ffffff;
-    transition: all linear 0.3s;
+    transition:all linear 0.3s;
     position: relative;
 }
 
@@ -12,13 +12,11 @@
 
 .labelProduct::after {
     content: "";
-    width: 0;
-    height: 0;
     left: 0;
-    bottom: -9px;
+    right: 0;
+    top: 100%;
     position: absolute;
     border-color: transparent var(--primary-color);
     border-style: solid;
-    border-width: 0 23px 10px;
-    /* z-index: 3; */
+    border-width: 0 24px 12px;
 }
