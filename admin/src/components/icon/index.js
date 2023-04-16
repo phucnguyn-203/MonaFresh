@@ -7,3 +7,5 @@ export { default as IconProduct } from "./product";
 export { default as IconSetting } from "./setting";
 export { default as IconNotification } from "./notification";
 export { default as IconStaff } from "./staff";
+export { default as IconClose } from "./close";
+export { default as IconUploadFile } from "./uploadFile";
