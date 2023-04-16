@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import formatCurrency from "@/utils/formatCurrency";
 import CartItem from "@/components/cart/CardItem";
@@ -6,6 +7,7 @@ import CartItem from "@/components/cart/CardItem";
 import { carts } from "@/api/data";
 
 export default function Cart() {
+  const router = useRouter();
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isChecked, setIsChecked] = useState([]);
   const [list, setList] = useState([]);
@@ -88,7 +90,11 @@ export default function Cart() {
             <button className="text-center bg-primary text-[white] w-[25%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase hover:bg-[#93db73e3]">
               <div>Cập nhật giỏ hàng</div>
             </button>
-            <button className="text-center bg-[#d26e4b] text-[white] w-[27%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase hover:bg-[#a8583c]">
+            <button
+              className={`${
+                isChecked.length === 0 ? "pointer-events-none bg-[#CCCCCC]" : ""
+              } text-center bg-[#d26e4b] text-[white] w-[27%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase hover:bg-[#a8583c]`}
+            >
               <div>Xoá các mục đã chọn</div>
             </button>
           </div>
@@ -135,7 +141,14 @@ export default function Cart() {
             </div>
 
             <div className="border-t-[2px] border-[#ececec] pt-[20px]">
-              <button className="bg-[#d26e4b] text-[white] w-full min-h-[40px] flex items-center text-center justify-center uppercase hover:bg-[#a8583c]">
+              <button
+                onClick={() => router.push("/checkout")}
+                className={`${
+                  isChecked.length === 0
+                    ? "pointer-events-none bg-[#CCCCCC]"
+                    : ""
+                } bg-[#d26e4b] text-[white] w-full min-h-[40px] flex items-center text-center justify-center uppercase hover:bg-[#a8583c]`}
+              >
                 Tiến hành thanh toán
               </button>
             </div>

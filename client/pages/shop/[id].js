@@ -18,6 +18,7 @@ export default function Shop() {
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
+  console.log(quantity);
 
   return (
     <div className="container">
@@ -154,16 +155,11 @@ export default function Shop() {
                   -
                 </button>
                 <input
-                  type="text"
+                  type="number"
                   className="w-[65px] h-[40px] border-[1px] border-solid text-center outline-none"
                   value={quantity}
                   onChange={(e) => {
-                    const value = Number(e.target.value);
-                    if (typeof value === "number" && !isNaN(value)) {
-                      setQuantity(+e.target.value);
-                    } else {
-                      setQuantity(1);
-                    }
+                    setQuantity(Number(e.target.value));
                   }}
                 />
                 <button

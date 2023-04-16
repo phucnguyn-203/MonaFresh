@@ -1,5 +1,6 @@
 import styles from "@/styles/Checkout.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import formatCurrency from "@/utils/formatCurrency";
 
 export default function Checkout() {
   const Product = [
@@ -34,12 +35,12 @@ export default function Checkout() {
   ];
   const paymentMethod = [
     {
-      id: 2,
+      id: 1,
       title: "Trả tiền mặt khi nhận hàng",
       description: "Trả tiền mặt khi giao hàng.",
     },
     {
-      id: 1,
+      id: 2,
       title: "Chuyển khoản ngân hàng",
       description:
         "Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ đươc giao sau khi tiền đã chuyển.",
@@ -51,10 +52,10 @@ export default function Checkout() {
   const deliveryCharge = 0;
   const total = subtotal + deliveryCharge;
 
-  const [isChecked, setIsChecked] = useState(2);
+  const [isChecked, setIsChecked] = useState(1);
 
   return (
-    <div className="container bg-[white]">
+    <div className="container bg-[white] my-32">
       <div className="py-[30px] box-border max-w-[1240px] w-full flex mx-auto">
         <div className="max-w-[60%] basis-[60%] w-full px-[1%]">
           <div className="border-t-[2px] border-[#ececec] w-full p-[3.5%]">
@@ -64,7 +65,7 @@ export default function Checkout() {
             <form action="">
               <div className="w-full flex">
                 <div className="mr-[10px] w-[50%] basis-[50%]">
-                  <label className="font-[550]" for="name">
+                  <label className="font-[550]" htmlFor="name">
                     Họ Tên *
                   </label>{" "}
                   <br />
@@ -77,7 +78,7 @@ export default function Checkout() {
                   />
                 </div>
                 <div className="ml-[10px] w-[50%] basis-[50%]">
-                  <label className="font-[550]" for="phoneNumber">
+                  <label className="font-[550]" htmlFor="phoneNumber">
                     Số điện thoại *
                   </label>{" "}
                   <br />
@@ -91,7 +92,7 @@ export default function Checkout() {
                 </div>
               </div>
               <div className="w-full">
-                <label className="font-[550]" for="province">
+                <label className="font-[550]" htmlFor="province">
                   Tỉnh/Thành phố *
                 </label>
                 <select
@@ -106,7 +107,7 @@ export default function Checkout() {
                   <option value="BinhDinh">Bình Định</option>
                 </select>{" "}
                 <br />
-                <label className="font-[550]" for="district">
+                <label className="font-[550]" htmlFor="district">
                   Quận/Huyện *
                 </label>
                 <select className={styles.information} id="district">
@@ -120,7 +121,7 @@ export default function Checkout() {
                   <option value="Quan1">Quận 8</option>
                 </select>{" "}
                 <br />
-                <label className="font-[550]" for="ward">
+                <label className="font-[550]" htmlFor="ward">
                   Phường/Xã *
                 </label>
                 <select className={styles.information} id="ward">
@@ -131,7 +132,7 @@ export default function Checkout() {
                   <option value="BinhDinh">Bình Định</option>
                 </select>{" "}
                 <br />
-                <label className="font-[550]" for="specificAddress">
+                <label className="font-[550]" htmlFor="specificAddress">
                   Địa chỉ cụ thể *
                 </label>{" "}
                 <br />
@@ -143,18 +144,6 @@ export default function Checkout() {
                   placeholder="VD: 210, Khu 1, Ấp Nam Chánh"
                 />
               </div>
-              <label className="font-[550]" for="note">
-                Ghi chú đơn hàng (tuỳ chọn)
-              </label>{" "}
-              <br />
-              <textarea
-                className={`${styles.information} pt-[0.7em] h-[120px]`}
-                name="note"
-                id="note"
-                cols="5"
-                rows="2"
-                placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."
-              ></textarea>
             </form>
           </div>
         </div>
@@ -182,8 +171,8 @@ export default function Checkout() {
                 </tr>
               </thead>
               <tbody>
-                {Product.map((item) => (
-                  <tr>
+                {Product.map((item, index) => (
+                  <tr key={index}>
                     <td className="text-left w-[55%] tracking-normal">
                       {item.name}
                     </td>
@@ -191,7 +180,7 @@ export default function Checkout() {
                       {item.quantity}
                     </td>
                     <td className="text-right w-[20%] tracking-normal whitespace-nowrap text-[#6abd45] font-bold text-[16px]">
-                      {item.total}đ
+                      {formatCurrency(item.total)}
                     </td>
                   </tr>
                 ))}
@@ -203,7 +192,7 @@ export default function Checkout() {
                   Tổng phụ
                 </div>
                 <div className="w-[50%] p-[0.5em] items-center text-right text-[16px] font-bold whitespace-nowrap text-[#6abd45] ">
-                  {subtotal}đ
+                  {formatCurrency(subtotal)}
                 </div>
               </div>
               <div className="border-b-[1px] border-[#ececec] flex">
@@ -219,7 +208,7 @@ export default function Checkout() {
                   Tổng
                 </div>
                 <div className="w-[50%] p-[0.5em] items-center text-right text-[16px] font-bold whitespace-nowrap text-[#6abd45] ">
-                  {total}đ
+                  {formatCurrency(total)}đ
                 </div>
               </div>
             </div>
@@ -228,14 +217,14 @@ export default function Checkout() {
                 {paymentMethod.map((item) => (
                   <li key={item.id} className={`${styles.li} mt-[10px]`}>
                     <div className="items-center font-[550] text-[16px] flex">
-                      <label class={styles.containerRadio}>
+                      <label className={styles.containerRadio}>
                         <input
                           checked={item.id === isChecked}
                           onChange={() => setIsChecked(item.id)}
                           className={styles.radio}
                           type="radio"
                         />
-                        <span class={styles.checkmark}></span>
+                        <span className={styles.checkmark}></span>
                       </label>
                       <label>{item.title}</label>
                     </div>
