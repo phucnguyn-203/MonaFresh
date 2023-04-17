@@ -34,8 +34,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                 <div className="h-full overflow-y-scroll grow mt-[20px]">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="w-full  flex  items-start px-[25px] my-[20px]">
-                            <label className="w-1/3">Ảnh nhân viên</label>
-
+                            <label className="w-1/3 text-sm text-gray-700">Ảnh nhân viên</label>
                             <input
                                 id="file"
                                 type="file"
@@ -43,7 +42,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                                 className="w-full border-[1px] border-solid h-[140px] outline-none rounded-md hidden"
                             />
                             <label htmlFor="file" className="grow">
-                                <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer flex flex-col items-center">
+                                <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 border-dashed rounded-md cursor-pointer flex flex-col items-center">
                                     <span>
                                         <IconUploadFile />
                                     </span>
@@ -54,7 +53,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                             </label>
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Tên</label>
                             </div>
                             <div className="flex flex-col w-2/3 ">
@@ -63,14 +62,14 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                                     placeholder="Nhập tên"
                                     className={`  ${
                                         errors.name ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("name")}
                                 />
                                 {errors.name && <p className="text-red-500 text-sm">{`*${errors.name.message}`}</p>}
                             </div>
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Email</label>
                             </div>
                             <div className="flex flex-col w-2/3 ">
@@ -79,14 +78,14 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                                     placeholder="Nhập email"
                                     className={`${
                                         errors.email ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("email")}
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{`*${errors.email.message}`}</p>}
                             </div>
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Mật khẩu</label>
                             </div>
                             <div className="flex flex-col w-2/3 ">
@@ -95,7 +94,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                                     placeholder="Nhập mật khẩu"
                                     className={`${
                                         errors.password ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("password")}
                                 />
                                 {errors.password && (
@@ -104,7 +103,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                             </div>
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>SĐT</label>
                             </div>
                             <div className="flex flex-col w-2/3 ">
@@ -113,18 +112,18 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                                     placeholder="Nhập SĐT"
                                     className={`${
                                         errors.phone ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("phone")}
                                 />
                                 {errors.phone && <p className="text-red-500 text-sm">{`*${errors.phone.message}`}</p>}
                             </div>
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Chức vụ</label>
                             </div>
                             <div className="flex flex-col w-2/3 ">
-                                <select className="block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none">
+                                <select className="block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none">
                                     <option>Nhân viên</option>
                                     <option>Quản lý</option>
                                 </select>

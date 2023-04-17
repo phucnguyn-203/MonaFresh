@@ -25,7 +25,7 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                 <div className="h-full overflow-y-scroll grow mt-[20px]">
                     <form>
                         <div className="w-full flex  items-start px-[25px] my-[20px]">
-                            <label className="w-1/3">Ảnh đại diện</label>
+                            <label className="w-1/3 text-sm text-gray-700">Thumbnail sản phẩm</label>
                             <div className="w-2/3">
                                 <input
                                     id="file"
@@ -35,7 +35,7 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                                     onChange={handlePreviewAvatar}
                                 />
                                 <label htmlFor="file" className="grow">
-                                    <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer flex flex-col items-center">
+                                    <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 border-dashed rounded-md cursor-pointer flex flex-col items-center">
                                         <span>
                                             <IconUploadFile />
                                         </span>
@@ -55,7 +55,7 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                             </div>
                         </div>
                         <div className="w-full flex  items-start px-[25px] my-[20px]">
-                            <label className="w-1/3">Ảnh sản phẩm</label>
+                            <label className="w-1/3 text-sm text-gray-700">Ảnh sản phẩm</label>
 
                             <div className="w-2/3">
                                 <input
@@ -67,7 +67,7 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                                     // onChange={handlePreviewAvatar}
                                 />
                                 <label htmlFor="files" className="grow">
-                                    <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer flex flex-col items-center">
+                                    <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 border-dashed rounded-md cursor-pointer flex flex-col items-center">
                                         <span>
                                             <IconUploadFile />
                                         </span>
@@ -90,14 +90,14 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                             </div>
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Tên sản phẩm</label>
                             </div>
                             <input type="text" placeholder="Nhập tên sản phẩm" className={`${styles.inputItem} `} />
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
-                                <label>Thể loại</label>
+                            <div className="w-1/3 text-sm text-gray-700">
+                                <label>Danh mục</label>
                             </div>
                             <select className={`${styles.inputItem}`}>
                                 <option>Rau củ</option>
@@ -109,7 +109,7 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                             </select>
                         </div>
                         <div className={`${styles.descriptionItem}`}>
-                            <div className="w-1/3 py-[10px]">
+                            <div className="w-1/3 py-[10px] text-sm text-gray-700">
                                 <label>Mô tả</label>
                             </div>
                             <textarea
@@ -119,16 +119,16 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                             />
                         </div>
                         <div className={`${styles.item} `}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Giá</label>
                             </div>
                             <input type="number" placeholder="Nhập giá sản phẩm" className={`${styles.inputItem}`} />
                         </div>
                         <div className={`${styles.item}`}>
-                            <div className="w-1/3">
+                            <div className="w-1/3 text-sm text-gray-700">
                                 <label>Khuyến mãi</label>
                             </div>
-                            <input type="number" placeholder="Nhập khuyến mãi" className={`${styles.inputItem}`} />
+                            <input type="number" placeholder="Nhập khuyến mãi(%)" className={`${styles.inputItem}`} />
                         </div>
                         <input type="submit" hidden id="send" />
                     </form>

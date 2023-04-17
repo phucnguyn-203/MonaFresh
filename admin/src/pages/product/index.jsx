@@ -3,7 +3,7 @@ import { useState } from "react";
 import IconPlus from "../../components/icon/plus";
 import IconArrowdown from "../../components/icon/plus";
 import PageLayout from "../../components/layout/pageLayout";
-import AddModalProduct from "../../components/product/addModalProduct";
+import AddModalProduct from "../../components/product/AddModalProduct";
 
 export default function Product() {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -70,7 +70,7 @@ export default function Product() {
                         cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
                         text-white bg-primary border border-transparent hover:bg-emerald-700 "
                             >
-                                <span class="mr-3">
+                                <span className="mr-3">
                                     <IconPlus />
                                 </span>
                                 Thêm sản phẩm

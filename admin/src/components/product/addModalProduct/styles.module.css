@@ -10,8 +10,8 @@
     width: 66.666667%;
     border-radius: 6px;
     background-color: #f4f5f7;
-    border: 1px dotted #d3cfcf;
     padding: 10px;
+    border: 1px solid #e5e7eb
 }
 .descriptionItem {
     width: 100%;
@@ -25,9 +25,9 @@
     width: 66.666667%;
     border-radius: 6px;
     background-color: #f4f5f7;
-    border: 1px dotted #d3cfcf;
     height: 96px;
     padding: 10px;
+    border: 1px solid #e5e7eb
 }
 .descriptionInputItem:focus,
 .inputItem:focus {

@@ -18,7 +18,6 @@ export default function Shop() {
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
-  console.log(quantity);
 
   return (
     <div className="container">
