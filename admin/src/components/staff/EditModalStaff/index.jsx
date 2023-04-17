@@ -86,6 +86,7 @@ export default function EditModalStaff({ closeModal, title, titleBtnFooter, data
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{`*${errors.email.message}`}</p>}
                             </div>
+
                         </div>
                         <div className={`${styles.item}`}>
                             <div className="w-1/3">
@@ -120,8 +121,7 @@ export default function EditModalStaff({ closeModal, title, titleBtnFooter, data
                                     {...register("phone")}
                                 />
                                 {errors.phone && <p className="text-red-500 text-sm">{`*${errors.phone.message}`}</p>}
-                            </div>
-                        </div>
+
                         <div className={`${styles.item}`}>
                             <div className="w-1/3">
                                 <label>Chức vụ</label>
