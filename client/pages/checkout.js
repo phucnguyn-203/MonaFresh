@@ -67,7 +67,7 @@ export default function Checkout() {
                                     </label>{" "}
                                     <br />
                                     <input
-                                        className={styles.information}
+                                        className={styles.input}
                                         id="name"
                                         type="text"
                                         name="name"
@@ -80,7 +80,7 @@ export default function Checkout() {
                                     </label>{" "}
                                     <br />
                                     <input
-                                        className={styles.information}
+                                        className={styles.input}
                                         id="phoneNumber"
                                         type="tel"
                                         name="phoneNumber"
@@ -92,7 +92,7 @@ export default function Checkout() {
                                 <label className="font-[550]" for="province">
                                     Tỉnh/Thành phố *
                                 </label>
-                                <select className={styles.information} id="province" placeholder="">
+                                <select className={styles.input} id="province" placeholder="">
                                     <option value="TPHoChiMinh">TP.Hồ Chí Minh</option>
                                     <option value="SocTrang">Sóc Trăng</option>
                                     <option value="HauGiang">Hậu Giang</option>
@@ -103,7 +103,7 @@ export default function Checkout() {
                                 <label className="font-[550]" for="district">
                                     Quận/Huyện *
                                 </label>
-                                <select className={styles.information} id="district">
+                                <select className={styles.input} id="district">
                                     <option value="Quan1">Quận 1</option>
                                     <option value="Quan1">Quận 2</option>
                                     <option value="Quan1">Quận 3</option>
@@ -117,7 +117,7 @@ export default function Checkout() {
                                 <label className="font-[550]" for="ward">
                                     Phường/Xã *
                                 </label>
-                                <select className={styles.information} id="ward">
+                                <select className={styles.input} id="ward">
                                     <option value="TPHoChiMinh">TP.Hồ Chí Minh</option>
                                     <option value="SocTrang">Sóc Trăng</option>
                                     <option value="HauGiang">Hậu Giang</option>
@@ -130,7 +130,7 @@ export default function Checkout() {
                                 </label>{" "}
                                 <br />
                                 <input
-                                    className={styles.information}
+                                    className={styles.input}
                                     id="specificAddress"
                                     type="text"
                                     name="specificAddress"
@@ -142,7 +142,7 @@ export default function Checkout() {
                             </label>{" "}
                             <br />
                             <textarea
-                                className={`${styles.information} pt-[0.7em] h-[120px]`}
+                                className={`${styles.input} pt-[0.7em] h-[120px]`}
                                 name="note"
                                 id="note"
                                 cols="5"

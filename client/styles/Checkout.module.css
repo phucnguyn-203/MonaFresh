@@ -2,7 +2,7 @@
 
 
 
-.information {
+.input {
     font-family: system-ui !important;
     box-sizing: border-box;
     border: 1px solid #ddd;
@@ -24,10 +24,10 @@
     font: inherit;
 }
 
-.information:hover{
+.input:hover{
     box-shadow: inset 0 -1.8em 1em 0 rgba(0,0,0,0);
 }
-.information:focus {
+.input:focus {
     box-shadow: 0 0 5px #ccc;
     opacity: 1 !important;
     outline: 0;

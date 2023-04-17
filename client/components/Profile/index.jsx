@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Avatar from "@/public/assets/img/avatar.png";
@@ -29,7 +30,7 @@ export default function Profile() {
             <Image src={Avatar} className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl" alt="userprofile" />
             {isDropdown && (
                 <div className="absolute w-[200px] top-[100% + 20px] bg-gray-50 shadow-xl rounded-lg flex flex-col top-12 right-0 overflow-hidden ">
-                    <p className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base">
+                    <Link href="/profile" className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -45,7 +46,7 @@ export default function Profile() {
                             />
                         </svg>
                         Tài Khoản Của Tôi{" "}
-                    </p>
+                    </Link>
                     <p className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
