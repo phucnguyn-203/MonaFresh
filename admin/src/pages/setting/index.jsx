@@ -4,6 +4,7 @@ import avt from "../../assets/img/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
+import { useState } from "react";
 
 export default function Setting() {
     const schema = yup.object().shape({
@@ -22,6 +23,17 @@ export default function Setting() {
         resolver: yupResolver(schema),
     });
     const onSubmit = (data) => console.log(data);
+
+    const [avatar, setAvatar] = useState();
+
+    const handlePreviewAvatar = (e) => {
+        const file = e.target.files[0];
+
+        file.preview = URL.createObjectURL(file);
+
+        setAvatar(file);
+    };
+
     return (
         <PageLayout title="Cài đặt">
             <div className={styles.container}>
@@ -33,7 +45,14 @@ export default function Setting() {
                             </label>
                             <div className="col-span-8 sm:col-span-4 ">
                                 <div className="w-full text-center">
-                                    <input type="file" hidden id="file" accept="image/*" />
+                                    <input
+                                        type="file"
+                                        hidden
+                                        id="file"
+                                        accept="image/*"
+                                        onChange={handlePreviewAvatar}
+                                    />
+
                                     <label htmlFor="file">
                                         <div className="px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer">
                                             <span className="mx-auto flex justify-center">
@@ -61,13 +80,12 @@ export default function Setting() {
                                             </em>
                                         </div>
                                     </label>
-
-                                    <aside className="flex flex-row flex-wrap mt-4">
+                                    {avatar && (
                                         <img
-                                            src={avt}
-                                            className="inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
+                                            src={avatar.preview}
+                                            className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
                                         />
-                                    </aside>
+                                    )}
                                 </div>
                             </div>
                         </div>
