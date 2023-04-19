@@ -1,10 +1,10 @@
 import PageLayout from "../../components/layout/pageLayout";
 import styles from "../setting/styles.module.css";
-import avt from "../../assets/img/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
 import { useState } from "react";
+import ResetPassword from "../setting/indexRe";
 
 export default function Setting() {
     const schema = yup.object().shape({
@@ -14,6 +14,7 @@ export default function Setting() {
             .string()
             .required("Vui lòng nhập số điện thoại của bạn")
             .phone("Vui lòng nhập đúng định dạng số điện thoại"),
+        password: yup.string().required("Vui lòng nhập mật khẩu"),
     });
     const {
         register,
@@ -145,6 +146,7 @@ export default function Setting() {
                     </div>
                 </form>
             </div>
+            <ResetPassword />
         </PageLayout>
     );
 }
