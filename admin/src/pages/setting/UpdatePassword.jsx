@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
-import styles from "../setting/styles.module.css";
 
-export default function Reset() {
+export default function UpdatePassword() {
     const schema = yup.object().shape({
         password: yup.string().required("Vui lòng nhập mật khẩu cũ"),
         newpassword: yup.string().required("Vui lòng nhập mật khẩu mới"),
@@ -22,7 +21,7 @@ export default function Reset() {
     const onSubmit = (data) => console.log(data);
 
     return (
-        <div className={styles.container}>
+        <div className="bg-white rounded-lg">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="p-6 mt-9 flex-grow w-full max-h-full ">
                     <div className="grid grid-cols-6 gap-3 mb-6">
@@ -34,7 +33,7 @@ export default function Reset() {
                                 type="password"
                                 className={` ${
                                     errors.password ? "border-red-500" : ""
-                                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
                                 {...register("password")}
                             />
                             {errors.password && <p className="text-red-500 text-sm">{`*${errors.password.message}`}</p>}
@@ -49,7 +48,7 @@ export default function Reset() {
                                 type="password"
                                 className={` ${
                                     errors.newpassword ? "border-red-500" : ""
-                                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
                                 {...register("newpassword")}
                             />
                             {errors.newpassword && (
@@ -66,7 +65,7 @@ export default function Reset() {
                                 type="password"
                                 className={`${
                                     errors.cpassword ? "border-red-500" : ""
-                                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
                                 {...register("cpassword")}
                             />
                             {errors.cpassword && (

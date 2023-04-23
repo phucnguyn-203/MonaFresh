@@ -1,10 +1,9 @@
 import PageLayout from "../../components/layout/pageLayout";
-import styles from "../setting/styles.module.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
 import { useState } from "react";
-import ResetPassword from "../setting/indexRe";
+import UpdatePassword from "./UpdatePassword";
 
 export default function Setting() {
     const schema = yup.object().shape({
@@ -29,15 +28,13 @@ export default function Setting() {
 
     const handlePreviewAvatar = (e) => {
         const file = e.target.files[0];
-
         file.preview = URL.createObjectURL(file);
-
         setAvatar(file);
     };
 
     return (
         <PageLayout title="Cài đặt">
-            <div className={styles.container}>
+            <div className="bg-white rounded-lg">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="p-6 flex-grow w-full max-h-full ">
                         <div className="grid grid-cols-6 gap-3 mb-6">
@@ -64,7 +61,7 @@ export default function Setting() {
                                                     viewBox="0 0 24 24"
                                                     strokeLinecap="round"
                                                     strokeLinejoin="round"
-                                                    class="text-3xl text-green-500"
+                                                    className="text-3xl text-green-500"
                                                     height="1em"
                                                     width="1em"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +88,7 @@ export default function Setting() {
                             </div>
                         </div>
                         <div className="grid grid-cols-6 gap-3 mb-6">
-                            <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                            <label className="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                                 Tên
                             </label>
                             <div className="col-span-8 sm:col-span-4 ">
@@ -100,7 +97,7 @@ export default function Setting() {
                                     placeholder="Tên của bạn"
                                     className={`${
                                         errors.name ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("name")}
                                 />
                                 {errors.name && <p className="text-red-500 text-sm">{`*${errors.name.message}`}</p>}
@@ -116,7 +113,7 @@ export default function Setting() {
                                     placeholder="admin@gmail.com"
                                     className={`${
                                         errors.email ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("email")}
                                 />
                                 {errors.email && <p className="text-red-500 text-sm">{`*${errors.email.message}`}</p>}
@@ -132,7 +129,7 @@ export default function Setting() {
                                     placeholder="0791234567"
                                     className={`${
                                         errors.phone ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
                                     {...register("phone")}
                                 />
                                 {errors.phone && <p className="text-red-500 text-sm">{`*${errors.phone.message}`}</p>}
@@ -146,7 +143,7 @@ export default function Setting() {
                     </div>
                 </form>
             </div>
-            <ResetPassword />
+            <UpdatePassword />
         </PageLayout>
     );
 }

@@ -16,7 +16,6 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
 
         setAvatar(file);
     };
-
     return (
         <div>
             <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>

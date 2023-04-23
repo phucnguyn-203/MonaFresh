@@ -1,9 +1,8 @@
-import { useState } from "react";
-
-import IconPlus from "../../components/icon/plus";
-import IconArrowdown from "../../components/icon/plus";
+import React, { useState } from "react";
+import { IconAdd, IconDelete } from "../../components/icon";
 import PageLayout from "../../components/layout/pageLayout";
 import AddModalProduct from "../../components/product/AddModalProduct";
+import ProductTable from "../../components/product/ProductTable";
 
 export default function Product() {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -14,9 +13,37 @@ export default function Product() {
     // const handleShowEditProductModal = () => {
     //     setShowEditModal(!showEditModal);
     // };
+
     return (
         <PageLayout title="Sản phẩm">
-            <div className="min-w-0 bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
+            <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
+                <div className="p-4">
+                    <div className="flex justify-end items-center py-3 gap-x-4">
+                        <button
+                            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white bg-red-300 cursor-not-allowed border border-transparent"
+                        >
+                            <span className="mr-3">
+                                <IconDelete />
+                            </span>
+                            Xoá
+                        </button>
+                        <button
+                            onClick={handleShowProductModal}
+                            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
+                        text-white bg-primary border border-transparent hover:bg-emerald-700 "
+                        >
+                            <span className="mr-3">
+                                <IconAdd />
+                            </span>
+                            Thêm sản phẩm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
                 <div className="p-4">
                     <div className="py-3 flex gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
                         <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow ">
@@ -36,7 +63,7 @@ export default function Product() {
                         focus:bg-white border-transparent form-select "
                             >
                                 <option value="All" hidden="">
-                                    Tất cả
+                                    Danh Mục
                                 </option>
                                 <option value="Organic Food">Thực phẩm Organic</option>
                                 <option value="Fish &amp; Meat">Cá &amp; Thịt</option>
@@ -63,19 +90,6 @@ export default function Product() {
                                 <option value="High">Cao đến thấp </option>
                             </select>
                         </div>
-                        <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
-                            <button
-                                onClick={handleShowProductModal}
-                                className="w-full h-12 align-bottom inline-flex leading-5 items-center justify-center 
-                        cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
-                        text-white bg-primary border border-transparent hover:bg-emerald-700 "
-                            >
-                                <span className="mr-3">
-                                    <IconPlus />
-                                </span>
-                                Thêm sản phẩm
-                            </button>
-                        </div>
                     </div>
                 </div>
                 {showAddModal && (
@@ -86,6 +100,7 @@ export default function Product() {
                     />
                 )}
             </div>
+            <ProductTable />
         </PageLayout>
     );
 }
