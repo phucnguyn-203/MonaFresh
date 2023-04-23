@@ -10,8 +10,10 @@ import Profile from "@/components/Profile";
 import styles from "./styles.module.css";
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(false);
-  const router = useRouter();
+
+   const [isLogin, setIsLogin] = useState(true);
+   const router = useRouter();
+
 
   return (
     <header className={styles.header}>

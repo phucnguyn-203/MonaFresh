@@ -54,28 +54,104 @@ export default function Checkout() {
 
   const [isChecked, setIsChecked] = useState(1);
 
-  return (
-    <div className="container bg-[white] my-32">
-      <div className="py-[30px] box-border max-w-[1240px] w-full flex mx-auto">
-        <div className="max-w-[60%] basis-[60%] w-full px-[1%]">
-          <div className="border-t-[2px] border-[#ececec] w-full p-[3.5%]">
-            <h1 className="font-[600] text-[18px] uppercase">
-              Thông tin thanh toán
-            </h1>
-            <form action="">
-              <div className="w-full flex">
-                <div className="mr-[10px] w-[50%] basis-[50%]">
-                  <label className="font-[550]" htmlFor="name">
-                    Họ Tên *
-                  </label>{" "}
-                  <br />
-                  <input
-                    className={styles.information}
-                    id="name"
-                    type="text"
-                    name="name"
-                    placeholder="Nguyễn Văn A"
-                  />
+   return (
+        <div className="container bg-[white]">
+            <div className="py-[30px] box-border max-w-[1240px] w-full flex mx-auto">
+                <div className="max-w-[60%] basis-[60%] w-full px-[1%]">
+                    <div className="border-t-[2px] border-[#ececec] w-full p-[3.5%]">
+                        <h1 className="font-[600] text-[18px] uppercase">Thông tin thanh toán</h1>
+                        <form action="">
+                            <div className="w-full flex">
+                                <div className="mr-[10px] w-[50%] basis-[50%]">
+                                    <label className="font-[550]" for="name">
+                                        Họ Tên *
+                                    </label>{" "}
+                                    <br />
+                                    <input
+                                        className={styles.input}
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        placeholder="Nguyễn Văn A"
+                                    />
+                                </div>
+                                <div className="ml-[10px] w-[50%] basis-[50%]">
+                                    <label className="font-[550]" for="phoneNumber">
+                                        Số điện thoại *
+                                    </label>{" "}
+                                    <br />
+                                    <input
+                                        className={styles.input}
+                                        id="phoneNumber"
+                                        type="tel"
+                                        name="phoneNumber"
+                                        placeholder="0796884386"
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-full">
+                                <label className="font-[550]" for="province">
+                                    Tỉnh/Thành phố *
+                                </label>
+                                <select className={styles.input} id="province" placeholder="">
+                                    <option value="TPHoChiMinh">TP.Hồ Chí Minh</option>
+                                    <option value="SocTrang">Sóc Trăng</option>
+                                    <option value="HauGiang">Hậu Giang</option>
+                                    <option value="TienGiang">Tiền Giang</option>
+                                    <option value="BinhDinh">Bình Định</option>
+                                </select>{" "}
+                                <br />
+                                <label className="font-[550]" for="district">
+                                    Quận/Huyện *
+                                </label>
+                                <select className={styles.input} id="district">
+                                    <option value="Quan1">Quận 1</option>
+                                    <option value="Quan1">Quận 2</option>
+                                    <option value="Quan1">Quận 3</option>
+                                    <option value="Quan1">Quận 4</option>
+                                    <option value="Quan1">Quận 5</option>
+                                    <option value="Quan1">Quận 6</option>
+                                    <option value="Quan1">Quận 7</option>
+                                    <option value="Quan1">Quận 8</option>
+                                </select>{" "}
+                                <br />
+                                <label className="font-[550]" for="ward">
+                                    Phường/Xã *
+                                </label>
+                                <select className={styles.input} id="ward">
+                                    <option value="TPHoChiMinh">TP.Hồ Chí Minh</option>
+                                    <option value="SocTrang">Sóc Trăng</option>
+                                    <option value="HauGiang">Hậu Giang</option>
+                                    <option value="TienGiang">Tiền Giang</option>
+                                    <option value="BinhDinh">Bình Định</option>
+                                </select>{" "}
+                                <br />
+                                <label className="font-[550]" for="specificAddress">
+                                    Địa chỉ cụ thể *
+                                </label>{" "}
+                                <br />
+                                <input
+                                    className={styles.input}
+                                    id="specificAddress"
+                                    type="text"
+                                    name="specificAddress"
+                                    placeholder="VD: 210, Khu 1, Ấp Nam Chánh"
+                                />
+                            </div>
+                            <label className="font-[550]" for="note">
+                                Ghi chú đơn hàng (tuỳ chọn)
+                            </label>{" "}
+                            <br />
+                            <textarea
+                                className={`${styles.input} pt-[0.7em] h-[120px]`}
+                                name="note"
+                                id="note"
+                                cols="5"
+                                rows="2"
+                                placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."
+                            ></textarea>
+                        </form>
+                    </div>
                 </div>
                 <div className="ml-[10px] w-[50%] basis-[50%]">
                   <label className="font-[550]" htmlFor="phoneNumber">
