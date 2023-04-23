@@ -1,6 +1,6 @@
 export default function Description() {
   return (
-    <div className="px-[20px] py-[10px] text-[17px]">
+    <div className="text-[17px]">
       <h2 className="py-[5px]">
         Bưởi da xanh ruột hồng hướng hữu cơ là đặc sản của tỉnh Bến Tre, đây là
         loại trái cây có vỏ màu xanh đến hơi vàng khi chín, tép bưởi có màu hồng

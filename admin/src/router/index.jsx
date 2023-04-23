@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-} from "react-router-dom";
-
-
+import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 
 import Root from "../pages/root";
 import Login from "../pages/login/login";
@@ -21,7 +15,6 @@ import NotFoundPage from "../pages/NotFoundPage";
 const router = createBrowserRouter(
     createRoutesFromElements(
         <React.Fragment>
-          
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Root />}>
                 <Route path="" element={<Dashboard />} />
@@ -33,8 +26,8 @@ const router = createBrowserRouter(
                 <Route path="/setting" element={<Setting />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Route>
-        </React.Fragment>
-    )
+        </React.Fragment>,
+    ),
 );
 
 export default router;

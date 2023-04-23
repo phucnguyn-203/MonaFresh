@@ -12,10 +12,10 @@ export default function Sidebar() {
             </div>
             <div className={`${styles.navbar} grow mt-8`}>
                 {navigation.map(({ title, icon, path }) => (
-                    <NavItem title={title} icon={icon} path={path} />
+                    <NavItem key={path} title={title} icon={icon} path={path} />
                 ))}
             </div>
-            <button className="px-5 py-3 bg-primary font-semibold rounded-lg text-white text-sm flex items-center justify-center">
+            <button className="px-5 py-3 bg-primary hover:bg-emerald-700 font-semibold rounded-lg text-white text-sm flex items-center justify-center">
                 <div className="text-xl">
                     {" "}
                     <IconLogout />

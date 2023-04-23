@@ -1,136 +1,325 @@
 const categories = [
-    {
-        id: 1,
-        title: "Rau củ",
-    },
-    {
-        id: 2,
-        title: "Hải sản",
-    },
-    {
-        id: 3,
-        title: "Trái cây",
-    },
-    {
-        id: 4,
-        title: "Đồ khô",
-    },
-    {
-        id: 5,
-        title: "Thịt trứng",
-    },
+  {
+    id: 1,
+    title: "Rau củ",
+  },
+  {
+    id: 2,
+    title: "Hải sản",
+  },
+  {
+    id: 3,
+    title: "Trái cây",
+  },
+  {
+    id: 4,
+    title: "Đồ khô",
+  },
+  {
+    id: 5,
+    title: "Thịt",
+  },
 ];
 
 const products = [
-    {
-        id: 1,
-        name: "Bắp cải tím hữu cơ 1kg",
-        price: 135000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
-        category: 3,
-        // percentageDiscount: 0.2,
+  {
+    id: 0,
+    name: "Bắp cải tím hữu cơ 1kg",
+    price: 46000,
+    thumbnail:
+      "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+    category: {
+      id: 1,
+      name: "Rau củ",
     },
-    {
-        id: 2,
-        name: "Ngô Bình Định 350g",
-        price: 35000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/ngongot_efdb710405b44b06a1ea02e5db5cf3f9_large.jpg",
-        category: 1,
-        percentageDiscount: 0.45,
+    quantity: 10,
+    percentageDiscount: 0,
+    images: [
+      "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/12/12805-277401657617210-1657617210--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8736-278031623999476-1623999476--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8737-409491623999484-1623999484--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+    ],
+    ratingsAverage: 4.5,
+    ratingsQuantity: 15,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 1,
+    name: "Bưởi năm roi",
+    price: 55000,
+    thumbnail:
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+    category: {
+      id: 3,
+      name: "Trái cây",
     },
-    {
-        id: 3,
-        name: "Bí đỏ nhà trồng 400g",
-        price: 84000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/bi-hat-dau-huu-co_a9a76ed27a1a4dcdac41e8a857f1590f_large.jpg",
-        category: 5,
-        percentageDiscount: 0.2,
+    quantity: 12,
+    percentageDiscount: 0.25,
+    images: [
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+    ],
+    ratingsAverage: 4,
+    ratingsQuantity: 20,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 2,
+    name: "Gạo lứt tím hữu cơ Mùa 2kg",
+    price: 189000,
+    thumbnail:
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+    category: {
+      id: 4,
+      name: "Đồ khô",
     },
-    {
-        id: 4,
-        name: "Cà chua Đà Lạt 400g",
-        price: 71500,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/ca-chua-bee-cherry-huu-co_2afe5b08b1f242809cac54171701fff4_large.jpg",
-        category: 2,
-        percentageDiscount: 0.2,
+    quantity: 12,
+    percentageDiscount: 0,
+    images: [
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+    ],
+    ratingsAverage: 4.5,
+    ratingsQuantity: 100,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 3,
+    name: "Thăn bò Kobe",
+    price: 500000,
+    thumbnail:
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+    category: {
+      id: 5,
+      name: "Thịt",
     },
-
-    {
-        id: 5,
-        name: "Cà rốt Chị Hằng 1kg",
-        price: 135000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/ca-rot-huu-co_051657cb99144443bac8015f6dd34dae_large.jpg",
-        category: 3,
-        percentageDiscount: 0.2,
+    quantity: 12,
+    percentageDiscount: 0.2,
+    images: [
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+    ],
+    ratingsAverage: 4.2,
+    ratingsQuantity: 1000,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 4,
+    name: "Bắp cải tím hữu cơ 1kg",
+    price: 46000,
+    thumbnail:
+      "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+    category: {
+      id: 1,
+      name: "Rau củ",
     },
-    {
-        id: 6,
-        name: "Cải bó xanh 350g",
-        price: 35000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/cai-ngong-huu-co_7040d71c8df64334be916ea10db3d897_large.jpg",
-        category: 1,
-        percentageDiscount: 0.2,
+    quantity: 10,
+    percentageDiscount: 0,
+    images: [
+      "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/12/12805-277401657617210-1657617210--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8736-278031623999476-1623999476--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8737-409491623999484-1623999484--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+    ],
+    ratingsAverage: 4.5,
+    ratingsQuantity: 15,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 5,
+    name: "Bưởi năm roi",
+    price: 55000,
+    thumbnail:
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+    category: {
+      id: 3,
+      name: "Trái cây",
     },
-    {
-        id: 7,
-        name: "Chanh hữu cơ 400g",
-        price: 84000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/chanh-vang_49d0a0eed2f64de39773602c0f675292_large.jpeg",
-        category: 5,
-        percentageDiscount: 0.2,
+    quantity: 12,
+    percentageDiscount: 0.25,
+    images: [
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8586-149551623982924-1623982924--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/13/12822-875081657688748-1657688748--400x400.jpg",
+    ],
+    ratingsAverage: 4,
+    ratingsQuantity: 20,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 6,
+    name: "Gạo lứt tím hữu cơ Mùa 2kg",
+    price: 189000,
+    thumbnail:
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+    category: {
+      id: 4,
+      name: "Đồ khô",
     },
-    {
-        id: 8,
-        name: "Nấm rừng 400g",
-        price: 71500,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/combo_gia_dinh_nam_tuoi_hon_hop_huu_co_400g_cdcc732b11944aeeac86297b39d880cb_large.jpg",
-        category: 2,
-        percentageDiscount: 0.25,
+    quantity: 12,
+    percentageDiscount: 0,
+    images: [
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+    ],
+    ratingsAverage: 4.5,
+    ratingsQuantity: 100,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
+  {
+    id: 7,
+    name: "Thăn bò Kobe",
+    price: 500000,
+    thumbnail:
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+    category: {
+      id: 5,
+      name: "Thịt",
     },
-    {
-        id: 9,
-        name: "Củ dền hữu cơ 1kg",
-        price: 135000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/cu-den-huu-co_5b7a9b55f9674d91bba675d05f47acb1_large.jpg",
-        category: 3,
-        percentageDiscount: 0.2,
-    },
-    {
-        id: 10,
-        name: "Rừng Đồng Nai 350g",
-        price: 35000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/gung-huu-co_607c3c7e7e294cb49bf3dcfb2c0ad705_large.jpg",
-        category: 1,
-        percentageDiscount: 0.2,
-    },
-    {
-        id: 11,
-        name: "Khoai lang mật 400g",
-        price: 84000,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/khoai-mat-huu-co_6acf11bc200d4d0a82cae134bbad21d7_large.jpg",
-        category: 5,
-        percentageDiscount: 0.2,
-    },
-    {
-        id: 12,
-        name: "Ớt chuông khổng lồ 400g",
-        price: 71500,
-        thumbnail:
-            "https://product.hstatic.net/200000423303/product/ot-chuong-vang-huu-co.jpg_d5646be6f8834c068c1f4cc0626dc1bd_large.png",
-        category: 2,
-        percentageDiscount: 0.2,
-    },
+    quantity: 12,
+    percentageDiscount: 0.2,
+    images: [
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+    ],
+    ratingsAverage: 4.2,
+    ratingsQuantity: 1000,
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  },
 ];
 
-export { categories, products };
+const carts = [
+  {
+    id: 0,
+    product: {
+      id: 0,
+      name: "Bắp cải tím hữu cơ 1kg",
+      price: 46000,
+      thumbnail:
+        "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+      category: {
+        id: 1,
+        name: "Rau củ",
+      },
+      quantity: 10,
+      percentageDiscount: 0,
+      images: [
+        "https://product.hstatic.net/200000423303/product/bap-cai-tim-huu-co_203f203060064cf5a24b9f8e9c352214_large.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/12/12805-277401657617210-1657617210--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8736-278031623999476-1623999476--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8737-409491623999484-1623999484--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/18/8738-974711623999484-1623999484--400x400.jpg",
+      ],
+      ratingsAverage: 4.5,
+      ratingsQuantity: 15,
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    },
+    quantity: 4,
+  },
+  {
+    id: 1,
+    product: {
+      id: 7,
+      name: "Thăn bò Kobe",
+      price: 500000,
+      thumbnail:
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+      category: {
+        id: 5,
+        name: "Thịt",
+      },
+      quantity: 12,
+      percentageDiscount: 0.2,
+      images: [
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/27/13175-694581658891002-1658891002--400x400.png",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/June/7/12456-495691654617272-1654617272--400x400.png",
+      ],
+      ratingsAverage: 4.2,
+      ratingsQuantity: 1000,
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    },
+    quantity: 3,
+  },
+  {
+    id: 2,
+    product: {
+      id: 6,
+      name: "Gạo lứt tím hữu cơ Mùa 2kg",
+      price: 189000,
+      thumbnail:
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+      category: {
+        id: 4,
+        name: "Đồ khô",
+      },
+      quantity: 12,
+      percentageDiscount: 0,
+      images: [
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2022/July/19/13005-668731658203936-1658203936--400x400.jpg",
+        "https://y5kbp0ifnvobj.vcdn.cloud/uploads/filecloud/2021/June/9/8434-295991623230771-1623230771--400x400.jpg",
+      ],
+      ratingsAverage: 4.5,
+      ratingsQuantity: 100,
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    },
+    quantity: 2,
+  },
+];
+
+export { categories, products, carts };

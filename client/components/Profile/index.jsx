@@ -4,26 +4,26 @@ import Image from "next/image";
 import Avatar from "@/public/assets/img/avatar.png";
 
 export default function Profile() {
-    const [isDropdown, setIsDropdown] = useState();
-    const profile = useRef(null);
+  const [isDropdown, setIsDropdown] = useState();
+  const profile = useRef(null);
 
-    const handleDropdownMenu = () => {
-        setIsDropdown(!isDropdown);
-    };
+  const handleDropdownMenu = () => {
+    setIsDropdown(!isDropdown);
+  };
 
-    const handleClickOutSite = (event) => {
-        if (profile.current?.contains(event.target)) {
-            // click inside
-            return;
-        }
-        //click outside
-        setIsDropdown(false);
-    };
+  const handleClickOutSite = (event) => {
+    if (profile.current?.contains(event.target)) {
+      // click inside
+      return;
+    }
+    //click outside
+    setIsDropdown(false);
+  };
 
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutSite);
-        return () => document.removeEventListener("click", handleClickOutSite);
-    }, []);
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutSite);
+    return () => document.removeEventListener("click", handleClickOutSite);
+  }, []);
 
     return (
         <div ref={profile} className="relative cursor-pointer" onClick={handleDropdownMenu}>
@@ -84,5 +84,7 @@ export default function Profile() {
                 </div>
             )}
         </div>
-    );
+      )}
+    </div>
+  );
 }

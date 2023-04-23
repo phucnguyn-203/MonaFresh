@@ -1,131 +1,202 @@
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/ProductDetail.module.css";
-import { useState } from "react";
-
-import { products } from "@/api/data";
+import Image from "next/image";
+import Slider from "react-slick";
+import { Rating } from "react-simple-star-rating";
 import formatCurrency from "@/utils/formatCurrency";
-import { IconTechcombank, IconPaypal } from "@/components/icons";
 import Description from "@/components/Product/Description";
 import Feedback from "@/components/Product/Feedback";
 import ProductsCarousel from "@/components/Product/ProductsCarousel";
 
+import { products } from "@/api/data";
+
 export default function Shop() {
   const router = useRouter();
   const { id } = router.query;
-  console.log(id);
-  const [type, setType] = useState("Mô tả");
 
-  const btns = ["Mô tả", "Đánh giá"];
+  const [tab, setTab] = useState(0);
+  const [nav1, setNav1] = useState();
+  const [nav2, setNav2] = useState();
+  const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className={`container`}>
-      <div className={`${styles.productDetailContainer} `}>
-        <div className="w-2/5 mt-[10px]">
-          {/* image */}
-          <div>
-            <div>
-              <div
-                style={{ backgroundImage: `url(${products[0].thumbnail})` }}
-                className={`${styles.productThumnail} pt-[100%] bg-no-repeat bg-contain bg-center`}
-              ></div>
-            </div>
-          </div>
-          <div className="w-full mt-[10px] bg-[red]">
-            <h1>Pagination</h1>
-          </div>
+    <div className="container">
+      <div className="flex bg-white rounded-xl my-28 py-10">
+        <div className="w-1/2 px-5">
+          {products[id]?.images && (
+            <React.Fragment>
+              <Slider
+                fade={true}
+                asNavFor={nav2}
+                arrows={false}
+                lazyLoad={true}
+                ref={(slider1) => setNav1(slider1)}
+              >
+                {products[id].images.map((img, index) => (
+                  <Image
+                    key={index}
+                    src={img}
+                    alt="product"
+                    width={260}
+                    height={120}
+                    priority
+                  />
+                ))}
+              </Slider>
+              <div className="productSliderNav">
+                <Slider
+                  arrows={true}
+                  asNavFor={nav1}
+                  ref={(slider2) => setNav2(slider2)}
+                  slidesToShow={5}
+                  swipeToSlide={true}
+                  focusOnSelect={true}
+                >
+                  {products[id]?.images.map((img, index) => (
+                    <Image
+                      key={index}
+                      src={img}
+                      alt="product"
+                      width={260}
+                      height={120}
+                      priority
+                    />
+                  ))}
+                </Slider>
+              </div>
+            </React.Fragment>
+          )}
         </div>
-        <div className="w-3/5 mt-[10px]">
+        <div className="w-1/2 px-5">
           {/* info */}
-          <h1 className="font-semibold text-3xl ">{products[0].name}</h1>
-          <div className="mt-[5px]">
-            <span>
-              Tình trạng:
-              <span className="text-[#6abd45] ml-[5px]">Còn hàng</span>
-            </span>
-          </div>
-          <div className="flex items-end w-2/4 bg-[#f1f1f1] px-[10px] py-[5px] rounded-lg text-3xl my-[20px]">
-            <h1 className="text-[#6abd45]">
-              {formatCurrency(products[0].price)}
-            </h1>
-            <h1 className="text-[#000000] text-base ml-[5px] line-through">
-              {formatCurrency(products[0].price - 10000)}
-            </h1>
-          </div>
-          <div className="text-base text-[#353535]">
-            <p className="px-[10px] py-[5px]">Sản phẩm chất lượng</p>
-            <p className="px-[10px] py-[5px]">Giao hàng trực tiếp từ vườn</p>
-            <p className="px-[10px] py-[5px]">Đổi trả trong vòng 12h</p>
-          </div>
-          <div className="flex flex-col items-center w-2/4 text-xl text-center mb-[10px]">
-            <p className="font-semibold py-[20px]">Khuyến mãi bất ngờ</p>
-            <p className="w-1/3 text-[#fff] py-[10px] px-[5px] font-semibold bg-[#f57224] rounded-lg">
-              GIẢM 20%
+          <h1 className="font-semibold text-3xl ">{products[id]?.name}</h1>
+          <div className="mt-2 flex items-center gap-x-2">
+            <p className="text-primary underline font-bold mt-1">
+              {products[id]?.ratingsAverage}
+            </p>
+            <Rating
+              allowFraction
+              size={20}
+              readonly={true}
+              initialValue={4.5}
+              SVGclassName="react-start"
+            />
+            <p className="mt-1 underline text-primary">
+              {products[id]?.ratingsQuantity} đánh giá
             </p>
           </div>
-          <from>
-            <div className="mb-[20px]">
-              <h1 className="mb-[10px] text-[#000000] text-base">Số lượng:</h1>
-              <div className="flex w-2/4 justify-between items-center">
-                <div className="">
-                  <input
-                    type="button"
-                    className="w-[30px] h-[40px] border-[1px] border-solid text-center cursor-pointer"
-                    value="-"
-                  />
-                  <input
-                    type="text"
-                    className="w-[65px] h-[40px] border-[1px] border-solid text-center "
-                    value="1"
-                    step="1"
-                    min="1"
-                    max="100"
-                  />
-                  <input
-                    type="button"
-                    className="w-[30px] h-[40px] border-[1px] border-solid text-center cursor-pointer"
-                    value="+"
-                  />
+          <div className="mt-2">
+            <span className="font-semibold">
+              Tình trạng:
+              {products[id]?.quantity && products[id].quantity > 0 ? (
+                <span className="text-[#6abd45] ml-[5px] font-normal">
+                  Còn hàng
+                </span>
+              ) : (
+                <span className="text-[#6abd45] ml-[5px] font-normal">
+                  Hết hàng
+                </span>
+              )}
+            </span>
+          </div>
+          <div className="mt-2">
+            <span className="font-semibold">
+              Danh Mục:
+              <span className="text-[#6abd45] ml-[5px] font-normal">
+                {products[id]?.category.name}
+              </span>
+            </span>
+          </div>
+          <div className="flex items-center bg-[#f1f1f1] px-3 py-3 rounded-lg text-3xl my-[20px] gap-x-4">
+            {products[id]?.percentageDiscount ? (
+              <React.Fragment>
+                <div className="flex items-end">
+                  <h1 className="text-[#6abd45]">
+                    {formatCurrency(
+                      products[id].price -
+                        products[id].price * products[id].percentageDiscount,
+                    )}
+                  </h1>
+                  <h1 className="text-[#000000] text-base ml-[5px] line-through">
+                    {formatCurrency(products[id].price)}
+                  </h1>
                 </div>
-                <button className="bg-[#abe5b51a] text-[#6abd45] px-5 py-3 text-base font-semibold hover:opacity-70 rounded-md  border-solid border-2 border-[#6abd45]">
-                  THÊM VÀO GIỎ HÀNG
+                <p className="text-[#fff] text-xl py-[10px] px-[5px] font-semibold bg-[#f57224] rounded-lg">
+                  GIẢM 20%
+                </p>
+              </React.Fragment>
+            ) : (
+              <h1 className="text-[#6abd45]">
+                {formatCurrency(products[id]?.price)}
+              </h1>
+            )}
+          </div>
+          <div className="text-base text-[#353535]">
+            <p className="px-[10px] py-[5px]">- Hotline hỗ trợ 1900 636 648</p>
+            <p className="px-[10px] py-[5px]">- Sản phẩm chất lượng</p>
+            <p className="px-[10px] py-[5px]">- Đảm bảo tươi ngon</p>
+            <p className="px-[10px] py-[5px]">- Giao hàng trực tiếp từ vườn</p>
+            <p className="px-[10px] py-[5px]">- Đổi trả trong vòng 12h</p>
+          </div>
+
+          <div className="my-6 flex items-center gap-x-10">
+            <div className="flex items-center gap-x-5">
+              <h1 className="font-semibold">Số lượng:</h1>
+              <div className="flex items-center">
+                <button
+                  onClick={() => {
+                    if (quantity > 1) {
+                      setQuantity(quantity - 1);
+                    }
+                  }}
+                  className="w-[25px] h-[40px] overflow-hidden relative bg-[#f9f9f9] text-[#666] border-[1px] border-[#ddd] normal-case font-normal"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="w-[65px] h-[40px] border-[1px] border-solid text-center outline-none"
+                  value={quantity}
+                  onChange={(e) => {
+                    setQuantity(Number(e.target.value));
+                  }}
+                />
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-[25px] h-[40px] overflow-hidden relative bg-[#f9f9f9] text-[#666] border-[1px] border-[#ddd] normal-case font-normal"
+                >
+                  +
                 </button>
               </div>
             </div>
-
-            <div className="py-[10px] my-[20px] text-[#353535] text-base">
-              <div className="flex items-center">
-                <strong className="mr-[20px]">Thanh toán: </strong>
-                <div className="w-[100px] h-[50px]">
-                  <IconPaypal />
-                </div>
-                <div className="w-[100px] h-[50px]">
-                  <IconTechcombank />
-                </div>
-              </div>
-            </div>
-          </from>
+            <button className="text-[#6abd45] px-5 py-3 text-base font-semibold rounded-md border-solid border-2 border-[#6abd45] hover:bg-primary hover:text-white">
+              THÊM VÀO GIỎ HÀNG
+            </button>
+          </div>
         </div>
       </div>
-      <div className={`${styles.description} bg-white`}>
+
+      <div className="mb-32 bg-white p-5 rounded-xl">
         {/* Mô tả, đánh giá */}
-        <ul className="flex p-[20px]">
-          {btns.map((btn) => (
-            <li>
-              <button
-                key={btn}
-                onClick={() => setType(btn)}
-                className={`${styles.btn} ${
-                  type === btn ? `${styles.btnActive}` : ``
-                } bg-[#eee] mr-[10px] text-[#333] px-5 py-3 text-base font-semibold hover:opacity-70 rounded-md `}
-              >
-                {btn}
-              </button>
-            </li>
-          ))}
+        <ul className="flex mb-5">
+          <li
+            onClick={() => setTab(0)}
+            className={`${
+              tab === 0 ? "bg-primary text-white" : ""
+            } bg-[#eee] mr-[10px] text-[#333] px-5 py-3 text-base font-semibold hover:opacity-70 rounded-md cursor-pointer`}
+          >
+            Mô tả
+          </li>
+          <li
+            onClick={() => setTab(1)}
+            className={`${
+              tab === 1 ? "bg-primary text-white" : ""
+            } bg-[#EEEEEE] mr-[10px] text-[#333333] px-5 py-3 text-base font-semibold hover:opacity-70 rounded-md cursor-pointer `}
+          >
+            Đánh giá
+          </li>
         </ul>
-        <div>
-          <ul>{type === "Mô tả" ? <Description /> : <Feedback />}</ul>
-        </div>
+        {tab === 0 ? <Description /> : <Feedback />}
       </div>
       <div className="mb-[50px]">
         <h1 className="text-center text-2xl font-semibold py-[10px]">

@@ -7,7 +7,7 @@ export default function IconStaff() {
             viewBox="0 0 24 24"
             strokeLinecap="round"
             strokeLinejoin="round"
-            class="w-5 h-5"
+            className="w-5 h-5"
             aria-hidden="true"
             height="1em"
             width="1em"
