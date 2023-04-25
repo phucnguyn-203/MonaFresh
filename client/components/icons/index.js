@@ -9,3 +9,4 @@ export { default as IconFacebook } from "./facebook";
 export { default as IconInstagram } from "./instagram";
 export { default as IconCash } from "./cash";
 export { default as IconCard } from "./card";
+export { default as IconClose } from "./close";
