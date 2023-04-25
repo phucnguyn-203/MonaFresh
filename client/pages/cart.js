@@ -94,7 +94,7 @@ export default function Cart() {
               disabled={isChecked.length === 0}
               className={`${
                 isChecked.length === 0 ? "bg-[#CCCCCC] cursor-not-allowed" : ""
-              } text-center bg-[#d26e4b] text-[white] w-[27%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase`}
+              } text-center bg-[#ee4d2d] text-[white] w-[27%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase`}
             >
               <div>Xoá các mục đã chọn</div>
             </button>
@@ -149,7 +149,7 @@ export default function Cart() {
                   isChecked.length === 0
                     ? "bg-[#CCCCCC] cursor-not-allowed"
                     : ""
-                } bg-[#d26e4b] text-[white] w-full min-h-[40px] flex items-center text-center justify-center uppercase`}
+                } bg-[#ee4d2d] text-[white] w-full min-h-[40px] flex items-center text-center justify-center uppercase`}
               >
                 Tiến hành thanh toán
               </button>
