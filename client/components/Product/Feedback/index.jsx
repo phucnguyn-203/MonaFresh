@@ -1,4 +1,4 @@
-import ProductFeedback from "@/components/Product/ProductFeedback";
+import ProductFeedback from "@/components/product/ProductFeedback";
 import React, { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 

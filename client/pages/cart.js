@@ -91,9 +91,10 @@ export default function Cart() {
               <div>Cập nhật giỏ hàng</div>
             </button>
             <button
+              disabled={isChecked.length === 0}
               className={`${
-                isChecked.length === 0 ? "pointer-events-none bg-[#CCCCCC]" : ""
-              } text-center bg-[#d26e4b] text-[white] w-[27%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase hover:bg-[#a8583c]`}
+                isChecked.length === 0 ? "bg-[#CCCCCC] cursor-not-allowed" : ""
+              } text-center bg-[#d26e4b] text-[white] w-[27%] min-h-[40px] ml-[10px] flex items-center justify-center uppercase`}
             >
               <div>Xoá các mục đã chọn</div>
             </button>
@@ -143,11 +144,12 @@ export default function Cart() {
             <div className="border-t-[2px] border-[#ececec] pt-[20px]">
               <button
                 onClick={() => router.push("/checkout")}
+                disabled={isChecked.length === 0}
                 className={`${
                   isChecked.length === 0
-                    ? "pointer-events-none bg-[#CCCCCC]"
+                    ? "bg-[#CCCCCC] cursor-not-allowed"
                     : ""
-                } bg-[#d26e4b] text-[white] w-full min-h-[40px] flex items-center text-center justify-center uppercase hover:bg-[#a8583c]`}
+                } bg-[#d26e4b] text-[white] w-full min-h-[40px] flex items-center text-center justify-center uppercase`}
               >
                 Tiến hành thanh toán
               </button>

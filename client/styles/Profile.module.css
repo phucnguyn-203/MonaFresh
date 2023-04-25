@@ -1,11 +1,5 @@
-/* .active{
-    color: #6abd45;
-    border-right: 2px soid #6abd45;
-} */
 .active {
-    border-radius: 8px;
+    border-radius: 10px;
     color: white;
-    font-weight: 500;
     background-color: #6abd45;
-    /* border-bottom: 2px solid #6abd45 ; */
 }

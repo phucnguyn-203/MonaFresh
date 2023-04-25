@@ -1,4 +1,4 @@
-import ProductItem from "@/components/Product/ProductItem";
+import ProductItem from "@/components/product/ProductItem";
 import Pagination from "@/components/shared/Pagination";
 
 import { products } from "@/api/data";

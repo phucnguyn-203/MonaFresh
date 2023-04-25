@@ -1,6 +1,6 @@
 import Link from "next/link";
-import ProductItem from "@/components/Product/ProductItem";
-import ProductsCarousel from "@/components/Product/ProductsCarousel";
+import ProductItem from "@/components/product/ProductItem";
+import ProductsCarousel from "@/components/product/ProductsCarousel";
 import { products } from "@/api/data";
 
 export default function DiscountProducts() {

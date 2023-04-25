@@ -4,9 +4,9 @@ import Image from "next/image";
 import Slider from "react-slick";
 import { Rating } from "react-simple-star-rating";
 import formatCurrency from "@/utils/formatCurrency";
-import Description from "@/components/Product/Description";
-import Feedback from "@/components/Product/Feedback";
-import ProductsCarousel from "@/components/Product/ProductsCarousel";
+import Description from "@/components/product/Description";
+import Feedback from "@/components/product/Feedback";
+import ProductsCarousel from "@/components/product/ProductsCarousel";
 
 import { products } from "@/api/data";
 

@@ -6,18 +6,15 @@ import { IconCart } from "@/components/icons";
 import logo from "@/public/assets/img/logo.png";
 import navigation from "@/utils/nav";
 import SearchBar from "@/components/search/SearchBar";
-import Profile from "@/components/Profile";
+import Profile from "@/components/profile/ProfileAvatar";
 import styles from "./styles.module.css";
 
 export default function Header() {
-
-   const [isLogin, setIsLogin] = useState(true);
-   const router = useRouter();
-
+  const [isLogin, setIsLogin] = useState(true);
+  const router = useRouter();
 
   return (
     <header className={styles.header}>
-      {/*desktop & tablet*/}
       <div className="container flex h-full items-center justify-between">
         <Link href="/">
           <Image
