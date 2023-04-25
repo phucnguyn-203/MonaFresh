@@ -4,8 +4,6 @@ import DataTable from "../../DataTable";
 // import formatCurrency from "../../../utils/formatCurrency";
 import ToggleSwitch from "../../ToggleSwitch";
 
-//Tên, hiển thị, xem, thao tác
-
 export default function CategoryTable() {
     const columnData = [
         {
