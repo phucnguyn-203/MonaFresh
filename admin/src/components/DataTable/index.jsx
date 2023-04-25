@@ -30,7 +30,7 @@ export default function DataTable({ columnData, rowData, select = false }) {
                                         <input id={rowItem.id} name={rowItem.name} type="checkbox" />
                                     </td>
                                 ) : null}
-                                <td className="px-4 py-3 text-sm text-center">{index + 1}</td>
+                                <td className="px-4 py-3 text-sm ">{index + 1}</td>
                                 {columnData.map((columnItem) => (
                                     <td key={columnItem.field} className="px-4 py-3">
                                         {columnItem.renderCell ? (
