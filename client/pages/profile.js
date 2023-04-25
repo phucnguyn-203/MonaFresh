@@ -25,7 +25,7 @@ export default function Profile() {
                   Nguyễn Hoàng Phúc
                 </div>
                 <div className="w-full max-h-[50%] basis-[50%] h-full text-[13px] text-gray-400">
-                  chỉnh sữa thông tin
+                  Chỉnh sửa thông tin
                 </div>
               </div>
             </div>
