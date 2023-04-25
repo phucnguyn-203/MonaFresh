@@ -58,7 +58,7 @@ export default function Profile() {
             </svg>
             Tài Khoản Của Tôi{" "}
           </Link>
-          <p className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base">
+          {/* <p className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -74,7 +74,7 @@ export default function Profile() {
               />
             </svg>
             Đơn Hàng{" "}
-          </p>
+          </p> */}
           <p className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base">
             <svg
               xmlns="http://www.w3.org/2000/svg"

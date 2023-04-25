@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
+
 import styles from "./styles.module.css";
 import { IconSearch } from "@/components/icons";
 import MoreOderInfor from "../MoreOrderInfor/moreOrderInfor";
 import formatCurrency from "@/utils/formatCurrency";
+import ModalFeedback from "../../Product/ModalFeedback";
 
 export default function MyOders() {
   const [tab, setTab] = useState(0);
   const [showMoreOder, setShowMoreOrder] = useState(false);
   const [orderDropdown, setOrderDropdown] = useState(0);
+  const [showModalFeedback, setShowModalFeedback] = useState(false);
   const handleClose = () => {
     setShowMoreOrder(!showMoreOder);
+  };
+  const handleCloseModalFeedback = () => {
+    setShowModalFeedback(!showModalFeedback);
   };
 
   const Orders = [
@@ -152,7 +158,7 @@ export default function MyOders() {
         </div>
       </div>
       <div className="rounded-[8px] bg-[white] py-2 flex my-[20px]">
-        <div className="relative flex gap-x-2 items-center text-black max-w-[85%] basis-[85%] px-[20px] py-[10px] border-r-[1px] border-[#ececec] ">
+        <div className="relative flex gap-x-2 items-center text-black w-[70%] basis-[70%] px-[20px] py-[10px] border-r-[1px] border-[#ececec] ">
           <IconSearch />
           <input
             type="search"
@@ -160,9 +166,10 @@ export default function MyOders() {
             className=" w-full focus:outline-none placeholder:text-sm bg-transparent"
           />
         </div>
-        <div className="relative flex text-center items-center justify-center max-w-[15%] basis-[15%] text-black  ">
+        <div className="relative flex text-center items-center justify-center w-[30%] basis-[30%] text-black px-[5px] ">
+          <p className="w-[50%]">Sắp xếp theo</p>
           <select
-            className="outline-none w-full h-full px-[20px] bg-transparent"
+            className="outline-none w-[50%] h-full px-[20px] bg-transparent"
             id=""
           >
             <option value="new">Mới nhất</option>
@@ -173,23 +180,23 @@ export default function MyOders() {
       {Orders.map((order, index) => (
         <div
           onClick={() => setOrderDropdown(index)}
-          className=" w-full mb-[20px]"
+          className=" w-full mb-[20px] cursor-pointer"
           key={order.id}
         >
           <div className="rounded-lg ">
             <div className="rounded-t-lg flex items-center justify-between bg-primary py-4">
               <div className="mx-5 text-white">
-                <div className="text-[21px] font-[500]">#{order.id}</div>
-                <div className="text-base">23/04/2023</div>
-              </div>
-              <div className="">
-                <div className="rounded-[5px] flex text-center items-center justify-center mx-[20px] h-[20px] w-[100px] bg-white ">
-                  <div className="text-[#6abd45] font-[500] text-[13px]">
-                    {order.status}
-                  </div>
+                <div className="text-[21px] font-[500]">
+                  Mã đơn hàng: #{order.id}
                 </div>
-                <div className="text-center text-[black] font-[450] text-[13px]">
-                  {order.paymentStatus}
+                <div className="text-base">Thời gian đặt hàng: 23/04/2023</div>
+              </div>
+              <div className="flex ">
+                <div className="rounded-[5px] flex text-center items-center justify-center mx-[10px] p-[10px] h-[20px] min-w-[100px] bg-white text-[#6abd45] font-[500] text-[15px]">
+                  <div className="">{order.status}</div>
+                </div>
+                <div className="rounded-[5px] flex items-center justify-center  text-center text-[black] font-[500] text-[15px] mx-[10px] p-[10px] h-[20px] min-w-[150px] bg-white ">
+                  <div>{order.paymentStatus}</div>
                 </div>
               </div>
             </div>
@@ -212,20 +219,29 @@ export default function MyOders() {
                       </div>
                       <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
                         <div className="bg-[#6abd45] hover:bg-[#61b13f] text-[15px] flex justify-center items-center text-white  min-h-[30px] w-[70%] rounded-[5px]">
-                          Đánh giá sản phẩm
+                          <button
+                            onClick={() =>
+                              setShowModalFeedback(!showModalFeedback)
+                            }
+                          >
+                            Đánh giá sản phẩm
+                          </button>
                         </div>
+                        {showModalFeedback && (
+                          <ModalFeedback close={handleCloseModalFeedback} />
+                        )}
                       </div>
                     </div>
                   ))
                 : ""}
             </div>
 
-            <div className=" px-[20px] flex items-center text-white justify-between  rounded-b-[8px] bg-[#6abd45] h-[40px] w-full">
+            <div className=" px-[20px] flex items-center text-white justify-between rounded-b-[8px] bg-[#6abd45] h-[40px] w-full">
               <div className="">
                 {index === orderDropdown ? (
                   <div
                     onClick={handleClose}
-                    className="hover:scale-[110%] flex justify-center items-center underline text-[white]"
+                    className="hover:scale-[110%] flex justify-center items-center text-[white]"
                   >
                     Chi tiết đơn hàng
                   </div>
