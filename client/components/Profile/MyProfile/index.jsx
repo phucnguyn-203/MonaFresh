@@ -2,9 +2,42 @@ import { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import Image from "next/image";
 import Avatar from "@/public/assets/img/avatar.png";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import yup from "@/utils/yupGlobal";
 
 export default function MyProfile() {
   const [img, setImg] = useState(Avatar);
+
+  const schema = yup.object().shape({
+    name: yup.string().required("Vui lòng nhập tên của bạn"),
+    email: yup
+      .string()
+      .required("Vui lòng nhập Email của bạn")
+      .email("Vui lòng nhập đúng định dạng của Email"),
+    phone: yup
+      .string()
+      .required("Vui lòng nhập số điện thoại của bạn")
+      .phone("Vui lòng nhập đúng số điện thoại của bạn"),
+    password: yup
+      .string()
+      .required("Vui lòng nhập mật khẩu hiện tại cho tài khoản của bạn"),
+    newPassword: yup
+      .string()
+      .required("Vui lòng nhập mật khẩu mới cho tài khoản của bạn"),
+    cNewPassword: yup
+      .string()
+      .required("Vui lòng xác nhận lại mật khẩu mới cho tài khoản của bạn")
+      .oneOf([yup.ref("newPassword")], "Mật khẩu không trùng khớp"),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = (data) => console.log(data);
 
   const handleSetImg = (e) => {
     const file = e.target.files[0];
@@ -27,53 +60,73 @@ export default function MyProfile() {
         </div>
         <div className="flex w-full py-[30px]">
           <div className="max-w-[60%] basis-[60%] pr-[20px text-gray-400">
-            <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
-              <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Họ và Tên
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
+                <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
+                  Họ và Tên
+                </div>
+                <div className="max-w-[70%] basis-[70%] text-left">
+                  <input
+                    className={`${errors.name ? "border-red-500" : ""} ${
+                      styles.input
+                    }`}
+                    id="name"
+                    type="text"
+                    name="name"
+                    // defaultValue="Nguyễn Hoàng Phúc"
+                    {...register("name")}
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm italic">{`*${errors.name.message}`}</p>
+                  )}
+                </div>
               </div>
-              <div className="max-w-[70%] basis-[70%] text-left">
-                <input
-                  className={styles.input}
-                  id="name"
-                  type="text"
-                  name="name"
-                  defaultValue="Nguyễn Hoàng Phúc"
-                />
+              <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
+                <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
+                  Email
+                </div>
+                <div className="max-w-[70%] basis-[70%] text-left">
+                  <input
+                    className={`${errors.email ? "border-red-500" : ""} ${
+                      styles.input
+                    }`}
+                    id="email"
+                    type="text"
+                    name="email"
+                    // defaultValue="phuttocdai123@gmail.com"
+                    {...register("email")}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm italic">{`*${errors.email.message}`}</p>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
-              <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Email
+              <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
+                <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
+                  Số điện thoại
+                </div>
+                <div className="max-w-[70%] basis-[70%] text-left">
+                  <input
+                    className={`${errors.phone ? "border-red-500" : ""} ${
+                      styles.input
+                    }`}
+                    id="phoneNumber"
+                    type="text"
+                    name="phoneNumber"
+                    // defaultValue="0123456789"
+                    {...register("phone")}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm italic">{`*${errors.phone.message}`}</p>
+                  )}
+                </div>
               </div>
-              <div className="max-w-[70%] basis-[70%] text-left">
-                <input
-                  className={styles.input}
-                  id="email"
-                  type="text"
-                  name="email"
-                  defaultValue="phuttocdai123@gmail.com"
-                />
+              <div className="flex justify-center">
+                <button className="rounded-[8px] m-[20px] mt-[85px] bg-[#6abd45] text-[white] min-h-[40px] min-w-[150px] w-[20%] flex items-center text-center justify-center uppercase hover:bg-[#5faf3d]">
+                  Lưu chỉnh sửa
+                </button>
               </div>
-            </div>
-            <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
-              <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Số điện thoại
-              </div>
-              <div className="max-w-[70%] basis-[70%] text-left">
-                <input
-                  className={styles.input}
-                  id="phoneNumber"
-                  type="text"
-                  name="phoneNumber"
-                  defaultValue="0123456789"
-                />
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <button className="rounded-[8px] m-[20px] mt-[85px] bg-[#6abd45] text-[white] min-h-[40px] min-w-[150px] w-[20%] flex items-center text-center justify-center uppercase hover:bg-[#5faf3d]">
-                Lưu chỉnh sửa
-              </button>
-            </div>
+            </form>
           </div>
 
           <div className="px-[50px] max-w-[40%] basis-[40%] border-l-[1px] border-[#ececec] text-center items-center justify-center">
@@ -130,15 +183,21 @@ export default function MyProfile() {
           <div className="flex-1 pr-[20px text-gray-400">
             <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
               <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Mật khẩu cũ
+                Mật khẩu hiện tại
               </div>
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
-                  className={styles.input}
+                  className={`${errors.password ? "border-red-500" : ""} ${
+                    styles.input
+                  }`}
                   id="oldPassword"
                   type="password"
                   name="password"
+                  {...register("password")}
                 />
+                {errors.password && (
+                  <p className="text-red-500 text-sm italic">{`*${errors.password.message}`}</p>
+                )}
               </div>
             </div>
             <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
@@ -147,11 +206,17 @@ export default function MyProfile() {
               </div>
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
-                  className={styles.input}
+                  className={`${errors.newPassword ? "border-red-500" : ""} ${
+                    styles.input
+                  }`}
                   id="newPassword"
                   type="password"
                   name="newPassword"
+                  {...register("newPassword")}
                 />
+                {errors.newPassword && (
+                  <p className="text-red-500 text-sm italic">{`*${errors.newPassword.message}`}</p>
+                )}
               </div>
             </div>
             <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
@@ -160,11 +225,17 @@ export default function MyProfile() {
               </div>
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
-                  className={styles.input}
+                  className={`${errors.cNewPassword ? "border-red-500" : ""} ${
+                    styles.input
+                  }`}
                   id="compareNewPassword"
                   type="password"
                   name="compareNewPassword"
+                  {...register("cNewPassword")}
                 />
+                {errors.cNewPassword && (
+                  <p className="text-red-500 text-sm italic">{`*${errors.cNewPassword.message}`}</p>
+                )}
               </div>
             </div>
             <div className="flex justify-center">
