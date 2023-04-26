@@ -14,7 +14,7 @@ export default function Bill({ close, data }) {
             renderCell: (item) => {
                 return (
                     <div className="flex gap-x-2 items-center">
-                        <p className="text-sm font-semibold">{item.orderDetail[0].product}</p>
+                        <p className="text-sm ">{item.orderDetail[0].product}</p>
                     </div>
                 );
             },
@@ -24,7 +24,7 @@ export default function Bill({ close, data }) {
             headerName: "Số lượng",
             renderCell: (item) => {
                 return (
-                    <div className="text-sm font-semibold">
+                    <div className="text-sm ">
                         <span>{item.amount}</span>
                     </div>
                 );
@@ -35,7 +35,7 @@ export default function Bill({ close, data }) {
             headerName: "Khuyến mãi",
             renderCell: (item) => {
                 return (
-                    <div className="text-sm font-semibold">
+                    <div className="text-sm ">
                         <span>{item.percentDiscount}%</span>
                     </div>
                 );
@@ -46,7 +46,7 @@ export default function Bill({ close, data }) {
             headerName: "Giá",
             renderCell: (item) => {
                 return (
-                    <div className="text-sm font-semibold">
+                    <div className="text-sm ">
                         <span>{formatCurrency(item.price * (1 - item.percentDiscount / 100) * item.amount)}</span>
                     </div>
                 );
@@ -224,15 +224,15 @@ export default function Bill({ close, data }) {
                             </div>
                             <div className="w-1/3 text-left">
                                 <h2 className="font-semibold uppercase">Tạm tính</h2>
-                                <span className="text-[#707275] font-semibold">{formatCurrency(200000000)}</span>
+                                <span className="text-[#707275] ">{formatCurrency(200000000)}</span>
                             </div>
                             <div className="w-1/3 text-left">
                                 <h2 className="font-semibold uppercase">Tiền vận chuyển</h2>
-                                <span className="text-[#707275] font-semibold">{formatCurrency(200000)}</span>
+                                <span className="text-[#707275] ">{formatCurrency(200000)}</span>
                             </div>
                             <div className="w-1/3 text-left">
-                                <h2 className="font-semibold uppercase">Total</h2>
-                                <span className="text-[red] font-semibold">{formatCurrency(200000 + 200000000)}</span>
+                                <h2 className="font-semibold uppercase">Tổng tiền</h2>
+                                <span className="text-[red] ">{formatCurrency(200000 + 200000000)}</span>
                             </div>
                         </div>
                     </div>

@@ -19,7 +19,7 @@ export default function OrderTable() {
             renderCell: (item) => {
                 return (
                     <div className="flex gap-x-2 items-center">
-                        <p className="text-sm font-semibold">{item.OrderID}</p>
+                        <p className="text-sm ">{item.OrderID}</p>
                     </div>
                 );
             },
@@ -29,7 +29,7 @@ export default function OrderTable() {
             field: "orderTime",
             headerName: "Thời gian đặt",
             renderCell: (item) => {
-                return <span className="text-sm font-semibold">{item.time}</span>;
+                return <span className="text-sm ">{item.time}</span>;
             },
         },
         {
@@ -38,7 +38,7 @@ export default function OrderTable() {
             renderCell: (item) => {
                 return (
                     <div className="flex gap-x-2 items-center">
-                        <p className="text-sm font-semibold">{item.customerName}</p>
+                        <p className="text-sm ">{item.customerName}</p>
                     </div>
                 );
             },
@@ -49,7 +49,7 @@ export default function OrderTable() {
             renderCell: (item) => {
                 return (
                     <div className="flex gap-x-2 items-center">
-                        <p className="text-sm font-semibold">{item.staffName}</p>
+                        <p className="text-sm ">{item.staffName}</p>
                     </div>
                 );
             },
@@ -58,7 +58,7 @@ export default function OrderTable() {
             field: "method",
             headerName: "Thanh toán",
             renderCell: (item) => {
-                return <span className="text-sm font-semibold">{item.payMethod}</span>;
+                return <span className="text-sm ">{item.payMethod}</span>;
             },
         },
         {
@@ -66,7 +66,7 @@ export default function OrderTable() {
             headerName: "Giá",
             renderCell: (item) => {
                 return (
-                    <div className="text-sm font-semibold">
+                    <div className="text-sm font-semibold ">
                         <span>{formatCurrency(item.price)}</span>
                     </div>
                 );
@@ -77,7 +77,7 @@ export default function OrderTable() {
             headerName: "Trạng thái",
             renderCell: (item) => {
                 return (
-                    <select className="text-left font-semibold">
+                    <select className=" text-sm ">
                         <option value="" hidden>
                             Đang chờ
                         </option>
@@ -97,7 +97,7 @@ export default function OrderTable() {
                         <button
                             data-tooltip-id="view"
                             data-tooltip-content="Xem chi tiết"
-                            className="text-left font-semibold cursor-pointer text-gray-400 hover:text-green-600"
+                            className="text-left  cursor-pointer text-gray-400 hover:text-green-600"
                             onClick={handleShowBill}
                         >
                             <IconView />

@@ -5,7 +5,7 @@ import { IconView, IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import ToggleSwitch from "../../ToggleSwitch";
-import EditModalProduct from "../editModalProduct";
+// import EditModalProduct from "../EditModalProduct";
 
 export default function ProductTable() {
     const columnData = [
