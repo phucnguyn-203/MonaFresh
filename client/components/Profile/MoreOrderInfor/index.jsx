@@ -20,13 +20,17 @@ export default function MoreOderInfor({ order, close }) {
         onClick={close}
         className="bg-black/30 top-0 right-0 left-0 bottom-0 fixed w-full h-full"
       ></div>
-      <div className={`${styles.navbar}  h-[85%] mt-[40px] px-[20px] rounded-[8px] z-10 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  min-w-[60%] bg-white`}>
+      <div
+        className={`${styles.navbar}  h-[85%] mt-[40px] px-[20px] rounded-[8px] z-10 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  min-w-[60%] bg-white`}
+      >
         <div className="mb-[30px] mt-[10px] w-full h-20px">
           <div className="flex justify-between  items-center  ">
             <div className=" uppercase text-[25px] font-[600]">
               Thông tin đơn hàng
             </div>
-            <div className="text-[20px] font-[450]">Mã đơn hàng: #{order.id}</div>
+            <div className="text-[20px] font-[450]">
+              Mã đơn hàng: #{order.id}
+            </div>
           </div>
           <div className="text-[14px] flex justify-end items-center">
             Ngày đặt hàng: {order.createdDate}
@@ -74,7 +78,10 @@ export default function MoreOderInfor({ order, close }) {
               </div>
             </div>
             {order.orderDetail.map((item) => (
-              <div key={item.id} className="min-h-[40px] px-[20px] py-[20px] flex w-full text-center justify-center items-center border-b-[1px] border-[#ececec] last:border-0">
+              <div
+                key={item.id}
+                className="min-h-[40px] px-[20px] py-[20px] flex w-full text-center justify-center items-center border-b-[1px] border-[#ececec] last:border-0"
+              >
                 <div className="w-[40%] bassis-[40%] text-left text-[15px]">
                   {item.name}
                 </div>
@@ -106,21 +113,41 @@ export default function MoreOderInfor({ order, close }) {
                 </div>
               </div>
             ))}
-            <div className=" px-[20px] flex items-center text-white justify-between rounded-b-[8px] bg-[#6abd45] h-[40px] w-full">
-              <div className="">
-               
+            <div className=" px-[20px]  items-center text-white justify-between rounded-b-[8px] bg-[#6abd45] w-full">
+              <div className=" flex justify-end items-center ">
+                <div className="flex w-[35%] basiss-[35%] items-center">
+                  <div className="w-[60%] basiss[60%] flex justify-start text-[15px] font-[450] mr-[5px]">
+                    Tổng tạm:{" "}
+                  </div>
+                  <div className="w-[40%] basiss[40%] flex justify-end text-[21px] font-[500]">
+                    {formatCurrency(order.orderTotal)}
+                  </div>
+                </div>
               </div>
 
               <div className=" flex justify-end items-center ">
-               
-
-                <div className="text-[15px] font-[450] mr-[5px]">
-                  Tổng đơn hàng:{" "}
-                </div>
-                <div className="text-[21px] font-[500]">
-                  {formatCurrency(order.orderTotal)}
+                <div className="flex w-[35%] basiss-[35%] items-center">
+                  <div className="w-[60%] basiss[60%] flex justify-start text-[15px] font-[450] mr-[5px]">
+                    Phí vận chuyển:{" "}
+                  </div>
+                  <div className="w-[40%] basiss[40%] flex justify-end text-[21px] font-[500]">
+                    {formatCurrency(0)}
+                  </div>
                 </div>
               </div>
+
+              <div className=" flex justify-end items-center ">
+                <div className="flex w-[35%] basiss-[35%] items-center">
+                  <div className="w-[60%] basiss[60%] flex justify-start text-[15px] font-[450] mr-[5px]">
+                    Tổng đơn hàng:{" "}
+                  </div>
+                  <div className="w-[40%] basiss[40%] flex justify-end text-[21px] font-[500]">
+                    {formatCurrency(order.orderTotal)}
+                  </div>
+                </div>      
+              </div>
+
+             
             </div>
           </div>
         </div>
