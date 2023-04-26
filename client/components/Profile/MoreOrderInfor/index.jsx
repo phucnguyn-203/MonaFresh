@@ -115,7 +115,7 @@ export default function MoreOderInfor({ order, close }) {
             ))}
             <div className=" px-[20px]  items-center text-white justify-between rounded-b-[8px] bg-[#6abd45] w-full">
               <div className=" flex justify-end items-center ">
-                <div className="flex w-[35%] basiss-[35%] items-center">
+                <div className="flex w-[40%] basiss-[40%] items-center">
                   <div className="w-[60%] basiss[60%] flex justify-start text-[15px] font-[450] mr-[5px]">
                     Tổng tạm:{" "}
                   </div>
@@ -126,7 +126,7 @@ export default function MoreOderInfor({ order, close }) {
               </div>
 
               <div className=" flex justify-end items-center ">
-                <div className="flex w-[35%] basiss-[35%] items-center">
+                <div className="flex w-[40%] basiss-[40%] items-center">
                   <div className="w-[60%] basiss[60%] flex justify-start text-[15px] font-[450] mr-[5px]">
                     Phí vận chuyển:{" "}
                   </div>
@@ -137,7 +137,7 @@ export default function MoreOderInfor({ order, close }) {
               </div>
 
               <div className=" flex justify-end items-center ">
-                <div className="flex w-[35%] basiss-[35%] items-center">
+                <div className="flex w-[40%] basiss-[40%] items-center">
                   <div className="w-[60%] basiss[60%] flex justify-start text-[15px] font-[450] mr-[5px]">
                     Tổng đơn hàng:{" "}
                   </div>

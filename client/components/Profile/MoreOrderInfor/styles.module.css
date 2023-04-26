@@ -1,8 +1,8 @@
 
 
 .navbar {
-    overflow-y: hidden;
-  
+    overflow-y: scroll;
+    
 }
 .navbar:hover{
     overflow-y: scroll;
