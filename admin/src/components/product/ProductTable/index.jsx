@@ -1,8 +1,11 @@
 import { Tooltip } from "react-tooltip";
+import { useState } from "react";
+
 import { IconView, IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import ToggleSwitch from "../../ToggleSwitch";
+import EditModalProduct from "../editModalProduct";
 
 export default function ProductTable() {
     const columnData = [

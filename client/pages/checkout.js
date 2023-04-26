@@ -157,69 +157,7 @@ export default function Checkout() {
               </form>
             </div>
           </div>
-          {/* <div className="ml-[10px] w-[50%] basis-[50%]">
-            <label className="font-[550]" htmlFor="phoneNumber">
-              Số điện thoại *
-            </label>{" "}
-            <br />
-            <input
-              className={styles.information}
-              id="phoneNumber"
-              type="tel"
-              name="phoneNumber"
-              placeholder="0796884386"
-            />
-          </div> */}
         </div>
-        {/* <div className="w-full">
-          <label className="font-[550]" htmlFor="province">
-            Tỉnh/Thành phố *
-          </label>
-          <select className={styles.information} id="province" placeholder="">
-            <option value="TPHoChiMinh">TP.Hồ Chí Minh</option>
-            <option value="SocTrang">Sóc Trăng</option>
-            <option value="HauGiang">Hậu Giang</option>
-            <option value="TienGiang">Tiền Giang</option>
-            <option value="BinhDinh">Bình Định</option>
-          </select>{" "}
-          <br />
-          <label className="font-[550]" htmlFor="district">
-            Quận/Huyện *
-          </label>
-          <select className={styles.information} id="district">
-            <option value="Quan1">Quận 1</option>
-            <option value="Quan1">Quận 2</option>
-            <option value="Quan1">Quận 3</option>
-            <option value="Quan1">Quận 4</option>
-            <option value="Quan1">Quận 5</option>
-            <option value="Quan1">Quận 6</option>
-            <option value="Quan1">Quận 7</option>
-            <option value="Quan1">Quận 8</option>
-          </select>{" "}
-          <br />
-          <label className="font-[550]" htmlFor="ward">
-            Phường/Xã *
-          </label>
-          <select className={styles.information} id="ward">
-            <option value="TPHoChiMinh">TP.Hồ Chí Minh</option>
-            <option value="SocTrang">Sóc Trăng</option>
-            <option value="HauGiang">Hậu Giang</option>
-            <option value="TienGiang">Tiền Giang</option>
-            <option value="BinhDinh">Bình Định</option>
-          </select>{" "}
-          <br />
-          <label className="font-[550]" htmlFor="specificAddress">
-            Địa chỉ cụ thể *
-          </label>{" "}
-          <br />
-          <input
-            className={styles.information}
-            id="specificAddress"
-            type="text"
-            name="specificAddress"
-            placeholder="VD: 210, Khu 1, Ấp Nam Chánh"
-          />
-        </div> */}
       </div>
 
       <div className="max-w-[40%] basis-[40%] w-full px-[1%]">
