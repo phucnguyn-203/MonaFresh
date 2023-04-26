@@ -48,9 +48,9 @@ export default function MyProfile() {
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
                   className={styles.input}
-                  id="name"
+                  id="email"
                   type="text"
-                  name="name"
+                  name="email"
                   defaultValue="phuttocdai123@gmail.com"
                 />
               </div>
@@ -62,9 +62,9 @@ export default function MyProfile() {
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
                   className={styles.input}
-                  id="name"
+                  id="phoneNumber"
                   type="text"
-                  name="name"
+                  name="phoneNumber"
                   defaultValue="0123456789"
                 />
               </div>
@@ -135,9 +135,9 @@ export default function MyProfile() {
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
                   className={styles.input}
-                  id="name"
+                  id="oldPassword"
                   type="password"
-                  name="name"
+                  name="password"
                 />
               </div>
             </div>
@@ -148,9 +148,9 @@ export default function MyProfile() {
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
                   className={styles.input}
-                  id="name"
+                  id="newPassword"
                   type="password"
-                  name="name"
+                  name="newPassword"
                 />
               </div>
             </div>
@@ -161,9 +161,9 @@ export default function MyProfile() {
               <div className="max-w-[70%] basis-[70%] text-left">
                 <input
                   className={styles.input}
-                  id="name"
+                  id="compareNewPassword"
                   type="password"
-                  name="name"
+                  name="compareNewPassword"
                 />
               </div>
             </div>
