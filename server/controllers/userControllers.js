@@ -73,7 +73,11 @@ exports.login = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         data: {
-            user,
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            photo: user.photo,
         },
     });
 });
@@ -145,7 +149,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
     const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
-    const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } });
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
+    });
     if (!user) {
         return next(new AppError("Đường dẫn không hợp lệ hoặc đã hết hạn", 400));
     }
@@ -181,7 +188,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
 exports.updateMe = catchAsync(async (req, res, next) => {
     const filterBody = filterObject(req.body, "name", "email", "phone", "photo");
-    const updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, { new: true, runValidators: true });
+    const updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, {
+        new: true,
+        runValidators: true,
+    });
     res.status(200).json({
         status: "success",
         data: {

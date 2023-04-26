@@ -34,7 +34,3 @@
   left: calc(100% - 1px);
   transform: translateX(-100%);
 }
-
-.reactSwitchLabel:active .reactSwitchButton {
-  width: 60px;
-}

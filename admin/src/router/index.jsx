@@ -10,16 +10,16 @@ import Customer from "../pages/customer";
 import Order from "../pages/order";
 import Staff from "../pages/staff";
 import Setting from "../pages/setting";
-import Forget from "../pages/forget";
-import Reset from "../pages/reset";
+import ForgotPassword from "../pages/forgotPassword";
+import ResetPassword from "../pages/resetPassword";
 import NotFoundPage from "../pages/NotFoundPage";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <React.Fragment>
             <Route path="/login" element={<Login />} />
-            <Route path="/forget-password" element={<Forget />} />
-            <Route path="/reset-password" element={<Reset />} />
+            <Route path="/forget-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/" element={<Root />}>
                 <Route path="" element={<Dashboard />} />
                 <Route path="/products" element={<Product />} />

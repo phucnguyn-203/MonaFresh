@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../../../assets/img/logo.png";
 import NavItem from "../../navItem";
 import { IconLogout } from "../../icon";
@@ -7,9 +8,9 @@ import styles from "./styles.module.css";
 export default function Sidebar() {
     return (
         <aside className={`${styles.sidebar} bg-bgSecondary`}>
-            <div className="cursor-pointer">
+            <Link to="/" className="cursor-pointer">
                 <img src={Logo} alt="logo" />
-            </div>
+            </Link>
             <div className={`${styles.navbar} grow mt-8`}>
                 {navigation.map(({ title, icon, path }) => (
                     <NavItem key={path} title={title} icon={icon} path={path} />

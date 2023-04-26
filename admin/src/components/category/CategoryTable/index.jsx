@@ -67,6 +67,7 @@ export default function CategoryTable() {
     ];
     const rowData = [
         {
+            id: 1,
             name: "Rau củ",
         },
     ];

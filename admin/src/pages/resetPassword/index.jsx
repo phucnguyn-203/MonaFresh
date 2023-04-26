@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
 
-export default function Login() {
+export default function ResetPassword() {
     const schema = yup.object().shape({
         password: yup.string().required("Vui lòng nhập mật khẩu cho tài khoản của bạn"),
         cpassword: yup

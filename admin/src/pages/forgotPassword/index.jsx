@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
 
-export default function Login() {
+export default function ForgotPassword() {
     const schema = yup.object().shape({
         email: yup.string().required("Vui lòng nhập Email của bạn ").email("Vui lòng nhập đúng định dạng của Email"),
     });

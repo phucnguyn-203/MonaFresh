@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
 //IMPORT ROUTES
@@ -20,6 +21,21 @@ if (process.env.NODE_ENV === "development") {
 
 //COOKIE PARSER
 app.use(cookieParser());
+
+//CORS
+const whitelist = [process.env.FRONT_END_ADMIN_URL];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 //BODY PARSER
 app.use(express.json({ limit: "50mb" }));

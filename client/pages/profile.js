@@ -18,6 +18,7 @@ export default function Profile() {
                   src={Avatar}
                   className="w-auto min-w-[30px] h-[80%] min-h-[30px] drop-shadow-xl"
                   alt="userprofile"
+                  priority
                 />
               </div>
               <div className="max-w-[70%] basis-[70%] py-[10px] pr-[10px]">

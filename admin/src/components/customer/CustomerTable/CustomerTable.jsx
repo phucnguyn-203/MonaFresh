@@ -48,7 +48,7 @@ export default function CustomerTable() {
                     <div className=" text-gray-400 gap-x-4">
                         <button
                             data-tooltip-id="view"
-                            data-tooltip-content="Xem chi tiết đơn hàng"
+                            data-tooltip-content="Xem đơn hàng"
                             className="text-gray-400 hover:text-green-600"
                         >
                             <IconView />
@@ -61,6 +61,7 @@ export default function CustomerTable() {
     ];
     const rowData = [
         {
+            id: 1,
             name: "Võ Anh Phụng",
             email: "phung12@gmail.com",
             phone: "0796884386",

@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
 import login from "../../assets/img/login-office.c7786a89.jpeg";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
+import authAPI from "../../api/authAPI";
 
 export default function Login() {
     const schema = yup.object().shape({
@@ -16,7 +18,15 @@ export default function Login() {
     } = useForm({
         resolver: yupResolver(schema),
     });
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = async (data) => {
+        const { email, password } = data;
+        try {
+            const user = await authAPI.login(email, password);
+            console.log(user);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
         <div className={styles.layout}>
@@ -62,9 +72,9 @@ export default function Login() {
                             </div>
                             <button className="w-full bg-primary text-white text-sm py-4 rounded-md">Đăng Nhập</button>
                             <div className=" flex pt-5 justify-start pl-2 items-center w-full h-full">
-                                <a href="" className="underline text-sm text-gray-700">
-                                    Quên mật khẩu
-                                </a>
+                                <Link to="/forget-password" className="underline text-sm text-primary">
+                                    Quên mật khẩu?
+                                </Link>
                             </div>
 
                             <hr className="my-10" />

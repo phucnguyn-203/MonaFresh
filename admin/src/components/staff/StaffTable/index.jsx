@@ -104,6 +104,7 @@ export default function StaffTable() {
     ];
     const rowData = [
         {
+            id: 1,
             name: "Võ Anh Phụng",
             email: "phung12@gmail.com",
             phone: "0796884386",

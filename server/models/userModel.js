@@ -37,6 +37,11 @@ const userSchema = new Schema(
         phone: {
             type: String,
             required: [true, "Vui lòng nhập số điện thoại của bạn"],
+            validate(value) {
+                if (!validator.isMobilePhone(value, "vi-VN")) {
+                    throw new Error("Vui lòng nhập đúng định dạng số điện thoại");
+                }
+            },
             unique: true,
         },
         role: {
@@ -52,16 +57,6 @@ const userSchema = new Schema(
             type: Boolean,
             default: true,
         },
-        address: [
-            {
-                name: String,
-                phone: String,
-                province: String,
-                district: String,
-                ward: String,
-                note: String,
-            },
-        ],
         passwordChangeAt: Date,
         passwordResetToken: String,
         passwordResetExpires: Date,
