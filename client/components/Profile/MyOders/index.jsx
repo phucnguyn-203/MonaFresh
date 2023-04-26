@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-
+import React from "react";
 import styles from "./styles.module.css";
 import { IconSearch } from "@/components/icons";
-import MoreOderInfor from "../MoreOrderInfor/moreOrderInfor";
+import MoreOderInfor from "../MoreOrderInfor";
 import formatCurrency from "@/utils/formatCurrency";
 import ModalFeedback from "../../Product/ModalFeedback";
 
@@ -28,6 +28,7 @@ export default function MyOders() {
             "http://mauweb.monamedia.net/happytrade/wp-content/uploads/2019/05/ca_basa_huu_co_binca_cat_lat_master.jpg",
           name: "Cá Basa cắt lát hữu cơ Binca hộp 270g",
           price: 75000,
+          percentageDiscount: 0.2,
           quantity: 4,
           total: 300000,
         },
@@ -37,6 +38,7 @@ export default function MyOders() {
             "http://mauweb.monamedia.net/happytrade/wp-content/uploads/2019/05/tom_su_huu_co_binca_3_master.jpg",
           name: "Tôm sú hữu cơ Binca size đặc biệt XL hộp 250g",
           price: 181000,
+          percentageDiscount: 0.15,
           quantity: 5,
           total: 905000,
         },
@@ -46,6 +48,7 @@ export default function MyOders() {
             "http://mauweb.monamedia.net/happytrade/wp-content/uploads/2019/05/upload_021f1d5bfb6043009170a1f950ecea5a_master-300x300.jpg",
           name: "	Xoài cát Hòa Lộc Global GAP loại đặc biệt",
           price: 140000,
+          percentageDiscount: 0,
           quantity: 2,
           total: 280000,
         },
@@ -73,6 +76,7 @@ export default function MyOders() {
             "http://mauweb.monamedia.net/happytrade/wp-content/uploads/2019/05/ca_basa_huu_co_binca_cat_lat_master.jpg",
           name: "Cá Basa cắt lát hữu cơ Binca hộp 270g",
           price: 75000,
+          percentageDiscount: 0.1,
           quantity: 4,
           total: 300000,
         },
@@ -82,6 +86,7 @@ export default function MyOders() {
             "http://mauweb.monamedia.net/happytrade/wp-content/uploads/2019/05/tom_su_huu_co_binca_3_master.jpg",
           name: "Tôm sú hữu cơ Binca size đặc biệt XL hộp 250g",
           price: 181000,
+          percentageDiscount: 0,
           quantity: 5,
           total: 905000,
         },
@@ -91,6 +96,7 @@ export default function MyOders() {
             "http://mauweb.monamedia.net/happytrade/wp-content/uploads/2019/05/upload_021f1d5bfb6043009170a1f950ecea5a_master-300x300.jpg",
           name: "	Xoài cát Hòa Lộc Global GAP loại đặc biệt",
           price: 140000,
+          percentageDiscount: 0.35,
           quantity: 2,
           total: 280000,
         },
@@ -213,9 +219,30 @@ export default function MyOders() {
                       <div className=" max-w-[60%] basis-[60%] items-center">
                         <div className="">{item.name}</div>
                         <div className="font-[500]">x{item.quantity}</div>
-                        <div className="text-[#6abd45] font-[450]">
+                        {/* <div className="text-[#6abd45] font-[450]">
                           {formatCurrency(item.price)}
-                        </div>
+                        </div> */}
+
+                        {item.percentageDiscount === 0 ? (
+                          <React.Fragment>
+                            <p className="text-primary">
+                            {formatCurrency(item.price)}
+                            </p>
+                           
+                          </React.Fragment>
+                        ) : (
+                          <React.Fragment>
+                            <p className="text-primary">
+                              {formatCurrency(
+                                item.price -
+                                  item.price * item.percentageDiscount,
+                              )}
+                            </p>
+                            <p className="text-sm text-[#0000008a] font-normal line-through">
+                              {formatCurrency(item.price)}
+                            </p>
+                          </React.Fragment>
+                        )}
                       </div>
                       <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
                         <div className="bg-[#6abd45] hover:bg-[#61b13f] text-[15px] flex justify-center items-center text-white  min-h-[30px] w-[70%] rounded-[5px]">

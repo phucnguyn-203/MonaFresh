@@ -1,0 +1,19 @@
+
+
+.navbar {
+    overflow-y: hidden;
+  
+}
+.navbar:hover{
+    overflow-y: scroll;
+}
+
+.navbar::-webkit-scrollbar {
+    width: 6px;
+}
+  
+
+.navbar::-webkit-scrollbar-thumb {
+    background: #A7A7A733;
+    border-radius: 10px;
+}
