@@ -10,9 +10,6 @@ export default function Product() {
     const handleShowProductModal = () => {
         setShowAddModal(!showAddModal);
     };
-    // const handleShowEditProductModal = () => {
-    //     setShowEditModal(!showEditModal);
-    // };
 
     return (
         <PageLayout title="Sản phẩm">

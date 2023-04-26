@@ -33,7 +33,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter }) {
                 <ModalHeader closeModal={closeModal} title={title} />
                 <div className="h-full overflow-y-scroll grow mt-[20px]">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="w-full  flex  items-start px-[25px] my-[20px]">
+                        <div className="w-full flex items-start px-[25px] my-[20px]">
                             <label className="w-1/3 text-sm text-gray-700">Ảnh nhân viên</label>
                             <input
                                 id="file"
