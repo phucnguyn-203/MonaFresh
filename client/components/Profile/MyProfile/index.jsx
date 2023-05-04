@@ -5,6 +5,7 @@ import Avatar from "@/public/assets/img/avatar.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "@/utils/yupGlobal";
+import UpdatePassword from "./updatePassword";
 
 export default function MyProfile() {
   const [img, setImg] = useState(Avatar);
@@ -59,7 +60,7 @@ export default function MyProfile() {
           </div>
         </div>
         <div className="flex w-full py-[30px]">
-          <div className="max-w-[60%] basis-[60%] pr-[20px text-gray-400">
+          <div className="max-w-[60%] basis-[60%] pr-[20px] text-gray-400">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
                 <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
@@ -170,82 +171,7 @@ export default function MyProfile() {
         </div>
       </div>
       {/* Cập nhật mất khẩu */}
-      <div className="bg-white px-[20px] rounded-[8px] mt-[20px]">
-        <div className=" w-full h-[100px] border-b-[1px] border-[#ececec] pt-[30px] pb-[20px]">
-          <div className="w-full uppercase text-[18px] font-[600]">
-            Cập nhật mật khẩu
-          </div>
-          <div className="w-full text-[15px] font-[300]">
-            Quản lý mật khẩu của bạn
-          </div>
-        </div>
-        <div className="flex w-full py-[30px]">
-          <div className="flex-1 pr-[20px text-gray-400">
-            <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
-              <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Mật khẩu hiện tại
-              </div>
-              <div className="max-w-[70%] basis-[70%] text-left">
-                <input
-                  className={`${errors.password ? "border-red-500" : ""} ${
-                    styles.input
-                  }`}
-                  id="oldPassword"
-                  type="password"
-                  name="password"
-                  {...register("password")}
-                />
-                {errors.password && (
-                  <p className="text-red-500 text-sm italic">{`*${errors.password.message}`}</p>
-                )}
-              </div>
-            </div>
-            <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
-              <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Mật khẩu mới
-              </div>
-              <div className="max-w-[70%] basis-[70%] text-left">
-                <input
-                  className={`${errors.newPassword ? "border-red-500" : ""} ${
-                    styles.input
-                  }`}
-                  id="newPassword"
-                  type="password"
-                  name="newPassword"
-                  {...register("newPassword")}
-                />
-                {errors.newPassword && (
-                  <p className="text-red-500 text-sm italic">{`*${errors.newPassword.message}`}</p>
-                )}
-              </div>
-            </div>
-            <div className="flex w-full h-[40px] items-center justify-center my-[30px]">
-              <div className="max-w-[30%] basis-[30%] text-left pr-[20px]">
-                Nhập lại mật khẩu mới
-              </div>
-              <div className="max-w-[70%] basis-[70%] text-left">
-                <input
-                  className={`${errors.cNewPassword ? "border-red-500" : ""} ${
-                    styles.input
-                  }`}
-                  id="compareNewPassword"
-                  type="password"
-                  name="compareNewPassword"
-                  {...register("cNewPassword")}
-                />
-                {errors.cNewPassword && (
-                  <p className="text-red-500 text-sm italic">{`*${errors.cNewPassword.message}`}</p>
-                )}
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <button className="rounded-[8px] p-[10px] m-[20px] bg-[#6abd45] text-[white] min-w-[150px] text-center uppercase hover:bg-[#5faf3d]">
-                Cập nhật mật khẩu
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <UpdatePassword />
     </div>
   );
 }
