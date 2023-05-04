@@ -25,7 +25,12 @@ export default function UpdatePassword() {
     <div className="bg-white rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="p-6 mt-9 flex-grow w-full max-h-full ">
-          <div className="grid grid-cols-6 gap-3 mb-6">
+          <div className=" w-full h-[100px] border-b-[1px] border-[#ececec] pt-[30px] pb-[20px]">
+            <div className="w-full uppercase text-[18px] font-[600]">
+              Cập nhật mật khẩu
+            </div>
+          </div>
+          <div className="grid grid-cols-6 gap-3 mb-6 pt-6">
             <label className="block  text-gray-400 dark:text-gray-400 col-span-4 sm:col-span-2  text-sm">
               Mật khẩu cũ
             </label>
