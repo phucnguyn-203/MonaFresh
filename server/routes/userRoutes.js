@@ -13,6 +13,7 @@ const {
     deleteMe,
     logout,
 } = require("../controllers/userControllers");
+const { createStaff } = require("../controllers/staffControllers");
 
 const { authenticate } = require("../middlewares/auth");
 
@@ -26,4 +27,6 @@ router.delete("/deleteMe", authenticate, deleteMe);
 router.get("/check-login", checkLogin);
 router.get("/get-new-accessToken", getNewAccessToken);
 router.get("/logout", logout);
+
+router.post("/register-staff", authenticate, createStaff);
 module.exports = router;
