@@ -31,12 +31,12 @@ function App() {
                 >
                     {auth.currentUser?.role === USER_ROLES.ADMIN
                         ? adminRouter.map((item) => {
-                              const Element = item.element;
-                              <Route path={item.path} element={<Element />} />;
+                              const Page = item.element;
+                              return <Route path={item.path} element={<Page />} />;
                           })
                         : staffRouter.map((item) => {
-                              const Element = item.element;
-                              <Route path={item.path} element={<Element />} />;
+                              const Page = item.element;
+                              return <Route path={item.path} element={<Page />} />;
                           })}
                 </Route>
             </React.Fragment>,
