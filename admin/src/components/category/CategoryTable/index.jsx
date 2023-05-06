@@ -33,14 +33,14 @@ export default function CategoryTable({
       field: "createdAt",
       headerName: "Ngày tạo",
       renderCell: (item) => {
-        return <p className="text-sm">{new Date(item.createdAt).toLocaleDateString()}</p>;
+        return <p className="text-sm">{new Date(item.createdAt).toLocaleDateString("en-GB")}</p>;
       },
     },
     {
       field: "updatedAt",
       headerName: "Ngày cập nhật",
       renderCell: (item) => {
-        return <p className="text-sm">{new Date(item.updatedAt).toLocaleDateString()}</p>;
+        return <p className="text-sm">{new Date(item.updatedAt).toLocaleDateString("en-GB")}</p>;
       },
     },
     {
