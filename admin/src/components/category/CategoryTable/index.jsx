@@ -1,8 +1,8 @@
 import { Tooltip } from "react-tooltip";
-import { IconView, IconEdit, IconDelete } from "../../icon";
+import { IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import ToggleSwitch from "../../ToggleSwitch";
-import Swal from "sweetalert2/dist/sweetalert2.js";
+import Swal from "sweetalert2";
 
 export default function CategoryTable({
   categories,
