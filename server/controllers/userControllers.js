@@ -57,7 +57,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.correctPassword(password, user.password))) {
-        return next(new AppError("Email hoặc mật khẩu không đúng", 401));
+        return next(new AppError("Đăng nhập không thành công Email hoặc mật khẩu không đúng", 401));
     }
     sendToken(res, {
         name: "accessToken",
@@ -92,7 +92,13 @@ exports.checkLogin = catchAsync(async (req, res, next) => {
     const user = await User.findById(decoded._id);
     res.status(200).json({
         status: "success",
-        data: user,
+        data: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            photo: user.photo,
+        },
     });
 });
 

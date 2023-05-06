@@ -8,7 +8,7 @@ import {
     IconStaff,
 } from "../components/icon";
 
-const navigation = [
+const adminNavigation = [
     {
         title: "Tổng quan",
         path: "",
@@ -46,4 +46,37 @@ const navigation = [
     },
 ];
 
-export default navigation;
+const staffNavigation = [
+    {
+        title: "Tổng quan",
+        path: "",
+        icon: IconDashboard,
+    },
+    {
+        title: "Sản phẩm",
+        path: "/products",
+        icon: IconProduct,
+    },
+    {
+        title: "Danh mục",
+        path: "/category",
+        icon: IconCategory,
+    },
+    {
+        title: "Khách hàng",
+        path: "/customers",
+        icon: IconCustomer,
+    },
+    {
+        title: "Đơn hàng",
+        path: "/orders",
+        icon: IconOrder,
+    },
+    {
+        title: "Cài đặt",
+        path: "/setting",
+        icon: IconSetting,
+    },
+];
+
+export { adminNavigation, staffNavigation };

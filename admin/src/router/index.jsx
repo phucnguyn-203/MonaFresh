@@ -1,8 +1,3 @@
-import React from "react";
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
-
-import Root from "../pages/root";
-import Login from "../pages/login/login";
 import Dashboard from "../pages/dashboard";
 import Product from "../pages/product";
 import Category from "../pages/category";
@@ -10,28 +5,63 @@ import Customer from "../pages/customer";
 import Order from "../pages/order";
 import Staff from "../pages/staff";
 import Setting from "../pages/setting";
-import ForgotPassword from "../pages/forgotPassword";
-import ResetPassword from "../pages/resetPassword";
-import NotFoundPage from "../pages/NotFoundPage";
 
-const router = createBrowserRouter(
-    createRoutesFromElements(
-        <React.Fragment>
-            <Route path="/login" element={<Login />} />
-            <Route path="/forget-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/" element={<Root />}>
-                <Route path="" element={<Dashboard />} />
-                <Route path="/products" element={<Product />} />
-                <Route path="/category" element={<Category />} />
-                <Route path="/customers" element={<Customer />} />
-                <Route path="/orders" element={<Order />} />
-                <Route path="/staffs" element={<Staff />} />
-                <Route path="/setting" element={<Setting />} />
-                <Route path="*" element={<NotFoundPage />} />
-            </Route>
-        </React.Fragment>,
-    ),
-);
+const adminRouter = [
+    {
+        path: "",
+        element: Dashboard,
+    },
+    {
+        path: "/products",
+        element: Product,
+    },
+    {
+        path: "/category",
+        element: Category,
+    },
+    {
+        path: "/customers",
+        element: Customer,
+    },
+    {
+        path: "/orders",
+        element: Order,
+    },
+    {
+        path: "/staffs",
+        element: Staff,
+    },
+    {
+        path: "/setting",
+        element: Setting,
+    },
+];
 
-export default router;
+const staffRouter = [
+    {
+        path: "",
+        element: Dashboard,
+    },
+    {
+        path: "/products",
+        element: Product,
+    },
+    {
+        path: "/category",
+        element: Category,
+    },
+    {
+        path: "/customers",
+        element: Customer,
+    },
+    {
+        path: "/orders",
+        element: Order,
+    },
+    {
+        path: "/setting",
+        element: Setting,
+    },
+];
+
+export { adminRouter, staffRouter };

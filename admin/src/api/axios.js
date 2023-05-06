@@ -16,10 +16,7 @@ instance.interceptors.response.use(
     },
     (error) => {
         // Handle errors
-        if (error && error.response) {
-            return error.response.data.message;
-        }
-        return error;
+        throw error;
     },
 );
 

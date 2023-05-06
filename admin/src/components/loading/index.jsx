@@ -1,7 +1,7 @@
-export default function Loading() {
+export default function Loading({ width, height }) {
     return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="border-[4px] border-[#F3F3F3] border-t-[4px] border-t-primary rounded-full w-[64px] h-[64px] animate-spin"></div>
-        </div>
+        <div
+            className={`border-[3px] border-[#F3F3F3] border-t-[4px] border-t-primary rounded-full w-[${width}px] h-[${height}px] animate-spin`}
+        ></div>
     );
 }
