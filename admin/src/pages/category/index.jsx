@@ -1,16 +1,70 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import categoryAPI from "../../api/categoryAPI";
 import PageLayout from "../../components/layout/pageLayout";
 import { IconDelete } from "../../components/icon";
 import { IconAdd } from "../../components/icon";
 import CategoryTable from "../../components/category/CategoryTable";
 import AddCategoryModal from "../../components/category/AddCategoryModal";
+import EditCategoryModal from "../../components/category/EditCategoryModal";
 
 export default function Category() {
-  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const handleShowCategoryModal = () => {
-    setShowAddCategoryModal(!showAddCategoryModal);
+  const [isShowAddCategoryModal, setIsShowAddCategoryModal] = useState(false);
+  const [isShowEditCategoryModal, setIsShowEditCategoryModal] = useState(false);
+  const [editData, setEditData] = useState();
+  const [categories, setCategories] = useState([]);
+
+  const getAllCategory = async () => {
+    try {
+      const response = await categoryAPI.getAllCategory();
+      setCategories(response.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  const handleAddCategory = async (data) => {
+    const { name } = data;
+    try {
+      await categoryAPI.addCategory({ name });
+      setIsShowAddCategoryModal(false);
+      getAllCategory();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleUpdateCategory = async (id, data) => {
+    try {
+      await categoryAPI.updateCategory(id, data);
+      setIsShowEditCategoryModal(false);
+      getAllCategory();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteCategory = async (id) => {
+    try {
+      await categoryAPI.deleteCategory(id);
+      getAllCategory();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleShowAddCategoryModal = () => {
+    setIsShowAddCategoryModal(!isShowAddCategoryModal);
+  };
+
+  const handleShowEditCategoryModal = (item) => {
+    setIsShowEditCategoryModal(!isShowEditCategoryModal);
+    setEditData(item);
+  };
+
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
   return (
     <PageLayout title="Danh mục">
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
@@ -30,7 +84,7 @@ export default function Category() {
               className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
                         cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
                         text-white bg-primary border border-transparent hover:bg-emerald-700 "
-              onClick={handleShowCategoryModal}
+              onClick={handleShowAddCategoryModal}
             >
               <span className="mr-3">
                 <IconAdd />
@@ -53,12 +107,27 @@ export default function Category() {
           </form>
         </div>
       </div>
-      <CategoryTable />
-      {showAddCategoryModal && (
+      <CategoryTable
+        categories={categories}
+        handleDeleteCategory={handleDeleteCategory}
+        handleShowEditCategoryModal={handleShowEditCategoryModal}
+        handleUpdateCategory={handleUpdateCategory}
+      />
+      {isShowAddCategoryModal && (
         <AddCategoryModal
-          closeModal={handleShowCategoryModal}
           title="THÊM DANH MỤC SẢN PHẨM"
           titleBtnFooter="THÊM DANH MỤC"
+          handleAddCategory={handleAddCategory}
+          closeModal={handleShowAddCategoryModal}
+        />
+      )}
+      {isShowEditCategoryModal && (
+        <EditCategoryModal
+          title="Cập nhật danh mục sản phẩm"
+          titleBtnFooter="CẬP NHẬT"
+          closeModal={handleShowEditCategoryModal}
+          category={editData}
+          handleUpdateCategory={handleUpdateCategory}
         />
       )}
     </PageLayout>

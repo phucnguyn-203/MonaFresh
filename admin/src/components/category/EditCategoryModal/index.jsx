@@ -6,7 +6,7 @@ import yup from "../../../utils/yupGlobal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function AddCategoryModal({ closeModal, title, titleBtnFooter, handleAddCategory }) {
+export default function EditCategoryModal({ closeModal, title, titleBtnFooter, category, handleUpdateCategory }) {
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên sản phẩm"),
   });
@@ -18,7 +18,7 @@ export default function AddCategoryModal({ closeModal, title, titleBtnFooter, ha
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => handleAddCategory(data);
+  const onSubmit = async (data) => handleUpdateCategory(category._id, data);
 
   return (
     <div>
@@ -27,7 +27,6 @@ export default function AddCategoryModal({ closeModal, title, titleBtnFooter, ha
         <ModalHeader closeModal={closeModal} title={title} />
         <div className="h-full overflow-y-scroll grow mt-[20px]">
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* onSubmit={handleSubmit(onSubmit)} */}
             <div className="p-6 flex-grow w-full max-h-full ">
               <div className="grid grid-cols-6 gap-3 mb-6">
                 <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
@@ -36,6 +35,7 @@ export default function AddCategoryModal({ closeModal, title, titleBtnFooter, ha
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
                     type="text"
+                    defaultValue={category.name}
                     placeholder="Tên danh mục"
                     className={`${
                       errors.name ? "border-red-500" : ""

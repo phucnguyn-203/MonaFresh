@@ -6,7 +6,6 @@ import Root from "./pages/root";
 import Login from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import ResetPassword from "./pages/resetPassword";
-import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./router/ProtectedRoute";
 
 import { adminRouter, staffRouter } from "./router";
@@ -32,11 +31,11 @@ function App() {
                     {auth.currentUser?.role === USER_ROLES.ADMIN
                         ? adminRouter.map((item) => {
                               const Page = item.element;
-                              return <Route path={item.path} element={<Page />} />;
+                              return <Route key={item.path} path={item.path} element={<Page />} />;
                           })
                         : staffRouter.map((item) => {
                               const Page = item.element;
-                              return <Route path={item.path} element={<Page />} />;
+                              return <Route key={item.path} path={item.path} element={<Page />} />;
                           })}
                 </Route>
             </React.Fragment>,

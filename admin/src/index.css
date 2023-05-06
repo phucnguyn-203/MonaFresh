@@ -11,3 +11,7 @@
   --color-text-primary: #0E9F6E;
   --color-text-secondary: #707275;
 }
+
+.swal2-container {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
