@@ -7,61 +7,61 @@ import Staff from "../pages/staff";
 import Setting from "../pages/setting";
 
 const adminRouter = [
-    {
-        path: "",
-        element: Dashboard,
-    },
-    {
-        path: "/products",
-        element: Product,
-    },
-    {
-        path: "/category",
-        element: Category,
-    },
-    {
-        path: "/customers",
-        element: Customer,
-    },
-    {
-        path: "/orders",
-        element: Order,
-    },
-    {
-        path: "/staffs",
-        element: Staff,
-    },
-    {
-        path: "/setting",
-        element: Setting,
-    },
+  {
+    path: "",
+    element: Dashboard,
+  },
+  {
+    path: "/products",
+    element: Product,
+  },
+  {
+    path: "/category",
+    element: Category,
+  },
+  {
+    path: "/customers",
+    element: Customer,
+  },
+  {
+    path: "/orders",
+    element: Order,
+  },
+  {
+    path: "/staffs",
+    element: Staff,
+  },
+  {
+    path: "/setting",
+    element: Setting,
+  },
 ];
 
 const staffRouter = [
-    {
-        path: "",
-        element: Dashboard,
-    },
-    {
-        path: "/products",
-        element: Product,
-    },
-    {
-        path: "/category",
-        element: Category,
-    },
-    {
-        path: "/customers",
-        element: Customer,
-    },
-    {
-        path: "/orders",
-        element: Order,
-    },
-    {
-        path: "/setting",
-        element: Setting,
-    },
+  {
+    path: "",
+    element: Dashboard,
+  },
+  {
+    path: "/products",
+    element: Product,
+  },
+  {
+    path: "/category",
+    element: Category,
+  },
+  {
+    path: "/customers",
+    element: Customer,
+  },
+  {
+    path: "/orders",
+    element: Order,
+  },
+  {
+    path: "/setting",
+    element: Setting,
+  },
 ];
 
 export { adminRouter, staffRouter };
