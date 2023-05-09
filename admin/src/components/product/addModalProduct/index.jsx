@@ -1,20 +1,40 @@
+import React, { useEffect } from "react";
 import Drawer from "../../modal/drawer";
 import ModalHeader from "../../modal/header";
 import ModalFooter from "../../modal/footer";
 import { useState } from "react";
-import styles from "./styles.module.css";
 import yup from "../../../utils/yupGlobal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import categoryAPI from "../../../api/categoryAPI";
+import productAPI from "../../../api/productAPI";
 
-export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
-  const [avatar, setAvatar] = useState();
+export default function AddModalProduct({ closeModal, title, titleBtnFooter, handleAddProduct }) {
+  // const [avatar, setAvatar] = useState();
+  const [categories, setCategories] = useState([]);
   const [images, setImages] = useState([]);
+  const [thumbnail, setThumbnail] = useState();
+  const [previewThumbnailURL, setPreviewThumbnailURL] = useState();
+
+  const handleThumnailChange = (event) => {
+    const file = event.target.files[0];
+    setThumbnail(file);
+    setPreviewThumbnailURL(URL.createObjectURL(file));
+  };
+
+  const handleThumnailUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", thumbnail);
+    return await productAPI.uploadThumbnail(formData);
+  };
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên sản phẩm"),
-    decrip: yup.string().required("Vui lòng nhập mô tả sản phẩm"),
-    price: yup.string().required("Vui lòng nhập giá sản phẩm"),
+    category: yup.string().required("Vui lòng chọn danh mục cho sản phẩm"),
+    description: yup.string().required("Vui lòng nhập mô tả sản phẩm"),
+    price: yup.number().required("Vui lòng nhập giá sản phẩm"),
+    quantity: yup.number().required("Vui lòng nhập số lượng sản phẩm"),
+    percentageDiscount: yup.number().default(0),
   });
   const {
     register,
@@ -23,15 +43,28 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
-
-  const handlePreviewAvatar = (e) => {
-    const file = e.target.files[0];
-
-    file.preview = URL.createObjectURL(file);
-
-    setAvatar(file);
+  const onSubmit = async (data) => {
+    try {
+      const uploadDataResponse = await handleThumnailUpload();
+      const photoUrl = uploadDataResponse.url;
+      data.thumbnail = photoUrl;
+      handleAddProduct(data);
+    } catch (err) {}
   };
+
+  const showAllCategory = async () => {
+    try {
+      const response = await categoryAPI.getAllCategory();
+      setCategories(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    showAllCategory();
+  }, []);
+
   return (
     <div>
       <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>
@@ -46,7 +79,8 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <div className="w-full text-center">
-                    <input type="file" hidden id="file" accept="image/*" onChange={handlePreviewAvatar} />
+                    <input type="file" hidden id="file" accept="image/*" onChange={handleThumnailChange} />
+
                     <label htmlFor="file">
                       <div className="px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer">
                         <span className="mx-auto flex justify-center">
@@ -73,9 +107,10 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                       </div>
                     </label>
                     <div>
-                      {avatar && (
+                      {thumbnail && (
                         <img
-                          src={avatar.preview}
+                          src={previewThumbnailURL}
+                          alt="preview"
                           className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
                         />
                       )}
@@ -156,14 +191,20 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                   Danh mục sản phẩm
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
-                  <select className={`${styles.inputItem}`}>
-                    <option>Rau củ</option>
-                    <option>Hải sản</option>
-                    <option>Trái cây</option>
-                    <option>Đồ uống</option>
-                    <option>Đồ khô</option>
-                    <option>Thịt trưng</option>
+                  <select
+                    className={`block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none ${
+                      errors.category ? "border-red-500" : ""
+                    }`}
+                    {...register("category")}
+                  >
+                    <option value="">Danh mục</option>
+                    {categories.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name}
+                      </option>
+                    ))}
                   </select>
+                  {errors.category && <p className="text-red-500 text-sm">{`*${errors.category.message}`}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
@@ -175,11 +216,11 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                     type="text"
                     placeholder="Mô tả chi tiết sản phẩm"
                     className={`${
-                      errors.decrip ? "border-red-500" : ""
+                      errors.description ? "border-red-500" : ""
                     } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
-                    {...register("decrip")}
+                    {...register("description")}
                   />
-                  {errors.decrip && <p className="text-red-500 text-sm">{`*${errors.decrip.message}`}</p>}
+                  {errors.description && <p className="text-red-500 text-sm">{`*${errors.description.message}`}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
@@ -188,7 +229,7 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Nhập giá sản phẩm"
                     className={`${
                       errors.price ? "border-red-500" : ""
@@ -200,140 +241,37 @@ export default function AddModalProduct({ closeModal, title, titleBtnFooter }) {
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
                 <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                  Số lượng sản phẩm
+                </label>
+                <div className="col-span-8 sm:col-span-4 ">
+                  <input
+                    type="number"
+                    placeholder="Nhập số lượng sản phẩm"
+                    className={`${
+                      errors.quantity ? "border-red-500" : ""
+                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                    {...register("quantity")}
+                  />
+                  {errors.quantity && <p className="text-red-500 text-sm">{`*${errors.quantity.message}`}</p>}
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 mb-6">
+                <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                   Khuyến mãi
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Khuyến mãi %"
-                    className=" block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none"
+                    defaultValue={0}
+                    className={`block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                    {...register("percentageDiscount")}
                   />
                 </div>
               </div>
             </div>
-
             <input type="submit" hidden id="send" />
           </form>
-          {/* <form onSubmit={handleSubmit}>
-                        <div className="w-full flex  items-start px-[25px] my-[20px]">
-                            <label className="w-1/3 text-sm text-gray-700">Thumbnail sản phẩm</label>
-                            <div className="w-2/3">
-                                <input
-                                    id="file"
-                                    type="file"
-                                    accept="image/*"
-                                    className="w-full border-[1px] border-solid h-[140px] outline-none rounded-md hidden"
-                                    onChange={handlePreviewAvatar}
-                                />
-                                <label htmlFor="file" className="grow">
-                                    <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 border-dashed rounded-md cursor-pointer flex flex-col items-center">
-                                        <span>
-                                            <IconUploadFile />
-                                        </span>
-
-                                        <p>Thêm ảnh tại đây</p>
-                                        <em>(Chỉ nhận ảnh có đuôi *.jpeg and *.png )</em>
-                                    </div>
-                                </label>
-                                <div>
-                                    {avatar && (
-                                        <img
-                                            src={avatar.preview}
-                                            className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
-                                        />
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="w-full flex  items-start px-[25px] my-[20px]">
-                            <label className="w-1/3 text-sm text-gray-700">Ảnh sản phẩm</label>
-
-                            <div className="w-2/3">
-                                <input
-                                    id="files"
-                                    type="file"
-                                    accept="image/*"
-                                    className="w-full border-[1px] border-solid h-[140px] outline-none rounded-md hidden"
-                                    onChange={(e) => setImages([...images, ...Array.from(e.target.files)])}
-                                    // onChange={handlePreviewAvatar}
-                                />
-                                <label htmlFor="files" className="grow">
-                                    <div className="px-6 pt-5 pb-6 border-[1px] border-gray-300 border-dashed rounded-md cursor-pointer flex flex-col items-center">
-                                        <span>
-                                            <IconUploadFile />
-                                        </span>
-
-                                        <p>Thêm ảnh tại đây</p>
-                                        <em>(Chỉ nhận ảnh có đuôi *.jpeg and *.png )</em>
-                                    </div>
-                                </label>
-                                <div>
-                                    <ul>
-                                        {images.map((image) => (
-                                            <img
-                                                key={image.name}
-                                                src={URL.createObjectURL(image)}
-                                                className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
-                                            />
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={`${styles.item}`}>
-                            <div className="w-1/3 text-sm text-gray-700">
-                                <label>Tên sản phẩm</label>
-                            </div>
-                            <div className="flex flex-col w-2/3">
-                                <input
-                                    type="text"
-                                    placeholder="Nhập tên sản phẩm"
-                                    className={`${
-                                        errors.name ? "border-red-500" : ""
-                                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none `}
-                                    {...register("name")}
-                                />
-                                {errors.name && <p className="text-red-500 text-sm">{`*${errors.name.message}`}</p>}
-                            </div>
-                        </div>
-
-                        <div className={`${styles.item} `}>
-                            <div className="w-1/3 text-sm text-gray-700">
-                                <label>Danh mục</label>
-                            </div>
-                            <select className={`${styles.inputItem}`}>
-                                <option>Rau củ</option>
-                                <option>Hải sản</option>
-                                <option>Trái cây</option>
-                                <option>Đồ uống</option>
-                                <option>Đồ khô</option>
-                                <option>Thịt trưng</option>
-                            </select>
-                        </div>
-                        <div className={`${styles.descriptionItem}`}>
-                            <div className="w-1/3 py-[10px] text-sm text-gray-700">
-                                <label>Mô tả</label>
-                            </div>
-                            <textarea
-                                type="text"
-                                placeholder="Nhập mô tả chi tiết"
-                                className={`${styles.descriptionInputItem}`}
-                            />
-                        </div>
-                        <div className={`${styles.item} `}>
-                            <div className="w-1/3 text-sm text-gray-700">
-                                <label>Giá</label>
-                            </div>
-                            <input type="number" placeholder="Nhập giá sản phẩm" className={`${styles.inputItem}`} />
-                        </div>
-                        <div className={`${styles.item}`}>
-                            <div className="w-1/3 text-sm text-gray-700">
-                                <label>Khuyến mãi</label>
-                            </div>
-                            <input type="number" placeholder="Nhập khuyến mãi(%)" className={`${styles.inputItem}`} />
-                        </div>
-                        <input type="submit" hidden id="send" />
-                    </form> */}
         </div>
         <ModalFooter title={titleBtnFooter} />
       </Drawer>
