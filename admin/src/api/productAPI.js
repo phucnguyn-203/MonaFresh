@@ -28,6 +28,15 @@ const productAPI = {
     });
     return response;
   },
+  uploadImagesProduct: async (data) => {
+    const url = "/upload/upload-files";
+    const response = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  },
 };
 
 export default productAPI;

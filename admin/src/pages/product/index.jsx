@@ -25,9 +25,10 @@ export default function Product() {
   };
 
   const handleAddProduct = async (data) => {
-    const { thumbnail, category, description, name, price, quantity, percentageDiscount } = data;
+    const { images, thumbnail, category, description, name, price, quantity, percentageDiscount } = data;
     try {
       await productAPI.addProduct({
+        images,
         thumbnail,
         category,
         name,
@@ -82,6 +83,8 @@ export default function Product() {
     showAllCategory();
     getAllProduct();
   }, []);
+
+  console.log(products);
   return (
     <PageLayout title="Sản phẩm">
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
