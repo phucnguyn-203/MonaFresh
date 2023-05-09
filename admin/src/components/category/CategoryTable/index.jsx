@@ -2,6 +2,7 @@ import { Tooltip } from "react-tooltip";
 import { IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import ToggleSwitch from "../../ToggleSwitch";
+import jsUcfirst from "../../../utils/jsUcfirst";
 import Swal from "sweetalert2";
 
 export default function CategoryTable({
@@ -9,13 +10,17 @@ export default function CategoryTable({
   handleDeleteCategory,
   handleShowEditCategoryModal,
   handleUpdateCategory,
+  isSelectAll,
+  isSelected,
+  handleSelectAll,
+  handleSelected,
 }) {
   const columnData = [
     {
       field: "name",
       headerName: "Tên danh mục",
       renderCell: (item) => {
-        return <p className="text-sm">{item.name}</p>;
+        return <p className="text-sm">{jsUcfirst(item.name)}</p>;
       },
     },
     {
@@ -62,6 +67,7 @@ export default function CategoryTable({
               onClick={() => {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
+                  text: "Các sản phẩm thuộc danh mục này cũng sẽ bị xoá và sẽ không thể khôi phục",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -88,5 +94,15 @@ export default function CategoryTable({
     },
   ];
 
-  return <DataTable columnData={columnData} rowData={categories} select />;
+  return (
+    <DataTable
+      columnData={columnData}
+      rowData={categories}
+      select
+      isSelectAll={isSelectAll}
+      isSelected={isSelected}
+      handleSelected={handleSelected}
+      handleSelectAll={handleSelectAll}
+    />
+  );
 }

@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const removeAccents = require("../utils/removeAccents");
 
 const categorySchema = new Schema(
     {
+        searchName: String,
         name: {
             type: String,
             required: [true, "Vui lòng cung cấp đầy đủ tên của danh mục"],
@@ -17,6 +19,11 @@ const categorySchema = new Schema(
         timestamps: true,
     },
 );
+
+categorySchema.pre("save", function (next) {
+    this.searchName = removeAccents(this.name).toLowerCase();
+    next();
+});
 
 const Category = mongoose.model("Category", categorySchema);
 module.exports = Category;

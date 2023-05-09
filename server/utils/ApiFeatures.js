@@ -1,3 +1,4 @@
+const removeAccents = require("../utils/removeAccents");
 module.exports = class {
     constructor(query, queryString) {
         this.query = query;
@@ -16,9 +17,9 @@ module.exports = class {
             JSON.stringify(objQuery).replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`),
         );
 
-        const q = search ? search.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&") : "";
+        const q = search ? removeAccents(search) : "";
 
-        const query = { ...queryString, name: { $regex: new RegExp(q, "i") } };
+        const query = { ...queryString, searchName: { $regex: new RegExp(q, "i") } };
 
         this.query = this.query.find(query);
         return this;
