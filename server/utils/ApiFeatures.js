@@ -19,7 +19,7 @@ module.exports = class {
 
         const q = search ? removeAccents(search) : "";
 
-        const query = { ...queryString, searchName: { $regex: new RegExp(q, "i") } };
+        const query = q ? { ...queryString, searchName: { $regex: new RegExp(q, "i") } } : { ...queryString };
 
         this.query = this.query.find(query);
         return this;
