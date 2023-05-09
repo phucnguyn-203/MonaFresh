@@ -110,7 +110,7 @@ export default function Category() {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
                   text: "Các sản phẩm thuộc các danh mục này cũng sẽ bị xoá và sẽ không thể khôi phục",
-                  icon: "warning",
+                  icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
                   cancelButtonColor: "#d33",
