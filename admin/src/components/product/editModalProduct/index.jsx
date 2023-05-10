@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import Drawer from "../../modal/drawer";
 import ModalHeader from "../../modal/header";
 import ModalFooter from "../../modal/footer";
-import { useState } from "react";
 import yup from "../../../utils/yupGlobal";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import categoryAPI from "../../../api/categoryAPI";
 import productAPI from "../../../api/productAPI";
+import styles from "./styles.module.css";
+import { IconClose } from "../../icon";
 
-export default function AddModalProduct({ closeModal, product, title, titleBtnFooter, handleAddProduct }) {
+export default function EditModalProduct({ closeModal, product, title, titleBtnFooter, handleUpdateProduct }) {
   const [categories, setCategories] = useState([]);
   const [images, setImages] = useState([]);
   const [thumbnail, setThumbnail] = useState();
@@ -25,6 +28,14 @@ export default function AddModalProduct({ closeModal, product, title, titleBtnFo
     const formData = new FormData();
     formData.append("file", thumbnail);
     return await productAPI.uploadThumbnail(formData);
+  };
+
+  const handleUploadImages = async () => {
+    const formData = new FormData();
+    for (let i = 0; i < images.length; i++) {
+      formData.append("files", images[i]);
+    }
+    return await productAPI.uploadImagesProduct(formData);
   };
 
   const schema = yup.object().shape({
@@ -44,11 +55,19 @@ export default function AddModalProduct({ closeModal, product, title, titleBtnFo
   });
   const onSubmit = async (data) => {
     try {
-      const uploadDataResponse = await handleThumnailUpload();
-      const photoUrl = uploadDataResponse.url;
-      data.thumbnail = photoUrl;
-      handleAddProduct(product._id, data);
-    } catch (err) {}
+      const uploadImagesProduct = await handleUploadImages();
+      // const uploadAvatar = await handleThumnailUpload();
+      if (!thumbnail) {
+        data.thumbnail = product.thumbnail;
+      } else {
+        const uploadAvatar = await handleThumnailUpload();
+        data.thumbnail = uploadAvatar.url;
+      }
+      data.images = [...uploadImagesProduct.urls];
+      handleUpdateProduct(product._id, data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const showAllCategory = async () => {
@@ -58,6 +77,11 @@ export default function AddModalProduct({ closeModal, product, title, titleBtnFo
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const deleteImgInPreviewList = (productIndex) => {
+    const newImages = images.filter((image, index) => index !== productIndex);
+    setImages(newImages);
   };
 
   useEffect(() => {
@@ -122,6 +146,7 @@ export default function AddModalProduct({ closeModal, product, title, titleBtnFo
                   <div className="w-full text-center">
                     <input
                       type="file"
+                      multiple="multiple"
                       hidden
                       id="files"
                       accept="image/*"
@@ -152,15 +177,34 @@ export default function AddModalProduct({ closeModal, product, title, titleBtnFo
                         <em className="text-xs text-gray-400">(Chỉ nhận file ảnh *.jpeg và *.png)</em>
                       </div>
                     </label>
-                    <div>
-                      <ul>
-                        {images.map((image) => (
-                          <img
-                            key={image.name}
-                            src={URL.createObjectURL(image)}
-                            className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
-                          />
-                        ))}
+                    <div className="mt-[15px]">
+                      <ul className="flex">
+                        {images.length === 0
+                          ? product.images.map((image, index) => {
+                              return (
+                                <li className="relative" key={index}>
+                                  <img
+                                    src={image}
+                                    className={`flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2 mx-[10px] `}
+                                  />
+                                  <div className={`${styles.deleteIcon}`} onClick={() => deleteImgInPreviewList(index)}>
+                                    <IconClose />
+                                  </div>
+                                </li>
+                              );
+                            })
+                          : images.map((image, index) => (
+                              <li className="relative" key={index}>
+                                <img
+                                  key={image.name}
+                                  src={URL.createObjectURL(image)}
+                                  className={`flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2 mx-[10px] `}
+                                />
+                                <div className={`${styles.deleteIcon}`} onClick={() => deleteImgInPreviewList(index)}>
+                                  <IconClose />
+                                </div>
+                              </li>
+                            ))}
                       </ul>
                     </div>
                   </div>

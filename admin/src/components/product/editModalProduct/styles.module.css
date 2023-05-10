@@ -1,48 +1,57 @@
 .item {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    height: 48px;
-    margin: 20px 0;
-    padding: 0 25px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin: 20px 0;
+  padding: 0 25px;
 }
 .inputItem {
-    width: 66.666667%;
-    border-radius: 6px;
-    background-color: #f4f5f7;
-    border: 1px dotted #d3cfcf;
-    padding: 10px;
+  width: 66.666667%;
+  border-radius: 6px;
+  background-color: #f4f5f7;
+  border: 1px dotted #d3cfcf;
+  padding: 10px;
 }
 .descriptionItem {
-    width: 100%;
-    display: flex;
-    align-items: start;
-    height: 96px;
-    margin: 20px 0;
-    padding: 0 25px;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  height: 96px;
+  margin: 20px 0;
+  padding: 0 25px;
 }
 .descriptionInputItem {
-    width: 66.666667%;
-    border-radius: 6px;
-    background-color: #f4f5f7;
-    border: 1px dotted #d3cfcf;
-    height: 96px;
-    padding: 10px;
+  width: 66.666667%;
+  border-radius: 6px;
+  background-color: #f4f5f7;
+  border: 1px dotted #d3cfcf;
+  height: 96px;
+  padding: 10px;
 }
 .descriptionInputItem:focus,
 .inputItem:focus {
-    outline: none;
-    background-color: transparent;
+  outline: none;
+  background-color: transparent;
 }
 
 .effect {
-    animation: modalAnimation ease 0.4s;
+  animation: modalAnimation ease 0.4s;
 }
 @keyframes modalAnimation {
-    from {
-        transform: translateX(150px);
-    }
-    to {
-        transform: translateX(0px);
-    }
+  from {
+    transform: translateX(150px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+.deleteIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 10px;
+  color: red;
+  cursor: pointer;
 }
