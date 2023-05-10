@@ -15,7 +15,6 @@ import { USER_ROLES } from "./utils/Constant";
 
 function App() {
   const auth = useSelector((state) => state.auth);
-
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
@@ -24,9 +23,9 @@ function App() {
       try {
         const response = await authAPI.checkIsLogin();
         dispatch(setUserSuccess(response.data));
-        setIsLoading(false);
       } catch {
         dispatch(setUserFail);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -64,7 +63,7 @@ function App() {
     <React.Fragment>
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">
-          <Loading width={64} height={64} />
+          <Loading size={64} />
         </div>
       ) : (
         <RouterProvider router={router} />

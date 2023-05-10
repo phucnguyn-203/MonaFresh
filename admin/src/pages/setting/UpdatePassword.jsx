@@ -1,9 +1,14 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { toast } from "react-toastify";
+import Loading from "../../components/loading";
+import authAPI from "../../api/authAPI";
+import userAPI from "../../api/userAPI";
 import yup from "../../utils/yupGlobal";
+import { useState } from "react";
 
-export default function UpdatePassword({ handleUpdatePassword }) {
+export default function UpdatePassword() {
   const schema = yup.object().shape({
     password: yup.string().required("Vui lòng nhập mật khẩu cũ"),
     newPassword: yup.string().required("Vui lòng nhập mật khẩu mới"),
@@ -20,9 +25,47 @@ export default function UpdatePassword({ handleUpdatePassword }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => {
-    console.log(data);
-    handleUpdatePassword(data);
+
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const handleUpdatePassword = async (data) => {
+    await userAPI.updatePassword({
+      currentPassword: data.password,
+      password: data.newPassword,
+      passwordConfirm: data.passwordConfirm,
+    });
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      await handleUpdatePassword(data);
+      await authAPI.logout();
+      navigate("/login");
+      toast.success("Cập nhật mật khẩu thành công. Bạn sẽ được đưa về trang đăng nhập", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch {
+      toast.error("Cập nhật thất bại. Mật khẩu hiện tại không đúng", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,11 +122,14 @@ export default function UpdatePassword({ handleUpdatePassword }) {
         </div>
         <div className="flex flex-row-reverse pr-6 pb-6">
           <button
+            disabled={isLoading}
             onClick={() => handleUpdatePassword}
             type="submit"
-            className="align-bottom inline-flex items-center justify-center cursor-pointer transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-[#0E9F6E] border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 h-12 "
+            className={`${
+              isLoading ? "cursor-not-allowed" : ""
+            } align-bottom inline-flex items-center justify-center transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-[#0E9F6E] border border-transparent active:bg-green-600 hover:bg-green-600 h-12 `}
           >
-            Cập nhật mật khẩu
+            {isLoading ? <Loading size={30} /> : "Cập nhật mật khẩu"}
           </button>
         </div>
       </form>
