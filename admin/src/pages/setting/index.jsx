@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import PageLayout from "../../components/layout/pageLayout";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -119,11 +120,12 @@ export default function Setting() {
                       <em className="text-xs text-gray-400">(Chỉ nhận file ảnh *.jpeg và *.png)</em>
                     </div>
                   </label>
-
-                  <img
-                    src={previewAvatar ? previewAvatar : currentAdmin.photo}
-                    className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
-                  />
+                  <Link to={previewAvatar ? previewAvatar : currentAdmin.photo} target="page">
+                    <img
+                      src={previewAvatar ? previewAvatar : currentAdmin.photo}
+                      className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
+                    />
+                  </Link>
                 </div>
               </div>
             </div>
