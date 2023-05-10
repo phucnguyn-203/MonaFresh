@@ -78,6 +78,7 @@ exports.login = catchAsync(async (req, res, next) => {
             email: user.email,
             role: user.role,
             photo: user.photo,
+            phone: user.phone,
         },
     });
 });
