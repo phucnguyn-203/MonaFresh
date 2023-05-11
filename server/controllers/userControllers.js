@@ -175,6 +175,21 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     });
 });
 
+exports.getStatusResetPasswordToken = catchAsync(async (req, res, next) => {
+    const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+        return next(new AppError("Đường dẫn không hợp lệ hoặc đã hết hạn", 400));
+    }
+    res.status(200).json({
+        status: "success",
+        message: "Đường dẫn còn hiệu lực",
+    });
+});
+
 exports.updatePassword = catchAsync(async (req, res, next) => {
     const { currentPassword } = req.body;
     if (!currentPassword) {
