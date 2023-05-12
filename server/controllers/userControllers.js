@@ -135,7 +135,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get("host")}/api/v1/users/resetPassword/${resetToken}`;
+    const resetURL = `${req.protocol}://localhost:3000/reset-password/${resetToken}`;
     const message = `Mật khẩu của bạn có thể được đặt lại bằng click vào đường dẫn này: ${resetURL} .Đường dẫn sẽ có hiệu lực trong 10 phút. Nếu bạn không yêu cầu đặt lại mật khẩu vui lòng bỏ qua email này`;
     try {
         await sendEmail({
