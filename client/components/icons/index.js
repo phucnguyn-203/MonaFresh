@@ -1,0 +1,12 @@
+export { default as IconPrevious } from "./previous";
+export { default as IconNext } from "./next";
+export { default as IconCart } from "./cart";
+export { default as IconSearch } from "./search";
+export { default as IconAddress } from "./address";
+export { default as IconPhone } from "./phone";
+export { default as IconEmail } from "./email";
+export { default as IconFacebook } from "./facebook";
+export { default as IconInstagram } from "./instagram";
+export { default as IconCash } from "./cash";
+export { default as IconCard } from "./card";
+export { default as IconClose } from "./close";

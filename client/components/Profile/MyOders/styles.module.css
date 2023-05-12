@@ -1,0 +1,14 @@
+.tab {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 450;
+    padding: 15px;
+    cursor: pointer;
+}
+.tabActive {
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    background-color: #6abd45;
+    /* border-bottom: 2px solid #6abd45 ; */
+}

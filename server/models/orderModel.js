@@ -1,53 +1,74 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_METHOD } = require("../utils/Constant");
 
-const orderSchema = new Schema({
-    customer: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: [true, "Order must have Customer ID"],
-    },
-    staff: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-    },
-    orderDetail: [
-        {
-            product: {
-                type: Schema.Types.ObjectId,
-                ref: "Product",
-                required: [true, "Order Detail must have Product ID"],
-            },
-            quantity: {
-                type: Number,
-                required: [true, "Order Detail must have Quantity"],
-            },
+const orderSchema = new Schema(
+    {
+        customer: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: [true, "Vui lòng cung cấp thông tin khách hàng"],
         },
-    ],
-    total: {
-        type: Number,
-        required: [true, "Order Detail must have Total"],
+        staff: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+        orderDetail: [
+            {
+                product: {
+                    type: Schema.Types.ObjectId,
+                    ref: "Product",
+                    required: [true, "Vui lòng cung cấp thông tin sản phẩm"],
+                },
+                quantity: {
+                    type: Number,
+                    required: [true, "Vui lòng nhập số lượng của sản phẩm"],
+                },
+                total: {
+                    type: Number,
+                    required: true,
+                },
+            },
+        ],
+        orderTotal: {
+            type: Number,
+            required: true,
+        },
+        status: {
+            type: Number,
+            enum: [
+                ORDER_STATUS.PENDING,
+                ORDER_STATUS.CONFIRMED,
+                ORDER_STATUS.DELIVERING,
+                ORDER_STATUS.DELIVERED,
+                ORDER_STATUS.CANCELED,
+                ORDER_STATUS.RETURNS,
+            ],
+            default: ORDER_STATUS.PENDING,
+        },
+        paymentStatus: {
+            type: Number,
+            enum: [PAYMENT_STATUS.UNPAID, PAYMENT_STATUS.PAID],
+            default: PAYMENT_STATUS.UNPAID,
+        },
+        paymentMethod: {
+            type: Number,
+            required: [true, "Vui lòng chọn phương thức thanh toán của đơn hàng"],
+            enum: [PAYMENT_METHOD.ONL, PAYMENT_METHOD.COD],
+        },
+        deliveryAddress: {
+            name: String,
+            phone: String,
+            province: String,
+            district: String,
+            ward: String,
+            note: String,
+        },
     },
-    status: {
-        type: String,
-        required: [true, "Order Detail must have Status"],
+    {
+        timestamps: true,
     },
-    payment_status: {
-        type: String,
-        required: [true, "Order Detail must have Payment Status"],
-    },
-    payment_method: {
-        type: String,
-        required: [true, "Order Detail must have Payment Method"],
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-    },
-});
+);
 
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;

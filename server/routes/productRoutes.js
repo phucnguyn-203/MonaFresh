@@ -7,12 +7,17 @@ const {
     getOneProduct,
     updateProduct,
     deleteProduct,
-} = require("../controllers/productContronllers");
+} = require("../controllers/productControllers");
+const feedbackRouter = require("./feedbackRoutes");
+
+const { authenticate, authorize } = require("../middlewares/auth");
+
+router.use("/:productId/feedbacks", feedbackRouter);
 
 router.get("/", getAllProduct);
 router.get("/:id", getOneProduct);
-router.post("/", createProduct);
-router.patch("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+router.post("/", authenticate, createProduct);
+router.patch("/:id", authenticate, updateProduct);
+router.delete("/:id", authenticate, deleteProduct);
 
 module.exports = router;

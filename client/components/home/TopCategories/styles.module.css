@@ -1,0 +1,14 @@
+.parent {
+    position: relative;
+    cursor: pointer;
+    transition: all .5s linear;
+}
+
+.overlay {
+    display: none;
+}
+  
+.parent:hover .overlay {
+    display: block;
+}
+  

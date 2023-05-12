@@ -1,20 +1,28 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const removeAccents = require("../utils/removeAccents");
 
-const categorySchema = new Schema({
-    name: {
-        type: String,
-        required: [true, "Category must have a name"],
-        unique: true,
+const categorySchema = new Schema(
+    {
+        searchName: String,
+        name: {
+            type: String,
+            required: [true, "Vui lòng cung cấp đầy đủ tên của danh mục"],
+            unique: true,
+        },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
     },
-    isActive: {
-        type: Boolean,
-        default: true,
+    {
+        timestamps: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+);
+
+categorySchema.pre("save", function (next) {
+    this.searchName = removeAccents(this.name).toLowerCase();
+    next();
 });
 
 const Category = mongoose.model("Category", categorySchema);

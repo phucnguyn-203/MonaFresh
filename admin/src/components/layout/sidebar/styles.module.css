@@ -1,0 +1,27 @@
+.sidebar {
+    width: var(--sidebar-wide);
+    height: 100vh;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+    position: fixed;
+}
+
+.navbar {
+    overflow-y: hidden;
+  
+}
+.navbar:hover{
+    overflow-y: scroll;
+}
+
+.navbar::-webkit-scrollbar {
+    width: 6px;
+}
+  
+
+.navbar::-webkit-scrollbar-thumb {
+    background: #A7A7A733;
+    border-radius: 10px;
+}
