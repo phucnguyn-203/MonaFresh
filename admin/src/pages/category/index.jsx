@@ -19,6 +19,10 @@ export default function Category() {
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
 
+  useEffect(() => {
+    getAllCategory();
+  }, [debounceValue]);
+
   const handleSelectAll = () => {
     setIsSelectAll(!isSelectAll);
     setIsSelected(categories.map((category) => category._id));
@@ -94,10 +98,6 @@ export default function Category() {
     setIsShowEditCategoryModal(!isShowEditCategoryModal);
     setEditData(item);
   };
-
-  useEffect(() => {
-    getAllCategory();
-  }, [debounceValue]);
 
   return (
     <PageLayout title="Danh mục">

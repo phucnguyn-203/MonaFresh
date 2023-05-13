@@ -44,3 +44,11 @@ exports.deleteProduct = catchAsync(async (req, res) => {
         data: null,
     });
 });
+
+exports.deleteManyProduct = catchAsync(async (req, res) => {
+    await Product.deleteMany({ _id: { $in: req.body.productIds } });
+    res.status(204).json({
+        status: "success",
+        data: null,
+    });
+});

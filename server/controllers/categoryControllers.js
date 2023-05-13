@@ -1,6 +1,7 @@
 const Category = require("../models/categoryModel");
-const catchAsync = require("../utils/catchAsync");
+const Product = require("../models/productModel");
 const ApiFeatures = require("../utils/ApiFeatures");
+const catchAsync = require("../utils/catchAsync");
 
 exports.getOneCategory = catchAsync(async (req, res) => {
     const category = await Category.findById(req.params.id);
@@ -40,7 +41,8 @@ exports.updateCategory = catchAsync(async (req, res) => {
 
 exports.deleteCategory = catchAsync(async (req, res) => {
     await Category.findByIdAndDelete(req.params.id);
-    res.status(204).json({
+    await Product.deleteMany({ category: req.params.id });
+    await Product.res.status(204).json({
         status: "success",
         data: null,
     });

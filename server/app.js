@@ -56,6 +56,5 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/upload", uploadFileRouter);
 
-
 app.use(globalErrorHandler);
 module.exports = app;

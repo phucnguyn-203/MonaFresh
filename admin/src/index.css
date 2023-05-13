@@ -5,6 +5,7 @@
 :root {
   --sidebar-wide: 16rem;
   --header-height: 4rem;
+  --modal-wide: calc(100% - var(--sidebar-wide));
   --color-primary: #0E9F6E;
   --color-bg-primary: #F9FAFB;
   --color-bg-secondary: #FFFFFF;

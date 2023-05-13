@@ -1,11 +1,22 @@
 import { Tooltip } from "react-tooltip";
-import { IconView, IconEdit, IconDelete } from "../../icon";
+import { IconEdit, IconDelete } from "../../icon";
+import jsUcfirst from "../../../utils/jsUcfirst";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
+import formatTimestamp from "../../../utils/formatTimestamp";
 import ToggleSwitch from "../../ToggleSwitch";
 import Swal from "sweetalert2";
 
-export default function ProductTable({ products, handleDeteletProduct, handleShowEditProduct, handleUpdateProduct }) {
+export default function ProductTable({
+  products,
+  handleDeteletProduct,
+  handleShowEditProduct,
+  handleUpdateProduct,
+  isSelectAll,
+  isSelected,
+  handleSelectAll,
+  handleSelected,
+}) {
   const columnData = [
     {
       field: "name",
@@ -16,7 +27,7 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
             <div className="w-[50px] h-[50px] ring-1 ring-gray-300">
               <img src={item.thumbnail} className="w-full h-full object-cover" />
             </div>
-            <p className="text-sm">{item.name}</p>
+            <p className="text-sm">{jsUcfirst(item.name)}</p>
           </div>
         );
       },
@@ -25,14 +36,15 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
       field: "category",
       headerName: "Danh mục",
       renderCell: (item) => {
-        return <span className="text-sm">{item.category?.name}</span>;
+        return <p className="text-sm">{jsUcfirst(item.category?.name)}</p>;
       },
     },
     {
       field: "price",
       headerName: "Giá bán",
+      customClassName: "text-center",
       renderCell: (item) => {
-        return <span className="text-sm font-semibold">{formatCurrency(item.price)}</span>;
+        return <p className="text-sm font-semibold text-center">{formatCurrency(item.price)}</p>;
       },
     },
     {
@@ -42,7 +54,7 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
         return (
           <div className="text-sm font-semibold">
             <span>{formatCurrency(item.price - item.price * item.percentageDiscount)}</span>
-            {item.percentageDiscount ? <span>{` (giảm${item.percentageDiscount * 100}%)`}</span> : null}
+            {item.percentageDiscount ? <span>{` (giảm ${item.percentageDiscount * 100}%)`}</span> : null}
           </div>
         );
       },
@@ -74,34 +86,32 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
       },
     },
     {
-      field: "active",
-      headerName: "Hiển thị",
+      field: "createdAt",
+      headerName: "Ngày thêm",
+      customClassName: "text-center",
       renderCell: (item) => {
-        return (
-          <div className="flex justify-center">
-            <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateProduct} />
-          </div>
-        );
+        return <p className="text-sm">{formatTimestamp(item.createdAt)}</p>;
       },
     },
     {
-      field: "view",
-      headerName: "Xem",
+      field: "updatedAt",
+      headerName: "Ngày sửa đổi",
+      customClassName: "text-center",
       renderCell: (item) => {
-        return (
-          <span className="flex justify-center">
-            <button
-              data-tooltip-id="view"
-              data-tooltip-content="Xem chi tiết"
-              className="text-gray-400 hover:text-green-600"
-            >
-              <IconView />
-            </button>
-            <Tooltip id="view" style={{ backgroundColor: "var(--color-primary" }} />
-          </span>
-        );
+        return <p className="text-sm">{formatTimestamp(item.updatedAt)}</p>;
       },
     },
+    // {
+    //   field: "active",
+    //   headerName: "Hiển thị",
+    //   renderCell: (item) => {
+    //     return (
+    //       <div className="flex justify-center">
+    //         <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateProduct} />
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "actions",
       headerName: "Thao tác",
@@ -121,7 +131,7 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
               onClick={() => {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
-                  icon: "warning",
+                  icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
                   cancelButtonColor: "#d33",
@@ -130,7 +140,7 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleDeteletProduct(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã xoá.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({ title: "Đã xoá", text: "Sản phẩm đã xoá.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}
@@ -147,5 +157,15 @@ export default function ProductTable({ products, handleDeteletProduct, handleSho
     },
   ];
 
-  return <DataTable columnData={columnData} rowData={products} select />;
+  return (
+    <DataTable
+      columnData={columnData}
+      rowData={products}
+      select
+      isSelectAll={isSelectAll}
+      isSelected={isSelected}
+      handleSelected={handleSelected}
+      handleSelectAll={handleSelectAll}
+    />
+  );
 }

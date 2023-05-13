@@ -8,6 +8,7 @@ import Loading from "../../components/loading";
 import PageLayout from "../../components/layout/pageLayout";
 import yup from "../../utils/yupGlobal";
 import userAPI from "../../api/userAPI";
+import uploadFileApi from "../../api/uploadFileApi";
 import UpdatePassword from "./UpdatePassword";
 
 export default function Setting() {
@@ -37,7 +38,7 @@ export default function Setting() {
   const handleAvatarUpload = async () => {
     const formData = new FormData();
     formData.append("file", avatar);
-    return await userAPI.updateAvatar(formData);
+    return await uploadFileApi.uploadSingleFile(formData);
   };
   const handleUpdateInfo = async (data) => {
     await userAPI.updateInfo(data);
@@ -52,7 +53,7 @@ export default function Setting() {
       }
       await handleUpdateInfo(data);
       toast.success("Cập nhật thành công", {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -63,7 +64,7 @@ export default function Setting() {
       });
     } catch (err) {
       toast.error("Cập nhật thất bại, email hoặc số điện thoại đã tồn tại", {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -120,7 +121,11 @@ export default function Setting() {
                   className="inline-block mt-5"
                 >
                   <div className="w-[150px] h-[150px] border rounded-md border-gray-100 p-2">
-                    <img src={previewAvatar ? previewAvatar : currentUser.photo} alt="avatar" />
+                    <img
+                      src={previewAvatar ? previewAvatar : currentUser.photo}
+                      alt="avatar"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </Link>
               </div>

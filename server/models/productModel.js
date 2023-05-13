@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const removeAccents = require("../utils/removeAccents");
 
 const productSchema = new Schema(
     {
@@ -8,7 +9,9 @@ const productSchema = new Schema(
             required: [true, "Vui lòng cung cấp đầy đủ tên sản phẩm"],
             unique: true,
             trim: true,
+            lowercase: true,
         },
+        searchName: String,
         category: {
             type: Schema.Types.ObjectId,
             ref: "Category",
@@ -16,7 +19,6 @@ const productSchema = new Schema(
         },
         description: {
             type: String,
-            required: [true, "Vui lòng cung cấp mô tả của sản phẩm"],
             trim: true,
         },
         price: {
@@ -49,10 +51,13 @@ const productSchema = new Schema(
             default: true,
         },
     },
-    {
-        timestamps: true,
-    },
+    { collation: { locale: "vi", strength: 2 }, timestamps: true },
 );
+
+productSchema.pre("save", function (next) {
+    this.searchName = removeAccents(this.name).toLowerCase();
+    next();
+});
 
 productSchema.pre(/^find/, function (next) {
     this.populate({
