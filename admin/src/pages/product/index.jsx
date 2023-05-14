@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useDebounce from "../../hooks/useDebounce";
-import { IconAdd, IconDelete } from "../../components/icon";
+import { IconAdd, IconDelete, IconBack, IconRestore } from "../../components/icon";
 import PageLayout from "../../components/layout/pageLayout";
 import AddProductModal from "../../components/product/AddProductModal";
 import EditProductModal from "../../components/product/EditProductModal";
@@ -8,6 +8,7 @@ import ProductTable from "../../components/product/ProductTable";
 import productAPI from "../../api/productAPI";
 import categoryAPI from "../../api/categoryAPI";
 import Swal from "sweetalert2";
+import ProductDeletedTable from "../../components/product/ProductDetetedTable";
 
 export default function Product() {
   const [isShowAddProductModal, setIsShowAddProductModal] = useState(false);
@@ -21,10 +22,11 @@ export default function Product() {
   const [sortValue, setSortValue] = useState("");
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
+  const [isShowProductDeletedTable, setIsShowProductDeletedTable] = useState(false);
 
   useEffect(() => {
     getAllProduct();
-  }, [debounceValue, filterByCategory, sortValue]);
+  }, [debounceValue, filterByCategory, sortValue, isShowProductDeletedTable]);
 
   useEffect(() => {
     getAllCategory();
@@ -42,7 +44,7 @@ export default function Product() {
     const { id, checked } = event.target;
     setIsSelected([...isSelected, id]);
     if (!checked) {
-      setIsSelected(isSelected.filter((categoryId) => categoryId !== id));
+      setIsSelected(isSelected.filter((productId) => productId !== id));
     }
   };
 
@@ -56,6 +58,11 @@ export default function Product() {
     }
     if (sortValue) {
       params = { ...params, ...sortValue };
+    }
+    if (isShowProductDeletedTable) {
+      params.isActive = false;
+    } else {
+      params.isActive = true;
     }
     try {
       const response = await productAPI.getAllProduct(params);
@@ -113,6 +120,41 @@ export default function Product() {
       console.log(err);
     }
   };
+  const handleSoftDelete = async (id) => {
+    try {
+      await productAPI.updateProduct(id, { isActive: false });
+      getAllProduct();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSoftDeleteMany = async () => {
+    try {
+      await productAPI.updateManyProduct({productIds: isSelected, isActive: false});
+      getAllProduct();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleRestoreProduct = async (id) => {
+    try {
+      await productAPI.updateProduct(id, { isActive: true });
+      getAllProduct();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleRestoreMany = async () => {
+    try {
+      await productAPI.updateManyProduct({productIds: isSelected, isActive: true});
+      getAllProduct();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleShowAddProductModal = () => {
     setIsShowAddProductModal(!isShowAddProductModal);
   };
@@ -120,42 +162,118 @@ export default function Product() {
     setIsShowEditProdcutModal(!isShowEditProductModal);
     setEditProductData(item);
   };
-
+  const handleShowDeletedTable = () => {
+    setIsShowProductDeletedTable(!isShowProductDeletedTable);
+  };
   return (
     <PageLayout title="Sản phẩm">
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
         <div className="p-4">
           <div className="flex justify-end items-center py-3 gap-x-4">
-            <button
-              disabled={isSelected.length <= 0}
-              onClick={() => {
-                Swal.fire({
-                  title: "Bạn chắc chắn muốn xoá?",
-                  text: "Các sản phẩm sẽ bị xoá và sẽ không thể khôi phục",
-                  icon: "question",
-                  showCancelButton: true,
-                  confirmButtonColor: "#0E9F6E",
-                  cancelButtonColor: "#d33",
-                  cancelButtonText: "Huỷ bỏ",
-                  confirmButtonText: "Đồng ý!",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    handleDeleteManyProduct();
-                    Swal.fire({ title: "Đã xoá", text: "Các sản phẩm đã xoá.", confirmButtonColor: "#0E9F6E" });
-                  }
-                });
-              }}
-              className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
+            {isShowProductDeletedTable ? (
+              <React.Fragment>
+                <button
+                  disabled={isSelected.length <= 0}
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Bạn chắc chắn muốn khôi phục?",
+                      text: "Các sản phẩm sẽ được khôi phục",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonColor: "#0E9F6E",
+                      cancelButtonColor: "#d33",
+                      cancelButtonText: "Huỷ bỏ",
+                      confirmButtonText: "Đồng ý!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleRestoreMany();
+                        Swal.fire({
+                          title: "Đã Khôi phục",
+                          text: "Các sản phẩm đã được khôi phục.",
+                          confirmButtonColor: "#0E9F6E",
+                        });
+                      }
+                    });
+                  }}
+                  className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white border border-transparent ${
+                          isSelected.length > 0 ? "bg-yellow-400 cursor-pointer" : "bg-yellow-200 cursor-not-allowed"
+                        }`}
+                >
+                  <span className="mr-3">
+                    <IconRestore />
+                  </span>
+                  Khôi phục
+                </button>
+
+                
+                <button
+                  disabled={isSelected.length <= 0}
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Bạn chắc chắn muốn xoá?",
+                      text: "Các sản phẩm sẽ bị xoá và sẽ không thể khôi phục",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonColor: "#0E9F6E",
+                      cancelButtonColor: "#d33",
+                      cancelButtonText: "Huỷ bỏ",
+                      confirmButtonText: "Đồng ý!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleDeleteManyProduct();
+                        Swal.fire({ title: "Đã xoá", text: "Các sản phẩm đã xoá.", confirmButtonColor: "#0E9F6E" });
+                      }
+                    });
+                  }}
+                  className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
                         transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
                         text-white border border-transparent ${
                           isSelected.length > 0 ? "bg-red-600 cursor-pointer" : "bg-red-300 cursor-not-allowed"
                         }`}
-            >
-              <span className="mr-3">
-                <IconDelete />
-              </span>
-              Xoá
-            </button>
+                >
+                  <span className="mr-3">
+                    <IconDelete />
+                  </span>
+                  Xoá
+                </button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <button
+                  disabled={isSelected.length <= 0}
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Bạn chắc chắn muốn xoá?",
+                      text: "Các sản phẩm sẽ được chuyển vào thùng rác",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonColor: "#0E9F6E",
+                      cancelButtonColor: "#d33",
+                      cancelButtonText: "Huỷ bỏ",
+                      confirmButtonText: "Đồng ý!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleSoftDeleteMany();
+                        Swal.fire({ title: "Đã xoá", text: "Các sản phẩm đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                      }
+                    });
+                  }}
+                  className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white border border-transparent ${
+                          isSelected.length > 0 ? "bg-red-600 cursor-pointer" : "bg-red-300 cursor-not-allowed"
+                        }`}
+                >
+                  <span className="mr-3">
+                    <IconDelete />
+                  </span>
+                  Xoá
+                </button>
+              </React.Fragment>
+            )}
+
             <button
               className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
               cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
@@ -170,6 +288,7 @@ export default function Product() {
           </div>
         </div>
       </div>
+
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
         <div className="p-4">
           <div className="py-3 flex gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
@@ -228,16 +347,68 @@ export default function Product() {
           </div>
         </div>
       </div>
-      <ProductTable
-        products={products}
-        handleDeteletProduct={handleDeteletProduct}
-        handleShowEditProduct={handleShowEditProduct}
-        handleUpdateProduct={handleUpdateProduct}
-        isSelectAll={isSelectAll}
-        isSelected={isSelected}
-        handleSelectAll={handleSelectAll}
-        handleSelected={handleSelected}
-      />
+      <div className="flex justify-end mb-5 px-[20px]">
+        {isShowProductDeletedTable ? (
+          <button
+            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                          transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                          text-white  bg-primary border border-transparent hover:bg-emerald-700"
+            onClick={() => {
+              handleShowDeletedTable();
+              setIsSelected([]);
+              setIsSelectAll(false);
+            }}
+          >
+            <span className="mr-3">
+              <IconBack />
+            </span>
+            Quay lại
+          </button>
+        ) : (
+          <button
+            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white bg-red-500 hover:bg-red-700 border border-transparent"
+            onClick={() => {
+              handleShowDeletedTable();
+              setIsSelected([]);
+              setIsSelectAll(false);
+            }}
+          >
+            <span className="mr-3">
+              <IconDelete />
+            </span>
+            Thùng rác
+          </button>
+        )}
+      </div>
+      {isShowProductDeletedTable ? (
+        <React.Fragment>
+          <h1 className="text-black font-bold mb-5">Thùng rác</h1>
+          <ProductDeletedTable
+            products={products}
+            handleDeleteProduct={handleDeteletProduct}
+            handleRestoreProduct={handleRestoreProduct}
+            handleSelected={handleSelected}
+            isSelected={isSelected}
+            handleSelectAll={handleSelectAll}
+            isSelectAll={isSelectAll}
+          />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <h1 className="text-black font-bold mb-5">Kho hàng</h1>
+          <ProductTable
+            products={products}
+            handleSoftDelete={handleSoftDelete}
+            handleShowEditProduct={handleShowEditProduct}
+            handleSelected={handleSelected}
+            isSelected={isSelected}
+            handleSelectAll={handleSelectAll}
+            isSelectAll={isSelectAll}
+          />
+        </React.Fragment>
+      )}
       {isShowAddProductModal && (
         <AddProductModal
           title="THÊM SẢN PHẨM"

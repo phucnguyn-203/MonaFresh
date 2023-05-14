@@ -15,6 +15,10 @@ const productAPI = {
     const url = `/products/${id}`;
     await axios.patch(url, data);
   },
+  updateManyProduct: async (data) => {
+    const url = "/products";
+    await axios.patch(url, { data });
+  },
   deleteProduct: async (id) => {
     const url = `/products/${id}`;
     await axios.delete(url);

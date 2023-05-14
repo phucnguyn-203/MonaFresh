@@ -36,6 +36,18 @@ exports.updateProduct = catchAsync(async (req, res) => {
         data: product,
     });
 });
+exports.updateManyProduct = catchAsync(async (req, res) => {
+    console.log(req.body);
+    await Product.updateMany(
+        { _id: { $in: req.body.data.productIds}},
+        { $set: { isActive: req.body.data.isActive}},
+        { multi: true}
+    );
+    res.status(200).json({
+        status: "success",
+        
+    })
+})
 
 exports.deleteProduct = catchAsync(async (req, res) => {
     await Product.findByIdAndDelete(req.params.id);
@@ -52,3 +64,5 @@ exports.deleteManyProduct = catchAsync(async (req, res) => {
         data: null,
     });
 });
+
+
