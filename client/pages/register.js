@@ -3,8 +3,24 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "@/utils/yupGlobal";
 import Link from "next/link";
+import { data } from "autoprefixer";
+import UserAPI from "../api/userAPI";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 function Register() {
+  const router = useRouter();
+  const CreateUser = async (data) => {
+    const { name, email, phone, password, passwordConfirm } = data;
+    await UserAPI.signUp({
+      name,
+      email,
+      phone,
+      password,
+      passwordConfirm,
+    });
+  };
+
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng cung cấp họ tên của bạn"),
     email: yup
@@ -17,8 +33,9 @@ function Register() {
       .phone("Vui lòng nhập đúng định dạng số điện thoại"),
     password: yup
       .string()
-      .required("Vui lòng nhập mật khẩu cho tài khoản của bạn"),
-    cpassword: yup
+      .required("Vui lòng nhập mật khẩu cho tài khoản của bạn")
+      .min(8, "Vui lòng nhập tối thiểu 8 ký tự"),
+    passwordConfirm: yup
       .string()
       .required("Vui lòng xác nhận lại mật khẩu")
       .oneOf([yup.ref("password")], "Mật khẩu không trùng khớp"),
@@ -30,7 +47,30 @@ function Register() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      await CreateUser(data);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        text: "Đăng ký thành công!",
+        // showConfirmButton: false,
+        timer: 1500,
+        confirmButtonText: "Ok",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/login");
+        }
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Email hoặc số điện thoại đã tồn tại.",
+        text: "Vui lòng nhập lại!",
+      });
+      console.log(err);
+    }
+  };
   return (
     <div className="p-8 px-9 ">
       <h2 className="text-4xl font-bold text-center  text-teal-700">ĐĂNG KÝ</h2>
@@ -97,12 +137,12 @@ function Register() {
             type="password"
             placeholder="Nhập lại mật khẩu"
             className={`${
-              errors.cpassword ? "border-red-500" : ""
+              errors.passwordConfirm ? "border-red-500" : ""
             } p-2 placeholder:italic placeholder:text-sm rounded-lg bg-white mt-2 focus:bg-white focus:outline-none`}
-            {...register("cpassword")}
+            {...register("passwordConfirm")}
           />
-          {errors.cpassword && (
-            <p className="text-red-500 text-sm italic">{`*${errors.cpassword.message}`}</p>
+          {errors.passwordConfirm && (
+            <p className="text-red-500 text-sm italic">{`*${errors.passwordConfirm.message}`}</p>
           )}
         </div>
         <button className="w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg text-teal-800">
