@@ -103,7 +103,7 @@ export default function Product() {
     setIsShowEditProdcutModal(false);
   };
 
-  const handleDeteletProduct = async (id) => {
+  const handleDeleteProduct = async (id) => {
     try {
       await productAPI.deleteProduct(id);
       getAllProduct();
@@ -387,7 +387,7 @@ export default function Product() {
           <h1 className="text-black font-bold mb-5">Thùng rác</h1>
           <ProductDeletedTable
             products={products}
-            handleDeleteProduct={handleDeteletProduct}
+            handleDeleteProduct={handleDeleteProduct}
             handleRestoreProduct={handleRestoreProduct}
             handleSelected={handleSelected}
             isSelected={isSelected}

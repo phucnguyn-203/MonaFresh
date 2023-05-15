@@ -130,6 +130,7 @@ export default function ProductTable({
               onClick={() => {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
+                  text: "Sản phẩm sẽ được chuyển vào thùng rác.",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -139,7 +140,7 @@ export default function ProductTable({
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Sản phẩm đã chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Sản phẩm đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}
