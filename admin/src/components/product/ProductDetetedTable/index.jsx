@@ -121,6 +121,7 @@ export default function ProductDeletedTable({
               onClick={() => {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
+                  text: "Sản phẩm sẽ được xoá và không thể khôi phục",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -130,7 +131,7 @@ export default function ProductDeletedTable({
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleDeleteProduct(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã xoá.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({ title: "Đã xoá", text: "Sản phẩm đã được xoá.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}

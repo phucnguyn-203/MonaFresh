@@ -1,15 +1,16 @@
+import React, {useState,useEffect} from "react";
 import { Tooltip } from "react-tooltip";
-import { IconEdit, IconDelete } from "../../icon";
+import { IconRestore, IconDelete, IconBack } from "../../icon";
 import DataTable from "../../DataTable";
 import ToggleSwitch from "../../ToggleSwitch";
 import jsUcfirst from "../../../utils/jsUcfirst";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import Swal from "sweetalert2";
 
-export default function CategoryTable({
+export default function CategoryDeletedTable({
   categories,
-  handleSoftDelete,
-  handleShowEditCategoryModal,
+  handleDeleteCategory,
+  handleRestoreCategory,
   isSelectAll,
   isSelected,
   handleSelectAll,
@@ -48,19 +49,9 @@ export default function CategoryTable({
         return (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
-              onClick={() => handleShowEditCategoryModal(item)}
-              data-tooltip-id="edit"
-              data-tooltip-content="Chỉnh sửa"
-              className="hover:text-green-600"
-            >
-              <IconEdit />
-            </button>
-            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
-            <button
               onClick={() => {
                 Swal.fire({
-                  title: "Bạn chắc chắn muốn xoá?",
-                  text: "Các sản phẩm thuộc danh mục này cũng sẽ bị chuyển vào thùng rác.",
+                  title: "Bạn chắc chắn muốn Khôi phục?",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -69,8 +60,37 @@ export default function CategoryTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    handleRestoreCategory(item._id);
+                    Swal.fire({
+                      title: "Đã khôi phục",
+                      text: "Danh Mục đã được khôi phục.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
+                  }
+                });
+              }}
+              data-tooltip-id="restore"
+              data-tooltip-content="Khôi phục"
+              className="hover:text-primary"
+            >
+              <IconRestore />
+            </button>
+            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
+            <button
+              onClick={() => {
+                Swal.fire({
+                  title: "Bạn chắc chắn muốn xoá?",
+                  text: "Các sản phẩm thuộc danh mục này cũng sẽ bị xoá và sẽ không thể khôi phục",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonColor: "#0E9F6E",
+                  cancelButtonColor: "#d33",
+                  cancelButtonText: "Huỷ bỏ",
+                  confirmButtonText: "Đồng ý!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleDeleteCategory(item._id);
+                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã xoá.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}
