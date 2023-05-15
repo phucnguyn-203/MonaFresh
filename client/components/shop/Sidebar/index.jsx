@@ -2,11 +2,26 @@ import { useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import styles from "./styles.module.css";
-
-import { categories } from "../../../api/data";
+import categoryAPI from "@/api/categoryAPI";
+import { useEffect } from "react";
 
 export default function Sidebar() {
   const [cost, setCost] = useState([0, 1000000]);
+  const [categories, setCategories] = useState([]);
+
+  const getAllCategory = async () => {
+    try {
+      const response = await categoryAPI.getAllCategory();
+      setCategories(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
   return (
     <div className="w-1/4 pb-[30px] gap-x-1">
       <aside className="shadow-lg">
@@ -16,10 +31,12 @@ export default function Sidebar() {
 
         <div className="mb-[30px] ">
           <ul
-            className={`text-black font-semibold border-solid max-h-[228px] overflow-y-scroll  ${styles.list}`}
+            className={`text-black font-semibold uppercase border-solid max-h-[228px] overflow-y-scroll  ${styles.list}`}
           >
             {categories.map((item) => (
-              <li key={item.id}>{item.title}</li>
+              <li value={item._id} key={item._id}>
+                {item.name}
+              </li>
             ))}
           </ul>
         </div>
