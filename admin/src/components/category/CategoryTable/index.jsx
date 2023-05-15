@@ -3,6 +3,7 @@ import { IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import ToggleSwitch from "../../ToggleSwitch";
 import jsUcfirst from "../../../utils/jsUcfirst";
+import formatTimestamp from "../../../utils/formatTimestamp";
 import Swal from "sweetalert2";
 
 export default function CategoryTable({
@@ -19,41 +20,45 @@ export default function CategoryTable({
     {
       field: "name",
       headerName: "Tên danh mục",
+      customClassName: "text-center",
       renderCell: (item) => {
-        return <p className="text-sm">{jsUcfirst(item.name)}</p>;
+        return <p className="text-sm text-center">{jsUcfirst(item.name)}</p>;
       },
     },
-    {
-      field: "active",
-      headerName: "Hiển thị",
-      renderCell: (item) => {
-        return (
-          <div className="flex justify-start">
-            <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateCategory} />
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "active",
+    //   headerName: "Hiển thị",
+    //   renderCell: (item) => {
+    //     return (
+    //       <div className="flex justify-start">
+    //         <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateCategory} />
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "createdAt",
-      headerName: "Ngày tạo",
+      headerName: "Ngày thêm",
+      customClassName: "text-center",
       renderCell: (item) => {
-        return <p className="text-sm">{new Date(item.createdAt).toLocaleDateString("en-GB")}</p>;
+        return <p className="text-sm text-center">{formatTimestamp(item.createdAt)}</p>;
       },
     },
     {
       field: "updatedAt",
-      headerName: "Ngày cập nhật",
+      headerName: "Ngày sửa đổi",
+      customClassName: "text-center",
       renderCell: (item) => {
-        return <p className="text-sm">{new Date(item.updatedAt).toLocaleDateString("en-GB")}</p>;
+        return <p className="text-sm text-center">{formatTimestamp(item.updatedAt)}</p>;
       },
     },
     {
       field: "actions",
       headerName: "Thao tác",
+      customClassName: "text-center",
       renderCell: (item) => {
         return (
-          <div className="flex justify-start items-center text-gray-400 gap-x-4">
+          <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
               onClick={() => handleShowEditCategoryModal(item)}
               data-tooltip-id="edit"

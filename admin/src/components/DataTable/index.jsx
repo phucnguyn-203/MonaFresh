@@ -33,9 +33,12 @@ function DataTable({
                       />
                     </td>
                   ) : null}
-                  <td className="px-4 py-3">STT</td>
+                  <td className="px-4 py-3 text-center">STT</td>
                   {columnData.map((columnItem) => (
-                    <td key={columnItem.field} className="px-4 py-3">
+                    <td
+                      key={columnItem.field}
+                      className={`px-4 py-3 ${columnItem.customClassName ? columnItem.customClassName : ""}`}
+                    >
                       {columnItem.headerName}
                     </td>
                   ))}
@@ -55,7 +58,7 @@ function DataTable({
                         />
                       </td>
                     ) : null}
-                    <td className="px-4 py-3 text-sm ">{index + 1}</td>
+                    <td className="px-4 py-3 text-sm text-center">{index + 1}</td>
                     {columnData.map((columnItem) => (
                       <td key={columnItem.field} className="px-4 py-3">
                         {columnItem.renderCell ? (

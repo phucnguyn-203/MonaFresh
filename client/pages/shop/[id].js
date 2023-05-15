@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Slider from "react-slick";
@@ -7,8 +7,8 @@ import formatCurrency from "@/utils/formatCurrency";
 import Description from "@/components/product/Description";
 import Feedback from "@/components/product/Feedback";
 import ProductsCarousel from "@/components/product/ProductsCarousel";
-
-import { products } from "@/api/data";
+import productAPI from "@/api/productAPI";
+import IconCheck from "@/components/icons/check";
 
 export default function Shop() {
   const router = useRouter();
@@ -18,12 +18,32 @@ export default function Shop() {
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState([]);
+
+  const getOneProduct = async () => {
+    try {
+      const response = await productAPI.getOneProduct(id);
+      setProduct(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log(product);
+  console.log(id);
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+    getOneProduct();
+  }, [id]);
 
   return (
     <div className="container">
       <div className="flex bg-white rounded-xl my-28 py-10">
         <div className="w-1/2 px-5">
-          {products[id]?.images && (
+          {product?.images && (
             <React.Fragment>
               <Slider
                 fade={true}
@@ -32,7 +52,7 @@ export default function Shop() {
                 lazyLoad={true}
                 ref={(slider1) => setNav1(slider1)}
               >
-                {products[id].images.map((img, index) => (
+                {product?.images.map((img, index) => (
                   <Image
                     key={index}
                     src={img}
@@ -52,7 +72,7 @@ export default function Shop() {
                   swipeToSlide={true}
                   focusOnSelect={true}
                 >
-                  {products[id]?.images.map((img, index) => (
+                  {product?.images.map((img, index) => (
                     <Image
                       key={index}
                       src={img}
@@ -69,26 +89,26 @@ export default function Shop() {
         </div>
         <div className="w-1/2 px-5">
           {/* info */}
-          <h1 className="font-semibold text-3xl ">{products[id]?.name}</h1>
+          <h1 className="font-semibold text-3xl ">{product?.name}</h1>
           <div className="mt-2 flex items-center gap-x-2">
             <p className="text-primary underline font-bold mt-1">
-              {products[id]?.ratingsAverage}
+              {product?.ratingsAverage}
             </p>
             <Rating
               allowFraction
               size={20}
               readonly={true}
-              initialValue={4.5}
+              initialValue={product?.ratingsAverage}
               SVGclassName="react-start"
             />
             <p className="mt-1 underline text-primary">
-              {products[id]?.ratingsQuantity} đánh giá
+              {product?.ratingsQuantity} đánh giá
             </p>
           </div>
           <div className="mt-2">
             <span className="font-semibold">
               Tình trạng:
-              {products[id]?.quantity && products[id].quantity > 0 ? (
+              {product?.quantity && product.quantity > 0 ? (
                 <span className="text-[#6abd45] ml-[5px] font-normal">
                   Còn hàng
                 </span>
@@ -103,40 +123,65 @@ export default function Shop() {
             <span className="font-semibold">
               Danh Mục:
               <span className="text-[#6abd45] ml-[5px] font-normal">
-                {products[id]?.category.name}
+                {product?.category?.name}
               </span>
             </span>
           </div>
           <div className="flex items-center bg-[#f1f1f1] px-3 py-3 rounded-lg text-3xl my-[20px] gap-x-4">
-            {products[id]?.percentageDiscount ? (
+            {product?.percentageDiscount ? (
               <React.Fragment>
                 <div className="flex items-end">
                   <h1 className="text-[#6abd45]">
                     {formatCurrency(
-                      products[id].price -
-                        products[id].price * products[id].percentageDiscount,
+                      product.price -
+                        product.price * product.percentageDiscount,
                     )}
                   </h1>
                   <h1 className="text-[#000000] text-base ml-[5px] line-through">
-                    {formatCurrency(products[id].price)}
+                    {formatCurrency(product.price)}
                   </h1>
                 </div>
-                <p className="text-[#fff] text-xl py-[10px] px-[5px] font-semibold bg-[#f57224] rounded-lg">
-                  GIẢM 20%
+                <p className="text-[#fff] text-xl  py-[10px] px-[5px] font-semibold bg-[#f57224] rounded-lg">
+                  GIẢM {product.percentageDiscount * 100}%
                 </p>
               </React.Fragment>
             ) : (
               <h1 className="text-[#6abd45]">
-                {formatCurrency(products[id]?.price)}
+                {formatCurrency(product?.price)}
               </h1>
             )}
           </div>
           <div className="text-base text-[#353535]">
-            <p className="px-[10px] py-[5px]">- Hotline hỗ trợ 1900 636 648</p>
-            <p className="px-[10px] py-[5px]">- Sản phẩm chất lượng</p>
-            <p className="px-[10px] py-[5px]">- Đảm bảo tươi ngon</p>
-            <p className="px-[10px] py-[5px]">- Giao hàng trực tiếp từ vườn</p>
-            <p className="px-[10px] py-[5px]">- Đổi trả trong vòng 12h</p>
+            <p className="px-[10px] py-[5px] flex items-center ">
+              <div className="pr-1">
+                <IconCheck />
+              </div>
+              Hotline hỗ trợ 1900 636 648
+            </p>
+            <p className="px-[10px] py-[5px] flex items-center">
+              <div className="pr-1">
+                <IconCheck />
+              </div>{" "}
+              Sản phẩm chất lượng
+            </p>
+            <p className="px-[10px] py-[5px] flex items-center">
+              <div className="pr-1">
+                <IconCheck />
+              </div>{" "}
+              Đảm bảo tươi ngon
+            </p>
+            <p className="px-[10px] py-[5px] flex items-center">
+              <div className="pr-1">
+                <IconCheck />
+              </div>{" "}
+              Giao hàng trực tiếp từ vườn
+            </p>
+            <p className="px-[10px] py-[5px] flex items-center">
+              <div className="pr-1">
+                <IconCheck />
+              </div>{" "}
+              Đổi trả trong vòng 12h
+            </p>
           </div>
 
           <div className="my-6 flex items-center gap-x-10">
@@ -196,13 +241,17 @@ export default function Shop() {
             Đánh giá
           </li>
         </ul>
-        {tab === 0 ? <Description /> : <Feedback />}
+        {tab === 0 ? (
+          <Description description={product.description} />
+        ) : (
+          <Feedback />
+        )}
       </div>
       <div className="mb-[50px]">
         <h1 className="text-center text-2xl font-semibold py-[10px]">
           SẢN PHẨM TƯƠNG TỰ
         </h1>
-        <ProductsCarousel products={products} />
+        {/* <ProductsCarousel products={products} /> */}
       </div>
     </div>
   );

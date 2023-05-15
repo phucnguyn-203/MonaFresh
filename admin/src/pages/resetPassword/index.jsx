@@ -8,11 +8,13 @@ import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../components/loading";
 
 export default function ResetPassword() {
   const param = useParams();
   const navigate = useNavigate();
   const [isExpire, setIsExpire] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     password: yup
@@ -33,6 +35,7 @@ export default function ResetPassword() {
   });
   const onSubmit = async (data) => {
     try {
+      setIsLoading(true);
       await userAPI.resetPassword(data, param.resetToken);
       Swal.fire({
         position: "center",
@@ -50,6 +53,8 @@ export default function ResetPassword() {
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,7 +71,7 @@ export default function ResetPassword() {
       icon: "warning",
       iconColor: "#d33",
       title: "Thông báo",
-      text: "Đường dẫn hết hạn, vui lòng thực hiện xác nhận Email lại!",
+      text: "Đường dẫn hết hạn hoặc đã sử dụng, vui lòng thực hiện xác nhận Email lại!",
       showConfirmButton: true,
       confirmButtonColor: "#0E9F6E",
     }).then((result) => {
@@ -124,7 +129,15 @@ export default function ResetPassword() {
                     <p className="text-red-500 text-sm">{`*${errors.passwordConfirm.message}`}</p>
                   )}
                 </div>
-                <button className="w-full bg-primary text-white text-sm py-4 rounded-md">Đặt lại mật khẩu</button>
+                <button className="w-full bg-primary text-white text-sm py-4 rounded-md">
+                  {isLoading ? (
+                    <div className="flex items-center justify-center">
+                      <Loading size={30} />
+                    </div>
+                  ) : (
+                    "Đặt lại mật khẩu"
+                  )}
+                </button>
 
                 <hr className="my-10" />
               </form>

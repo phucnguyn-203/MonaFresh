@@ -1,33 +1,81 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-import Drawer from "../../modal/drawer";
-import ModalHeader from "../../modal/header";
-import ModalFooter from "../../modal/footer";
+import { Link } from "react-router-dom";
+import { Drawer, ModalHeader, ModalFooter } from "../../modal";
+import { IconClose } from "../../icon";
+import toastMessage from "../../../utils/toastMessage";
+import Loading from "../../loading";
 import yup from "../../../utils/yupGlobal";
 import categoryAPI from "../../../api/categoryAPI";
-import productAPI from "../../../api/productAPI";
+import uploadFileApi from "../../../api/uploadFileApi";
+import createImageFileObjectFromUrl from "../../../utils/createFileObjectFromUrl";
 import styles from "./styles.module.css";
-import { IconClose } from "../../icon";
+import TextEditor from "../TextEditor";
 
-export default function EditModalProduct({ closeModal, product, title, titleBtnFooter, handleUpdateProduct }) {
+export default function EditProductModal({ closeModal, product, title, titleBtnFooter, handleUpdateProduct }) {
+  const schema = yup.object().shape({
+    name: yup.string().required("Vui lòng nhập tên sản phẩm"),
+    category: yup.string().required("Vui lòng chọn danh mục cho sản phẩm"),
+    description: yup.string().default("Đang cập nhật"),
+    price: yup.number().typeError("Vui lòng nhập đúng định dạng").required("Vui lòng nhập giá sản phẩm"),
+    quantity: yup.number().typeError("Vui lòng nhập đúng định dạng").required("Vui lòng nhập số lượng sản phẩm"),
+    percentageDiscount: yup
+      .number()
+      .typeError("Vui lòng nhập đúng định dạng của giá trị")
+      .min(0, "Giá trị nên lớn hơn hoặc bằng 0")
+      .max(100, "Giá trị nên nhỏ hơn hoặc bằng 100")
+      .default(0),
+  });
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      category: product.category._id,
+    },
+  });
+
   const [categories, setCategories] = useState([]);
-  const [images, setImages] = useState([]);
   const [thumbnail, setThumbnail] = useState();
-  const [previewThumbnailURL, setPreviewThumbnailURL] = useState();
+  const [images, setImages] = useState([]);
+  const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(false);
 
-  const handleThumnailChange = (event) => {
-    const file = event.target.files[0];
-    setThumbnail(file);
-    setPreviewThumbnailURL(URL.createObjectURL(file));
-  };
+  console.log(product.images);
+  console.log(images);
 
-  const handleThumnailUpload = async () => {
+  useEffect(() => {
+    showAllCategory();
+  }, []);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        setIsImageLoading(true);
+        const newImages = await Promise.all(
+          product.images?.map(async (image) => {
+            return await createImageFileObjectFromUrl(image);
+          }),
+        );
+        setImages([...images, ...newImages]);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsImageLoading(false);
+      }
+    };
+    fetchImages();
+  }, []);
+
+  const handleUploadThumnail = async () => {
     const formData = new FormData();
     formData.append("file", thumbnail);
-    return await productAPI.uploadThumbnail(formData);
+    return await uploadFileApi.uploadSingleFile(formData);
   };
 
   const handleUploadImages = async () => {
@@ -35,38 +83,36 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
     for (let i = 0; i < images.length; i++) {
       formData.append("files", images[i]);
     }
-    return await productAPI.uploadImagesProduct(formData);
+    return await uploadFileApi.uploadMutipleFile(formData);
   };
 
-  const schema = yup.object().shape({
-    name: yup.string().required("Vui lòng nhập tên sản phẩm"),
-    category: yup.string().required("Vui lòng chọn danh mục cho sản phẩm"),
-    description: yup.string().required("Vui lòng nhập mô tả sản phẩm"),
-    price: yup.number().required("Vui lòng nhập giá sản phẩm"),
-    quantity: yup.number().required("Vui lòng nhập số lượng sản phẩm"),
-    percentageDiscount: yup.number().default(0),
-  });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
   const onSubmit = async (data) => {
     try {
-      const uploadImagesProduct = await handleUploadImages();
-      // const uploadAvatar = await handleThumnailUpload();
-      if (!thumbnail) {
-        data.thumbnail = product.thumbnail;
-      } else {
-        const uploadAvatar = await handleThumnailUpload();
-        data.thumbnail = uploadAvatar.url;
+      setIsLoading(true);
+      const promises = [];
+      if (thumbnail) {
+        promises.push(
+          handleUploadThumnail().then((uploadAvatar) => {
+            data.thumbnail = uploadAvatar.url;
+          }),
+        );
       }
-      data.images = [...uploadImagesProduct.urls];
-      handleUpdateProduct(product._id, data);
+      promises.push(
+        handleUploadImages().then((uploadImagesProduct) => {
+          data.images = [...uploadImagesProduct.urls];
+        }),
+      );
+
+      await Promise.all(promises);
+      if (description) {
+        data.description = description;
+      }
+      await handleUpdateProduct(product._id, data);
+      toastMessage({ type: "success", message: "Cập nhật thành công" });
     } catch (err) {
-      console.log(err);
+      toastMessage({ type: "error", message: "Cập nhật thất bại. Tên sản phẩm đã tồn tại" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -84,10 +130,6 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
     setImages(newImages);
   };
 
-  useEffect(() => {
-    showAllCategory();
-  }, []);
-
   return (
     <div>
       <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>
@@ -102,7 +144,13 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <div className="w-full text-center">
-                    <input type="file" hidden id="file" accept="image/*" onChange={handleThumnailChange} />
+                    <input
+                      type="file"
+                      hidden
+                      id="file"
+                      accept="image/*"
+                      onChange={(e) => setThumbnail(e.target.files[0])}
+                    />
                     <label htmlFor="file">
                       <div className="px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer">
                         <span className="mx-auto flex justify-center">
@@ -128,13 +176,19 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
                         <em className="text-xs text-gray-400">(Chỉ nhận file ảnh *.jpeg và *.png)</em>
                       </div>
                     </label>
-                    <div>
-                      <img
-                        src={previewThumbnailURL ? previewThumbnailURL : product.thumbnail}
-                        className=" flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2"
-                        alt="thubnail"
-                      />
-                    </div>
+                    <Link
+                      to={thumbnail ? URL.createObjectURL(thumbnail) : product.thumbnail}
+                      target="_blank"
+                      className="inline-block mt-5"
+                    >
+                      <div className="w-[150px] h-[150px] border rounded-md border-gray-100 p-2">
+                        <img
+                          src={thumbnail ? URL.createObjectURL(thumbnail) : product.thumbnail}
+                          alt="avatar"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -178,34 +232,36 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
                       </div>
                     </label>
                     <div className="mt-[15px]">
-                      <ul className="flex">
-                        {images.length === 0
-                          ? product.images.map((image, index) => {
-                              return (
-                                <li className="relative" key={index}>
+                      {isImageLoading ? (
+                        <div className="flex justify-center">
+                          <Loading size={30} />
+                        </div>
+                      ) : (
+                        <ul className="grid grid-cols-4">
+                          {images.map((image, index) => (
+                            <li className="relative" key={URL.createObjectURL(image)}>
+                              <Link to={URL.createObjectURL(image)} target="_blank" className="inline-block mt-5">
+                                <div className="w-[150px] h-[150px] border rounded-md border-gray-100 p-2">
                                   <img
-                                    src={image}
-                                    className={`flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2 mx-[10px] `}
+                                    src={URL.createObjectURL(image)}
+                                    alt="photo"
+                                    className="w-full h-full object-cover"
                                   />
-                                  <div className={`${styles.deleteIcon}`} onClick={() => deleteImgInPreviewList(index)}>
-                                    <IconClose />
-                                  </div>
-                                </li>
-                              );
-                            })
-                          : images.map((image, index) => (
-                              <li className="relative" key={index}>
-                                <img
-                                  key={image.name}
-                                  src={URL.createObjectURL(image)}
-                                  className={`flex-wrap mt-4 inline-flex border rounded-md border-gray-100 w-24 max-h-24 p-2 mx-[10px] `}
-                                />
-                                <div className={`${styles.deleteIcon}`} onClick={() => deleteImgInPreviewList(index)}>
+                                </div>
+                                <div
+                                  className={`${styles.deleteIcon}`}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    deleteImgInPreviewList(index);
+                                  }}
+                                >
                                   <IconClose />
                                 </div>
-                              </li>
-                            ))}
-                      </ul>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -232,19 +288,26 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
                   Danh mục sản phẩm
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
-                  <select
-                    className={`block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none ${
-                      errors.category ? "border-red-500" : ""
-                    }`}
-                    {...register("category")}
-                  >
-                    <option value="">Danh mục</option>
-                    {categories.map((item) => (
-                      <option key={item._id} value={item._id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
+                  <Controller
+                    control={control}
+                    name="category"
+                    render={({ field }) => (
+                      <select
+                        {...field}
+                        className={`block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none ${
+                          errors.category ? "border-red-500" : ""
+                        }`}
+                      >
+                        <option value="">Danh mục</option>
+                        {categories.map((item) => (
+                          <option key={item._id} value={item._id}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  />
+
                   {errors.category && <p className="text-red-500 text-sm">{`*${errors.category.message}`}</p>}
                 </div>
               </div>
@@ -253,16 +316,10 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
                   Mô tả
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
-                  <textarea
-                    defaultValue={product.description}
-                    type="text"
-                    placeholder="Mô tả chi tiết sản phẩm"
-                    className={`${
-                      errors.description ? "border-red-500" : ""
-                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
-                    {...register("description")}
+                  <TextEditor
+                    data={product.description}
+                    handleChangeData={(editor) => setDescription(editor.getData())}
                   />
-                  {errors.description && <p className="text-red-500 text-sm">{`*${errors.description.message}`}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
@@ -305,19 +362,24 @@ export default function EditModalProduct({ closeModal, product, title, titleBtnF
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
-                    defaultValue={product.percentageDiscount}
+                    defaultValue={product.percentageDiscount * 100}
                     type="number"
-                    placeholder="Khuyến mãi %"
-                    className={`block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
+                    placeholder="Khuyến mãi (20%)"
+                    className={`${
+                      errors.percentageDiscount ? "border-red-500" : ""
+                    } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
                     {...register("percentageDiscount")}
                   />
+                  {errors.percentageDiscount && (
+                    <p className="text-red-500 text-sm">{`*${errors.percentageDiscount.message}`}</p>
+                  )}
                 </div>
               </div>
             </div>
-            <input type="submit" hidden id="send" />
+            <input type="submit" hidden id="send" disabled={isLoading} />
           </form>
         </div>
-        <ModalFooter title={titleBtnFooter} />
+        <ModalFooter title={titleBtnFooter} isLoading={isLoading} />
       </Drawer>
     </div>
   );

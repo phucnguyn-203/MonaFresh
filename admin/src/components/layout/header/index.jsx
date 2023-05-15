@@ -5,17 +5,18 @@ import { useSelector } from "react-redux";
 import styles from "./styles.module.css";
 
 export default function Header() {
-    const currentUser = useSelector((state) => state.auth.currentUser);
-    return (
-        <header className={`${styles.header} text-primary bg-bgSecondary`}>
-            <ul className="flex items-center cursor-pointer">
-                <li className="ml-6">
-                    <IconNotification />
-                </li>
-                <li className="ml-6">
-                    <ProfileAvatar url={currentUser?.photo} size={32} isActive={false} />
-                </li>
-            </ul>
-        </header>
-    );
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  return (
+    <header className={`${styles.header}  bg-bgSecondary`}>
+      <ul className="flex items-center cursor-pointer">
+        <li className="ml-6 text-primary">
+          <IconNotification />
+        </li>
+        <li className="ml-6 flex items-center gap-x-2">
+          <ProfileAvatar url={currentUser?.photo} size={35} isActive={false} />
+          <p>{currentUser?.name}</p>
+        </li>
+      </ul>
+    </header>
+  );
 }

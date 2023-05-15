@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../utils/yupGlobal";
 import userAPI from "../../api/userAPI";
 import Swal from "sweetalert2";
+import Loading from "../../components/loading";
+import { useState } from "react";
 
 export default function ForgotPassword() {
   const schema = yup.object().shape({
@@ -17,14 +19,17 @@ export default function ForgotPassword() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = async (data) => {
     try {
+      setIsLoading(true);
       await userAPI.forgotPassword(data);
       Swal.fire({
         position: "center",
         icon: "success",
-        text: "Vui lòng kiểm tra Email!",
         title: "Xác nhận Email thành công",
+        text: "Vui lòng kiểm tra Email!",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -33,7 +38,8 @@ export default function ForgotPassword() {
         icon: "error",
         text: "Email không tồn tại, vui lòng nhập lại!",
       });
-      console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,7 +69,20 @@ export default function ForgotPassword() {
                 {errors.email && <p className="text-red-500 text-sm">{`*${errors.email.message}`}</p>}
               </div>
 
-              <button className="w-full bg-primary text-white text-sm py-4 rounded-md">Xác nhận email</button>
+              <button
+                disabled={isLoading}
+                className={`${
+                  isLoading ? "cursor-not-allowed" : ""
+                } w-full bg-primary text-white text-sm py-4 rounded-md`}
+              >
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <Loading size={30} />
+                  </div>
+                ) : (
+                  "Xác nhận email"
+                )}
+              </button>
 
               <hr className="my-10" />
             </form>

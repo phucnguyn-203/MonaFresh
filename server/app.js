@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(cookieParser());
 
 //CORS
-const whitelist = [process.env.FRONT_END_ADMIN_URL];
+const whitelist = [process.env.FRONT_END_ADMIN_URL, process.env.FRONT_END_CLIENT_URL];
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
@@ -55,7 +55,6 @@ app.use("/api/v1/suppliers", supplierRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/upload", uploadFileRouter);
-
 
 app.use(globalErrorHandler);
 module.exports = app;
