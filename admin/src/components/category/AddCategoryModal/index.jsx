@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function AddCategoryModal({ closeModal, title, titleBtnFooter, handleAddCategory }) {
   const schema = yup.object().shape({
-    name: yup.string().required("Vui lòng nhập tên sản phẩm"),
+    name: yup.string().required("Vui lòng nhập tên danh mục"),
   });
   const {
     register,
@@ -23,7 +23,7 @@ export default function AddCategoryModal({ closeModal, title, titleBtnFooter, ha
   return (
     <div>
       <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>
-      <Drawer closeModal={closeModal} title={title} titleBtnFooter={titleBtnFooter}>
+      <Drawer closeModal={closeModal} title={title} titleBtnFooter={titleBtnFooter} isFullWidth={false}>
         <ModalHeader closeModal={closeModal} title={title} />
         <div className="h-full overflow-y-scroll grow mt-[20px]">
           <form onSubmit={handleSubmit(onSubmit)}>

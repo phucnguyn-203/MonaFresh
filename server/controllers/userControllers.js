@@ -135,7 +135,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get("host")}/api/v1/users/resetPassword/${resetToken}`;
+    const resetURL = `${req.headers.origin}/reset-password/${resetToken}`;
     const message = `Mật khẩu của bạn có thể được đặt lại bằng click vào đường dẫn này: ${resetURL} .Đường dẫn sẽ có hiệu lực trong 10 phút. Nếu bạn không yêu cầu đặt lại mật khẩu vui lòng bỏ qua email này`;
     try {
         await sendEmail({
@@ -172,6 +172,21 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         message: "Mật khẩu được cập nhật thành công",
+    });
+});
+
+exports.getStatusResetPasswordToken = catchAsync(async (req, res, next) => {
+    const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+        return next(new AppError("Đường dẫn không hợp lệ hoặc đã hết hạn", 400));
+    }
+    res.status(200).json({
+        status: "success",
+        message: "Đường dẫn còn hiệu lực",
     });
 });
 

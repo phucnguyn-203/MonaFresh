@@ -6,6 +6,7 @@ import Order from "../pages/order";
 import Staff from "../pages/staff";
 import Setting from "../pages/setting";
 import CustomerOrder from "../pages/customer/CustomerOrder/index";
+import Supplier from "../pages/supplier";
 const adminRouter = [
   {
     path: "",
@@ -39,6 +40,10 @@ const adminRouter = [
     path: "/setting",
     element: Setting,
   },
+  {
+    path: "/supplier",
+    element: Supplier,
+  },
 ];
 
 const staffRouter = [
@@ -69,6 +74,8 @@ const staffRouter = [
   {
     path: "/customer-order/:id",
     element: CustomerOrder,
+    path: "/supplier",
+    element: Supplier,
   },
 ];
 

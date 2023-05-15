@@ -10,7 +10,7 @@ import Profile from "@/components/profile/ProfileAvatar";
 import styles from "./styles.module.css";
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
 
   return (

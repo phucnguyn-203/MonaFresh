@@ -9,6 +9,8 @@ const categorySchema = new Schema(
             type: String,
             required: [true, "Vui lòng cung cấp đầy đủ tên của danh mục"],
             unique: true,
+            trim: true,
+            lowercase: true,
         },
         isActive: {
             type: Boolean,

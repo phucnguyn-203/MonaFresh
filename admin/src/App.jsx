@@ -37,7 +37,7 @@ function App() {
       <React.Fragment>
         <Route path="/login" element={<Login />} />
         <Route path="/forget-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
         <Route
           path="/"
           element={
