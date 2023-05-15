@@ -5,4 +5,4 @@ export { default as Promotion } from "./Promotion";
 export { default as NewProducts } from "./NewProducts";
 export { default as DiscountProducts } from "./DiscountProducts";
 export { default as CustomerPolicy } from "./CustomerPolicy";
-export { default as Certificateds } from "./Certificateds";
+export { default as Certificates } from "./Certificates";

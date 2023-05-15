@@ -57,7 +57,7 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     const user = await User.findOne({ email }).select("+password");
     if (!user || !(await user.correctPassword(password, user.password))) {
-        return next(new AppError("Email hoặc mật khẩu không đúng", 401));
+        return next(new AppError("Đăng nhập không thành công Email hoặc mật khẩu không đúng", 401));
     }
     sendToken(res, {
         name: "accessToken",
@@ -73,7 +73,12 @@ exports.login = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         data: {
-            user,
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            photo: user.photo,
+            phone: user.phone,
         },
     });
 });
@@ -88,7 +93,14 @@ exports.checkLogin = catchAsync(async (req, res, next) => {
     const user = await User.findById(decoded._id);
     res.status(200).json({
         status: "success",
-        data: user,
+        data: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            photo: user.photo,
+            phone: user.phone,
+        },
     });
 });
 
@@ -123,7 +135,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get("host")}/api/v1/users/resetPassword/${resetToken}`;
+    const resetURL = `${req.headers.origin}/reset-password/${resetToken}`;
     const message = `Mật khẩu của bạn có thể được đặt lại bằng click vào đường dẫn này: ${resetURL} .Đường dẫn sẽ có hiệu lực trong 10 phút. Nếu bạn không yêu cầu đặt lại mật khẩu vui lòng bỏ qua email này`;
     try {
         await sendEmail({
@@ -145,7 +157,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
     const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
-    const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gt: Date.now() } });
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
+    });
     if (!user) {
         return next(new AppError("Đường dẫn không hợp lệ hoặc đã hết hạn", 400));
     }
@@ -157,6 +172,21 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: "success",
         message: "Mật khẩu được cập nhật thành công",
+    });
+});
+
+exports.getStatusResetPasswordToken = catchAsync(async (req, res, next) => {
+    const hashedToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+        return next(new AppError("Đường dẫn không hợp lệ hoặc đã hết hạn", 400));
+    }
+    res.status(200).json({
+        status: "success",
+        message: "Đường dẫn còn hiệu lực",
     });
 });
 
@@ -181,7 +211,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
 exports.updateMe = catchAsync(async (req, res, next) => {
     const filterBody = filterObject(req.body, "name", "email", "phone", "photo");
-    const updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, { new: true, runValidators: true });
+    const updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, {
+        new: true,
+        runValidators: true,
+    });
     res.status(200).json({
         status: "success",
         data: {

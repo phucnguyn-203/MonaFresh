@@ -1,17 +1,33 @@
-import React from "react";
-import { Banner, TopCategories, TopProducts, Promotion, NewProducts, DiscountProducts } from "@/components/home";
+import React, { useEffect } from "react";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import {
+  Banner,
+  TopCategories,
+  TopProducts,
+  Promotion,
+  NewProducts,
+  DiscountProducts,
+  Certificates,
+  CustomerPolicy,
+} from "@/components/home";
 
 export default function Home() {
-    return (
-        <React.Fragment>
-            <Banner />
-            <div className="container">
-                <TopCategories />
-                <Promotion />
-                <TopProducts />
-                <NewProducts />
-                <DiscountProducts />
-            </div>
-        </React.Fragment>
-    );
+  useEffect(() => {
+    Aos.init({ duration: 1000 });
+  }, []);
+  return (
+    <React.Fragment>
+      <Banner />
+      <div className="container">
+        <TopCategories />
+        <Promotion />
+        <TopProducts />
+        <NewProducts />
+        <DiscountProducts />
+        <CustomerPolicy />
+      </div>
+      <Certificates />
+    </React.Fragment>
+  );
 }

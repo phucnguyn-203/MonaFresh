@@ -6,7 +6,9 @@ const {
     createProduct,
     getOneProduct,
     updateProduct,
+    updateManyProduct,
     deleteProduct,
+    deleteManyProduct,
 } = require("../controllers/productControllers");
 const feedbackRouter = require("./feedbackRoutes");
 
@@ -18,6 +20,8 @@ router.get("/", getAllProduct);
 router.get("/:id", getOneProduct);
 router.post("/", authenticate, createProduct);
 router.patch("/:id", authenticate, updateProduct);
+router.patch("/", authenticate, updateManyProduct);
 router.delete("/:id", authenticate, deleteProduct);
+router.delete("/", authenticate, deleteManyProduct);
 
 module.exports = router;

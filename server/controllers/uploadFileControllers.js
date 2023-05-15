@@ -8,3 +8,19 @@ exports.uploadFile = catchAsync(async (req, res) => {
         url: upload.url,
     });
 });
+
+exports.uploadMutipleFile = catchAsync(async (req, res) => {
+    const urls = [];
+    const files = req.files;
+
+    for (const file of files) {
+        const { path } = file;
+        const upload = await cloudinary.uploader.upload(path);
+        urls.push(upload.url);
+    }
+
+    res.status(201).json({
+        status: "success",
+        urls: urls,
+    });
+});

@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { uploadFile } = require("../controllers/uploadFileControllers");
+const { uploadFile, uploadMutipleFile } = require("../controllers/uploadFileControllers");
 
-var upload = require("../middlewares/multer.js");
+const upload = require("../middlewares/multer.js");
 
 router.post("/", upload.single("file"), uploadFile);
-
+router.post("/upload-files", upload.array("files"), uploadMutipleFile);
 module.exports = router;

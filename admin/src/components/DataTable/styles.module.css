@@ -1,0 +1,19 @@
+.pagination li a {
+  padding: 10px 15px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #4c4f52;
+  border-radius: 5px;
+}
+.pagination li a:hover {
+  background-color: #f4f5f7;
+}
+
+.currentNumberPage{
+  background-color: var(--color-primary);
+  color: #fff !important;
+}
+
+.currentNumberPage:hover {
+  background-color: #057a55 !important;
+}

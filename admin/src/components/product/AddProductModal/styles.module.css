@@ -1,0 +1,55 @@
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin: 20px 0;
+  padding: 0 25px;
+}
+.inputItem {
+  width: 100%;
+  border-radius: 6px;
+  background-color: #f4f5f7;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+}
+.descriptionItem {
+  width: 100%;
+  display: flex;
+  align-items: start;
+  height: 100%;
+  margin: 25px 0;
+  padding: 0 25px;
+}
+.descriptionInputItem {
+  width: 100%;
+  border-radius: 6px;
+  background-color: #f4f5f7;
+  height: 96px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+}
+.descriptionInputItem:focus,
+.inputItem:focus {
+  outline: none;
+  background-color: transparent;
+}
+
+.effect {
+  animation: modalAnimation ease 0.4s;
+}
+@keyframes modalAnimation {
+  from {
+    transform: translateX(150px);
+  }
+  to {
+    transform: translateX(0px);
+  }
+}
+.deleteIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: red;
+  cursor: pointer;
+}
