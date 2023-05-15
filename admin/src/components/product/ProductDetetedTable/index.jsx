@@ -1,16 +1,15 @@
+import React, { useState, useEffect } from "react";
+import { IconClose } from "../../icon";
 import { Tooltip } from "react-tooltip";
-import { IconEdit, IconDelete } from "../../icon";
-import jsUcfirst from "../../../utils/jsUcfirst";
+import { IconView, IconRestore, IconDelete, IconBack } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
-import formatTimestamp from "../../../utils/formatTimestamp";
 import ToggleSwitch from "../../ToggleSwitch";
 import Swal from "sweetalert2";
-
-export default function ProductTable({
+export default function ProductDeletedTable({
   products,
-  handleSoftDelete,
-  handleShowEditProduct,
+  handleDeleteProduct,
+  handleRestoreProduct,
   isSelectAll,
   isSelected,
   handleSelectAll,
@@ -26,7 +25,7 @@ export default function ProductTable({
             <div className="w-[50px] h-[50px] ring-1 ring-gray-300">
               <img src={item.thumbnail} className="w-full h-full object-cover" />
             </div>
-            <p className="text-sm">{jsUcfirst(item.name)}</p>
+            <p className="text-sm">{item.name}</p>
           </div>
         );
       },
@@ -35,15 +34,14 @@ export default function ProductTable({
       field: "category",
       headerName: "Danh mục",
       renderCell: (item) => {
-        return <p className="text-sm">{jsUcfirst(item.category?.name)}</p>;
+        return <span className="text-sm">{item.category?.name}</span>;
       },
     },
     {
       field: "price",
       headerName: "Giá bán",
-      customClassName: "text-center",
       renderCell: (item) => {
-        return <p className="text-sm font-semibold text-center">{formatCurrency(item.price)}</p>;
+        return <span className="text-sm font-semibold">{formatCurrency(item.price)}</span>;
       },
     },
     {
@@ -53,7 +51,7 @@ export default function ProductTable({
         return (
           <div className="text-sm font-semibold">
             <span>{formatCurrency(item.price - item.price * item.percentageDiscount)}</span>
-            {item.percentageDiscount ? <span>{` (giảm ${item.percentageDiscount * 100}%)`}</span> : null}
+            {item.percentageDiscount ? <span>{` (giảm${item.percentageDiscount * 100}%)`}</span> : null}
           </div>
         );
       },
@@ -84,33 +82,7 @@ export default function ProductTable({
         );
       },
     },
-    {
-      field: "createdAt",
-      headerName: "Ngày thêm",
-      customClassName: "text-center",
-      renderCell: (item) => {
-        return <p className="text-sm">{formatTimestamp(item.createdAt)}</p>;
-      },
-    },
-    {
-      field: "updatedAt",
-      headerName: "Ngày sửa đổi",
-      customClassName: "text-center",
-      renderCell: (item) => {
-        return <p className="text-sm">{formatTimestamp(item.updatedAt)}</p>;
-      },
-    },
-    // {
-    //   field: "active",
-    //   headerName: "Hiển thị",
-    //   renderCell: (item) => {
-    //     return (
-    //       <div className="flex justify-center">
-    //         <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateProduct} />
-    //       </div>
-    //     );
-    //   },
-    // },
+
     {
       field: "actions",
       headerName: "Thao tác",
@@ -118,18 +90,9 @@ export default function ProductTable({
         return (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
-              onClick={() => {handleShowEditProduct(item)}}
-              data-tooltip-id="edit"
-              data-tooltip-content="Chỉnh sửa"
-              className="hover:text-green-600"
-            >
-              <IconEdit />
-            </button>
-            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
-            <button
               onClick={() => {
                 Swal.fire({
-                  title: "Bạn chắc chắn muốn xoá?",
+                  title: "Bạn chắc chắn muốn Khôi phục?",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -138,8 +101,36 @@ export default function ProductTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Sản phẩm đã chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    handleRestoreProduct(item._id);
+                    Swal.fire({
+                      title: "Đã khôi phục",
+                      text: "Sản phẩm đã được khôi phục.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
+                  }
+                });
+              }}
+              data-tooltip-id="restore"
+              data-tooltip-content="Khôi phục"
+              className="hover:text-primary"
+            >
+              <IconRestore />
+            </button>
+            <Tooltip id="restore" style={{ backgroundColor: "var(--color-primary" }} />
+            <button
+              onClick={() => {
+                Swal.fire({
+                  title: "Bạn chắc chắn muốn xoá?",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#0E9F6E",
+                  cancelButtonColor: "#d33",
+                  cancelButtonText: "Huỷ bỏ",
+                  confirmButtonText: "Đồng ý!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleDeleteProduct(item._id);
+                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã xoá.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}
