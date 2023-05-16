@@ -6,36 +6,36 @@ import SearchResult from "../SearchResults";
 
 export default function SearchBar() {
   const [searchKeyword, setSearchKeyword] = useState("");
-  const debounceValue = useDebounce(searchKeyword, 500);
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showResults, setShowResults] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isShowResults, setIsShowResult] = useState(false);
+  const debounceValue = useDebounce(searchKeyword, 500);
 
   useEffect(() => {
     const getAllProduct = async () => {
       if (debounceValue) {
-        setIsLoading(true);
+        setIsSearching(true);
         try {
           const response = await productAPI.getAllProduct({
             search: debounceValue.trim(),
           });
           setProducts(response?.data);
-          setShowResults(true);
+          setIsShowResult(true);
         } catch (err) {
           console.log(err);
         }
-        setIsLoading(false);
+        setIsSearching(false);
       } else {
         setProducts([]);
-        setShowResults(false);
+        setIsShowResult(false);
       }
     };
     getAllProduct();
   }, [debounceValue]);
 
-  const handleSearch = (event) => {
-    const { value } = event.target;
-    setSearchKeyword(value);
+  const handleClickResultItem = () => {
+    setIsShowResult(false);
+    setSearchKeyword("");
   };
 
   return (
@@ -43,15 +43,17 @@ export default function SearchBar() {
       <IconSearch />
       <input
         value={searchKeyword}
-        onChange={handleSearch}
+        onChange={(e) => setSearchKeyword(e.target.value)}
         type="search"
         placeholder="Tìm kiếm..."
         className="focus:outline-none placeholder:text-sm bg-transparent"
       />
-      {isLoading ? (
-        ""
-      ) : (
-        <SearchResult products={products} showResults={showResults} />
+      {isShowResults && (
+        <SearchResult
+          products={products}
+          isSearching={isSearching}
+          handleClickResultItem={handleClickResultItem}
+        />
       )}
     </div>
   );
