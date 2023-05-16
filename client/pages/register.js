@@ -1,26 +1,14 @@
 import AuthLayout from "@/components/layout/AuthLayout";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 import yup from "@/utils/yupGlobal";
 import Link from "next/link";
-import { data } from "autoprefixer";
-import UserAPI from "../api/userAPI";
+import userAPI from "../api/userAPI";
 import Swal from "sweetalert2";
-import { useRouter } from "next/router";
 
 function Register() {
   const router = useRouter();
-  const CreateUser = async (data) => {
-    const { name, email, phone, password, passwordConfirm } = data;
-    await UserAPI.signUp({
-      name,
-      email,
-      phone,
-      password,
-      passwordConfirm,
-    });
-  };
-
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng cung cấp họ tên của bạn"),
     email: yup
@@ -47,14 +35,25 @@ function Register() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const signUp = async (data) => {
+    const { name, email, phone, password, passwordConfirm } = data;
+    await userAPI.signUp({
+      name,
+      email,
+      phone,
+      password,
+      passwordConfirm,
+    });
+  };
+
   const onSubmit = async (data) => {
     try {
-      await CreateUser(data);
+      await signUp(data);
       Swal.fire({
         position: "center",
         icon: "success",
         text: "Đăng ký thành công!",
-        // showConfirmButton: false,
         timer: 1500,
         confirmButtonText: "Ok",
       }).then((result) => {
@@ -66,11 +65,13 @@ function Register() {
       Swal.fire({
         icon: "error",
         title: "Email hoặc số điện thoại đã tồn tại.",
-        text: "Vui lòng nhập lại!",
+        text: "Vui lòng kiểm tra lại!",
+        confirmButtonColor: "#6abd45",
       });
       console.log(err);
     }
   };
+
   return (
     <div className="p-8 px-9 ">
       <h2 className="text-4xl font-bold text-center  text-teal-700">ĐĂNG KÝ</h2>

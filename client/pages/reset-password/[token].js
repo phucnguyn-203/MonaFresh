@@ -123,7 +123,12 @@ function Reset() {
               <p className="text-red-500 text-sm italic">{`*${errors.passwordConfirm.message}`}</p>
             )}
           </div>
-          <button className="w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg text-teal-800">
+          <button
+            disabled={isLoading}
+            className={`w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg text-teal-800 ${
+              isLoading ? "cursor-not-allowed" : ""
+            }`}
+          >
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <Loading size={30} />
@@ -131,7 +136,6 @@ function Reset() {
             ) : (
               "Đặt lại mật khẩu"
             )}
-            {/* Xác nhận mật khẩu */}
           </button>
         </form>
       )}

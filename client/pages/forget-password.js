@@ -8,7 +8,10 @@ import userAPI from "@/api/userAPI";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import Loading from "@/components/loading";
+
 function Forget() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -22,7 +25,6 @@ function Forget() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
@@ -66,7 +68,12 @@ function Forget() {
           )}
         </div>
 
-        <button className="w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg  text-teal-800">
+        <button
+          disabled={isLoading}
+          className={`w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg  text-teal-800 ${
+            isLoading ? "cursor-not-allowed" : ""
+          }`}
+        >
           {isLoading ? (
             <div className="flex justify-center items-center">
               <Loading size={30} />

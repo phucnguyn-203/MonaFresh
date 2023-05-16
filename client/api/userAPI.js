@@ -1,6 +1,6 @@
 import axios from "./axios";
 
-const UserAPI = {
+const userAPI = {
   signUp: async (data) => {
     const { name, email, phone, password, passwordConfirm } = data;
     const url = "/users/signup";
@@ -20,4 +20,4 @@ const UserAPI = {
   },
 };
 
-export default UserAPI;
+export default userAPI;
