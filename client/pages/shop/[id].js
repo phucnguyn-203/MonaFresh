@@ -1,43 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { Rating } from "react-simple-star-rating";
 import Image from "next/image";
 import Slider from "react-slick";
-import { Rating } from "react-simple-star-rating";
 import formatCurrency from "@/utils/formatCurrency";
 import Description from "@/components/product/Description";
 import Feedback from "@/components/product/Feedback";
 import ProductsCarousel from "@/components/product/ProductsCarousel";
 import productAPI from "@/api/productAPI";
 import IconCheck from "@/components/icons/check";
+import jsUcfirst from "@/utils/jsUcfirst";
 
-export default function Shop() {
-  const router = useRouter();
-  const { id } = router.query;
-
+export default function Shop({ product, similarProducts }) {
   const [tab, setTab] = useState(0);
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState([]);
-
-  const getOneProduct = async () => {
-    try {
-      const response = await productAPI.getOneProduct(id);
-      setProduct(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  console.log(product);
-  console.log(id);
-
-  useEffect(() => {
-    if (!id) {
-      return;
-    }
-    getOneProduct();
-  }, [id]);
 
   return (
     <div className="container">
@@ -52,27 +29,8 @@ export default function Shop() {
                 lazyLoad={true}
                 ref={(slider1) => setNav1(slider1)}
               >
-                {product?.images.map((img, index) => (
-                  <Image
-                    key={index}
-                    src={img}
-                    alt="product"
-                    width={260}
-                    height={120}
-                    priority
-                  />
-                ))}
-              </Slider>
-              <div className="productSliderNav">
-                <Slider
-                  arrows={true}
-                  asNavFor={nav1}
-                  ref={(slider2) => setNav2(slider2)}
-                  slidesToShow={5}
-                  swipeToSlide={true}
-                  focusOnSelect={true}
-                >
-                  {product?.images.map((img, index) => (
+                {Array.from([product?.thumbnail, ...product.images]).map(
+                  (img, index) => (
                     <Image
                       key={index}
                       src={img}
@@ -81,24 +39,52 @@ export default function Shop() {
                       height={120}
                       priority
                     />
-                  ))}
-                </Slider>
+                  ),
+                )}
+              </Slider>
+              <div className="productSliderNav">
+                {product?.images.length > 0 && (
+                  <Slider
+                    arrows={true}
+                    asNavFor={nav1}
+                    ref={(slider2) => setNav2(slider2)}
+                    slidesToShow={4}
+                    swipeToSlide={true}
+                    focusOnSelect={true}
+                  >
+                    {Array.from([product?.thumbnail, ...product.images]).map(
+                      (img, index) => (
+                        <Image
+                          key={index}
+                          src={img}
+                          alt="product"
+                          width={260}
+                          height={120}
+                          priority
+                        />
+                      ),
+                    )}
+                  </Slider>
+                )}
               </div>
             </React.Fragment>
           )}
         </div>
         <div className="w-1/2 px-5">
           {/* info */}
-          <h1 className="font-semibold text-3xl ">{product?.name}</h1>
+          <h1 className="font-semibold text-3xl ">
+            {product?.name && jsUcfirst(product?.name)}
+          </h1>
           <div className="mt-2 flex items-center gap-x-2">
             <p className="text-primary underline font-bold mt-1">
               {product?.ratingsAverage}
             </p>
+
             <Rating
               allowFraction
-              size={20}
-              readonly={true}
+              transition
               initialValue={product?.ratingsAverage}
+              size={20}
               SVGclassName="react-start"
             />
             <p className="mt-1 underline text-primary">
@@ -153,33 +139,33 @@ export default function Shop() {
           </div>
           <div className="text-base text-[#353535]">
             <p className="px-[10px] py-[5px] flex items-center ">
-              <div className="pr-1">
+              <span className="pr-1">
                 <IconCheck />
-              </div>
+              </span>
               Hotline hỗ trợ 1900 636 648
             </p>
             <p className="px-[10px] py-[5px] flex items-center">
-              <div className="pr-1">
+              <span className="pr-1">
                 <IconCheck />
-              </div>{" "}
+              </span>
               Sản phẩm chất lượng
             </p>
             <p className="px-[10px] py-[5px] flex items-center">
-              <div className="pr-1">
+              <span className="pr-1">
                 <IconCheck />
-              </div>{" "}
+              </span>
               Đảm bảo tươi ngon
             </p>
             <p className="px-[10px] py-[5px] flex items-center">
-              <div className="pr-1">
+              <span className="pr-1">
                 <IconCheck />
-              </div>{" "}
+              </span>
               Giao hàng trực tiếp từ vườn
             </p>
             <p className="px-[10px] py-[5px] flex items-center">
-              <div className="pr-1">
+              <span className="pr-1">
                 <IconCheck />
-              </div>{" "}
+              </span>
               Đổi trả trong vòng 12h
             </p>
           </div>
@@ -242,7 +228,7 @@ export default function Shop() {
           </li>
         </ul>
         {tab === 0 ? (
-          <Description description={product.description} />
+          <Description description={product?.description} />
         ) : (
           <Feedback />
         )}
@@ -251,8 +237,30 @@ export default function Shop() {
         <h1 className="text-center text-2xl font-semibold py-[10px]">
           SẢN PHẨM TƯƠNG TỰ
         </h1>
-        {/* <ProductsCarousel products={products} /> */}
+        <ProductsCarousel products={similarProducts} />
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const id = context.params.id;
+  try {
+    const product = (await productAPI.getOneProduct(id)).data;
+    const similarProducts = (
+      await productAPI.getAllProduct({
+        category: product.category._id,
+      })
+    ).data;
+    return {
+      props: { product, similarProducts },
+    };
+  } catch (err) {
+    return {
+      props: {
+        product: null,
+        similarProducts: null,
+      },
+    };
+  }
 }

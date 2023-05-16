@@ -11,7 +11,7 @@ export default function Sidebar() {
 
   const getAllCategory = async () => {
     try {
-      const response = await categoryAPI.getAllCategory();
+      const response = await categoryAPI.getAllCategory({ isActive: true });
       setCategories(response.data);
     } catch (err) {
       console.log(err);

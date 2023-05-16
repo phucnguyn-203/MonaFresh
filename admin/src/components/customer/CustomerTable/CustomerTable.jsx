@@ -47,7 +47,7 @@ export default function CustomerTable() {
       renderCell: (item) => {
         return (
           <div className=" text-gray-400 gap-x-4">
-            <Link to={`/customer-order/${item.id}`}>
+            <Link to={`/customers/${item._id}`}>
               <button
                 data-tooltip-id="view"
                 data-tooltip-content="Xem đơn hàng"
@@ -64,7 +64,7 @@ export default function CustomerTable() {
   ];
   const rowData = [
     {
-      id: 1,
+      _id: 1,
       name: "Võ Anh Phụng",
       email: "phung12@gmail.com",
       phone: "0796884386",

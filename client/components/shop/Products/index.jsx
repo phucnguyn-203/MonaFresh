@@ -8,7 +8,7 @@ export default function Products() {
 
   const getAllProduct = async () => {
     try {
-      const response = await productAPI.getAllProduct();
+      const response = await productAPI.getAllProduct({ isActive: true });
       setProducts(response.data);
     } catch (err) {
       console.log(err);

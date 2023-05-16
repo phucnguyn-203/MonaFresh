@@ -8,7 +8,7 @@ const productAPI = {
   },
   getOneProduct: async (id) => {
     const url = `/products/${id}`;
-    const response = await axios.get(url, id);
+    const response = await axios.get(url);
     return response;
   },
 };

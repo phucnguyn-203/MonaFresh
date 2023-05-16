@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.module.css";
 
-export default function ProductsCarousel({ products }) {
+export default function ProductsCarousel({ products = [] }) {
   const settings = {
     dots: false,
     infinite: true,

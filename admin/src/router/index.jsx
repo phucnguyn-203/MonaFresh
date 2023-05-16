@@ -12,10 +12,7 @@ const adminRouter = [
     path: "",
     element: Dashboard,
   },
-  {
-    path: "/customer-order/:id",
-    element: CustomerOrder,
-  },
+
   {
     path: "/products",
     element: Product,
@@ -27,6 +24,10 @@ const adminRouter = [
   {
     path: "/customers",
     element: Customer,
+  },
+  {
+    path: "/customers/:id",
+    element: CustomerOrder,
   },
   {
     path: "/orders",

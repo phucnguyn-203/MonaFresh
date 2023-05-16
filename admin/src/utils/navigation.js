@@ -16,6 +16,11 @@ const adminNavigation = [
     icon: IconDashboard,
   },
   {
+    title: "Danh mục",
+    path: "/category",
+    icon: IconCategory,
+  },
+  {
     title: "Sản phẩm",
     path: "/products",
     icon: IconProduct,
@@ -24,11 +29,6 @@ const adminNavigation = [
     title: "Nhà cung cấp",
     path: "/supplier",
     icon: IconSupplier,
-  },
-  {
-    title: "Danh mục",
-    path: "/category",
-    icon: IconCategory,
   },
   {
     title: "Khách hàng",
