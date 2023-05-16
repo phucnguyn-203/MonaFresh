@@ -6,6 +6,7 @@ const {
     createSupplier,
     getOneSupplier,
     updateSupplier,
+    updateManySupplier,
     deleteSupplier,
     deleteManySupplier,
 } = require("../controllers/supplierControllers");
@@ -16,6 +17,7 @@ router.get("/", getAllSupplier);
 router.get("/:id", getOneSupplier);
 router.post("/", authenticate, createSupplier);
 router.patch("/:id", authenticate, updateSupplier);
+router.patch("/",authenticate,updateManySupplier);
 router.delete("/:id", authenticate, deleteSupplier);
 router.delete("/", authenticate, deleteManySupplier);
 

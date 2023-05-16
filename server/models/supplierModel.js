@@ -25,6 +25,10 @@ const supplierSchema = new Schema(
             required: [true, "Nhà cung cấp phải có SĐT"],
             unique: true,
         },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
     },
     {
         timestamps: true,

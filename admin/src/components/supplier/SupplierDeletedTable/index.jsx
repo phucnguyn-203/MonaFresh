@@ -1,13 +1,13 @@
 import { Tooltip } from "react-tooltip";
-import { IconEdit, IconDelete } from "../../icon";
+import { IconRestore, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import Swal from "sweetalert2";
 import jsUcfirst from "../../../utils/jsUcfirst";
 
-export default function SupplierTable({
+export default function SupplierDeletedTable({
   supplier,
-  handleShowEditSupplierModal,
-  handleSoftDelete,
+  handleDeleteSupplier,
+  handleReStoreSupplier,
   isSelectAll,
   isSelected,
   handleSelectAll,
@@ -53,19 +53,9 @@ export default function SupplierTable({
         return (
           <div className="flex items-center text-gray-400 gap-x-4">
             <button
-              onClick={() => handleShowEditSupplierModal(item)}
-              data-tooltip-id="edit"
-              data-tooltip-content="Chỉnh sửa"
-              className="hover:text-green-600"
-            >
-              <IconEdit />
-            </button>
-            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
-            <button
               onClick={() => {
                 Swal.fire({
-                  title: "Bạn chắc chắn muốn xoá?",
-                  text: "Nhà cung cấp sẽ được chuyển vào thùng rác.",
+                  title: "Bạn chắc chắn muốn Khôi phục?",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -74,8 +64,37 @@ export default function SupplierTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Nhà cung cấp đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    handleReStoreSupplier(item._id);
+                    Swal.fire({
+                      title: "Đã khôi phục",
+                      text: "Nhà cung cấp đã được khôi phục.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
+                  }
+                });
+              }}
+              data-tooltip-id="restore"
+              data-tooltip-content="Khôi phục"
+              className="hover:text-primary"
+            >
+              <IconRestore />
+            </button>
+            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
+            <button
+              onClick={() => {
+                Swal.fire({
+                  title: "Bạn chắc chắn muốn xoá?",
+                  text: "Nhà cung cấp sẽ được xoá và không thể khôi phục",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#0E9F6E",
+                  cancelButtonColor: "#d33",
+                  cancelButtonText: "Huỷ bỏ",
+                  confirmButtonText: "Đồng ý!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleDeleteSupplier(item._id);
+                    Swal.fire({ title: "Đã xoá", text: "Nhà cung cấp đã được xoá.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}
