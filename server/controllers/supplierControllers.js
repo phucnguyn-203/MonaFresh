@@ -33,11 +33,23 @@ exports.createSupplier = catchAsync(async (req, res) => {
 
 exports.updateSupplier = catchAsync(async (req, res) => {
     const supplier = await Supplier.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    
     res.status(200).json({
         status: "success",
         data: supplier,
     });
 });
+
+exports.updateManySupplier = catchAsync(async (req, res) => {
+    await Supplier.updateMany(
+        {_id: { $in: req.body.data.supplierIds}},
+        { $set : { isActive: req.body.data.isActive }},
+        {multi: true}
+    );
+    res.status(200).json({
+        status: "success",
+    });
+})
 
 exports.deleteSupplier = catchAsync(async (req, res) => {
     await Supplier.findByIdAndDelete(req.params.id);

@@ -201,7 +201,7 @@ export default function Product() {
                           isSelected.length > 0 ? "bg-yellow-400 cursor-pointer" : "bg-yellow-200 cursor-not-allowed"
                         }`}
                 >
-                  <span className="mr-3">
+                  <span className="mr-3 ">
                     <IconRestore />
                   </span>
                   Khôi phục

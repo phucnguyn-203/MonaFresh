@@ -25,6 +25,10 @@ const supplierAPI = {
     const url = `/suppliers/${id}`;
     await axios.patch(url, data);
   },
+  updateManySupplier: async (data) => {
+    const url = "/suppliers";
+    await axios.patch(url, { data });
+  },
   deleteSupplier: async (id) => {
     const url = `/suppliers/${id}`;
     await axios.delete(url);
