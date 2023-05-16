@@ -2,16 +2,17 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
-export default function ProductFeedback({ src, name, rating, feedback }) {
+export default function ProductFeedback({ photo, name, rating, feedback, createdAt }) {
+  console.log(photo);
   return (
     <div className="mb-[15px]">
       <div className="flex items-center">
         <div className="rounded-full overflow-hidden w-10 h-10 relative">
-          <Image src={src} fill alt="avatar" />
+          <Image src={photo} fill alt="avatar" />
         </div>
         <div className="ml-3">
           <h1 className="text-base font-bold">{name}</h1>
-          <p className="text-sm text-gray-500">11/04/2023</p>
+          <p className="text-sm text-gray-500">{createdAt}</p>
         </div>
       </div>
       <div className="px-[50px] mt-[10px]">

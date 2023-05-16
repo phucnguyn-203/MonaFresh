@@ -1,54 +1,104 @@
 import ProductFeedback from "@/components/product/ProductFeedback";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Rating } from "react-simple-star-rating";
+import formatTimestamp from "@/utils/formatTimestamp";
+import productAPI from "@/api/productAPI";
 
-export default function Feedback() {
-  const feedbacks = [
-    {
-      name: "Võ Hồng Nguyên",
-      src: "https://taimienphi.vn/tmp/cf/aut/Z2sk-hinh-anh-avatar-dep-1.jpg",
-      rating: 4,
-      feedback: "Sản phẩm khá tốt.",
-    },
-    {
-      name: "Nguyễn Hoàng Phúc",
-      src: "https://taimienphi.vn/tmp/cf/aut/Z2sk-hinh-anh-avatar-dep-1.jpg",
-      rating: 3,
-      feedback: "Sản phẩm không tốt.",
-    },
-    {
-      name: "Trần Ngọc Tân",
-      src: "https://taimienphi.vn/tmp/cf/aut/Z2sk-hinh-anh-avatar-dep-1.jpg",
-      rating: 5,
-      feedback: "Sản phẩm không giống quảng cáo.",
-    },
-    {
-      name: "Võ Anh Phụng",
-      src: "https://taimienphi.vn/tmp/cf/aut/Z2sk-hinh-anh-avatar-dep-1.jpg",
-      rating: 2,
-      feedback: "Sản phẩm quá bình thường.",
-    },
-  ];
-  const [rate, setRate] = useState(5);
-  // Catch Rating value
-  const handleRating = (rate) => {
-    setRate(rate);
+export default function Feedback({ product }) {
+  const [filterByRating, setFilterByRating] = useState(0);
+  const [feedbacks, setFeedbacks] = useState([]);
+  
+
+
+  const arr = [1, 2, 3, 4, 5];
+
+  useEffect(() => {
+    getAllFeedback();
+  }, [filterByRating]);
+
+  const getAllFeedback = async () => {
+    let params = {};
+
+    if (filterByRating !== 0) {
+      params.rating = filterByRating;
+    }
+    try {
+      console.log(product._id);
+      const response = await productAPI.getAllFeedback(product._id, params);
+      setFeedbacks(response.data);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <React.Fragment>
-      <h1 className="text-[#1C1C1C] text-2xl font-semibold">Đánh giá</h1>
+      
+      <h1 className="text-[#1C1C1C] text-2xl font-semibold">Đánh giá </h1>
+      
+          <div className=" w-full ">
+            <div className="rounded-[8px] flex w-[75%] bg-[#e1fcd78f] py-[20px] my-[20px]">
+              <div className="flex-col w-[20%] basis-[20%] justify-center">
+                <div className="flex basis-full w-full justify-center">
+                  {/* <h1 className="text-[20px] font-semibold text-primary ">
+                    Có {feedbacks.length} đánh giá
+                  </h1> */}
+                </div>
+                <div className="flex basis-full w-full justify-center">
+                  <p className="flex justify-center text-primary text-[25px] font-bold mt-1 w-full">
+                    {product?.ratingsAverage.toFixed(1)} trên 5
+                  </p>
+                </div>
+                <div className="flex basis-full w-full justify-center">
+                  <Rating
+                    allowFraction
+                    transition
+                    initialValue={product?.ratingsAverage}
+                    size={20}
+                    SVGclassName="react-start"
+                  />
+                </div>
+              </div>
+              <div className="w-[80%] basis-[80%] flex items-center">
+                <button
+                  key={0}
+                  onClick={() => setFilterByRating(0)}
+                  className={`w-[13%] h-[40px] mx-[15px] border-[2px] rounded-[8px] bg-white border-[#ececec] font-[450] hover:border-[#6abd45] hover:text-[#6abd45]
+                                ${
+                                  filterByRating === 0
+                                    ? "!border-[#6abd45] !text-[#6abd45]"
+                                    : ""
+                                }`}
+                >
+                  Tất cả {filterByRating === 0 ? `(${feedbacks.length})` : ""}
+                </button>
+                {arr.map((i) => (
+                  <button
+                    key={i}
+                    onClick={() => setFilterByRating(i)}
+                    className={`w-[13%] h-[40px] mx-[15px] border-[2px] rounded-[8px] bg-white border-[#ececec] font-[450] hover:border-[#6abd45] hover:text-[#6abd45]
+                                ${
+                                  filterByRating === i
+                                    ? "!border-[#6abd45] !text-[#6abd45]"
+                                    : ""
+                                }`}
+                  >
+                    {i} Sao {filterByRating === i ? `(${feedbacks.length})` : ""}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
       {feedbacks.length ? (
         <>
-          <h1 className="my-[20px] text-sm font-semibold">
-            Có {feedbacks.length} đánh giá
-          </h1>
           {feedbacks.map((feedback, index) => (
             <div key={index}>
               <ProductFeedback
-                src={feedback.src}
-                name={feedback.name}
+                photo={feedback.customer.photo}
+                name={feedback.customer.name}
                 rating={feedback.rating}
                 feedback={feedback.feedback}
+                createdAt={formatTimestamp(feedback.createdAt)}
               />
             </div>
           ))}
@@ -58,32 +108,6 @@ export default function Feedback() {
           Chưa có đánh giá nào
         </h1>
       )}
-      <div className="px-[20px] py-[10px] w-full min-h-[420px] border-solid border-2 border-[#6abd45]">
-        <h1 className="text-2xl font-semibold mb-[10px]">Nhận xét sản phẩm</h1>
-        <h2 className="font-medium mb-[8px]">Đánh giá của bạn</h2>
-        <Rating
-          onClick={handleRating}
-          transition
-          initialValue={rate}
-          size={30}
-          SVGclassName="react-start"
-          showTooltip
-          tooltipArray={[
-            "Tệ",
-            "Không hài lòng",
-            "Bình thường",
-            "Hài lòng",
-            "Tuyệt vời",
-          ]}
-        />
-        <div>
-          <h3 className="my-[8px] font-medium">Nhận xét của bạn</h3>
-          <textarea className="w-full h-[120px] border-solid border-[1px] border-[#ddd] p-[10px] outline-none shadow-md"></textarea>
-        </div>
-        <button className="bg-[#6abd45] text-[#fff] px-5 py-3 text-base font-semibold hover:bg-[#38970f] rounded-md  border-solid border-2 border-[#6abd45] mt-[30px]">
-          GỬI
-        </button>
-      </div>
     </React.Fragment>
   );
 }
