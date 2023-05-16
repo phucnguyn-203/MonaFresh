@@ -43,7 +43,6 @@ export default function ResetPassword() {
         text: "Vui lòng đăng nhập lại!",
         title: "Đặt lại mật khẩu thành công",
         confirmButtonColor: "#0E9F6E",
-
         showConfirmButton: true,
         timer: 1500,
       }).then((result) => {
