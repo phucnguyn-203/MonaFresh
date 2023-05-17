@@ -2,8 +2,13 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Rating } from "react-simple-star-rating";
 
-export default function ProductFeedback({ photo, name, rating, feedback, createdAt }) {
-  console.log(photo);
+export default function ProductFeedback({
+  photo,
+  name,
+  rating,
+  feedback,
+  createdAt,
+}) {
   return (
     <div className="mb-[15px]">
       <div className="flex items-center">

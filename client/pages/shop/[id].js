@@ -10,14 +10,11 @@ import productAPI from "@/api/productAPI";
 import IconCheck from "@/components/icons/check";
 import jsUcfirst from "@/utils/jsUcfirst";
 
-
-export default function Shop({ product, similarProducts}) {
+export default function Shop({ product, similarProducts }) {
   const [tab, setTab] = useState(0);
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
-
-
 
   return (
     <div className="container">
@@ -233,9 +230,7 @@ export default function Shop({ product, similarProducts}) {
         {tab === 0 ? (
           <Description description={product?.description} />
         ) : (
-          <Feedback
-            product={product}  
-          />
+          <Feedback product={product} />
         )}
       </div>
       <div className="mb-[50px]">
@@ -257,10 +252,9 @@ export async function getServerSideProps(context) {
         category: product.category._id,
       })
     ).data;
-    
 
     return {
-      props: { product, similarProducts},
+      props: { product, similarProducts },
     };
   } catch (err) {
     return {

@@ -3,15 +3,8 @@ const catchAsync = require("../utils/catchAsync");
 const ApiFeatures = require("../utils/ApiFeatures");
 
 exports.getAllFeedback = catchAsync(async (req, res) => {
-    // const features = new ApiFeatures(Feedback, req.query).filter().sort();
-    const query = {};
-    if(req.query.rating) {
-        query.rating = req.query.rating;
-    }
-   
-    const feedbacks = await (await Feedback.find({product: req.params.productId, ...query})).sort();
-
-{product: req.params.productId }
+    const features = new ApiFeatures(Feedback.find({ product: req.params.productId }), req.query).filter().sort();
+    const feedbacks = await features.query;
     res.status(200).json({
         status: "success",
         results: feedbacks.length,
