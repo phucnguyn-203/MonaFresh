@@ -10,11 +10,14 @@ import productAPI from "@/api/productAPI";
 import IconCheck from "@/components/icons/check";
 import jsUcfirst from "@/utils/jsUcfirst";
 
-export default function Shop({ product, similarProducts }) {
+
+export default function Shop({ product, similarProducts}) {
   const [tab, setTab] = useState(0);
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
+
+
 
   return (
     <div className="container">
@@ -77,7 +80,7 @@ export default function Shop({ product, similarProducts }) {
           </h1>
           <div className="mt-2 flex items-center gap-x-2">
             <p className="text-primary underline font-bold mt-1">
-              {product?.ratingsAverage}
+              {product?.ratingsAverage.toFixed(1)}
             </p>
 
             <Rating
@@ -230,14 +233,16 @@ export default function Shop({ product, similarProducts }) {
         {tab === 0 ? (
           <Description description={product?.description} />
         ) : (
-          <Feedback />
+          <Feedback
+            product={product}  
+          />
         )}
       </div>
       <div className="mb-[50px]">
         <h1 className="text-center text-2xl font-semibold py-[10px]">
           SẢN PHẨM TƯƠNG TỰ
         </h1>
-        <ProductsCarousel products={similarProducts} />
+        {/* <ProductsCarousel products={similarProducts} /> */}
       </div>
     </div>
   );
@@ -252,14 +257,17 @@ export async function getServerSideProps(context) {
         category: product.category._id,
       })
     ).data;
+    
+
     return {
-      props: { product, similarProducts },
+      props: { product, similarProducts},
     };
   } catch (err) {
     return {
       props: {
         product: null,
         similarProducts: null,
+        feedbacks: null,
       },
     };
   }
