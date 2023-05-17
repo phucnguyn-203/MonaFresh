@@ -4,10 +4,12 @@ import "rc-slider/assets/index.css";
 import styles from "./styles.module.css";
 import categoryAPI from "@/api/categoryAPI";
 import { useEffect } from "react";
+import Link from "next/link";
 
-export default function Sidebar() {
+export default function Sidebar({ onCategoryClick }) {
   const [cost, setCost] = useState([0, 1000000]);
   const [categories, setCategories] = useState([]);
+  const [allProductsSelected, setAllProductsSelected] = useState(false);
 
   const getAllCategory = async () => {
     try {
@@ -18,10 +20,17 @@ export default function Sidebar() {
     }
   };
 
+  const handleAllProductsClick = () => {
+    onCategoryClick(null);
+    setAllProductsSelected(true);
+  };
+
   useEffect(() => {
     getAllCategory();
   }, []);
-
+  const handleCategoryClick = (categoryId) => {
+    onCategoryClick(categoryId);
+  };
   return (
     <div className="w-1/4 pb-[30px] gap-x-1">
       <aside className="shadow-lg">
@@ -33,8 +42,19 @@ export default function Sidebar() {
           <ul
             className={`text-black font-semibold uppercase border-solid max-h-[228px] overflow-y-scroll  ${styles.list}`}
           >
+            <li
+              className={allProductsSelected}
+              onClick={handleAllProductsClick}
+            >
+              TẤT CẢ
+            </li>
+
             {categories.map((item) => (
-              <li value={item._id} key={item._id}>
+              <li
+                value={item._id}
+                key={item._id}
+                onClick={() => handleCategoryClick(item._id)}
+              >
                 {item.name}
               </li>
             ))}
