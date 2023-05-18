@@ -112,7 +112,7 @@ export default function StaffTable({
                   if (result.isConfirmed) {
                     handleSoftDelete(item._id);
                     Swal.fire({
-                      title: "Đã xoá",
+                      title: "Đã chuyển vào thùng rác",
                       text: "Nhân viên đã được chuyển vào thùng rác.",
                       confirmButtonColor: "#0E9F6E",
                     });
