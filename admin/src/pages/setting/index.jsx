@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { setUserSuccess } from "../../features/auth/authSlice";
 import Loading from "../../components/loading";
 import PageLayout from "../../components/layout/pageLayout";
 import yup from "../../utils/yupGlobal";
@@ -30,19 +31,24 @@ export default function Setting() {
   const [avatar, setAvatar] = useState();
   const [previewAvatar, setPreviewAvatar] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
   const handlePreviewAvatar = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
     setPreviewAvatar(URL.createObjectURL(file));
   };
+
   const handleAvatarUpload = async () => {
     const formData = new FormData();
     formData.append("file", avatar);
     return await uploadFileApi.uploadSingleFile(formData);
   };
+
   const handleUpdateInfo = async (data) => {
-    await userAPI.updateInfo(data);
+    return await userAPI.updateInfo(data);
   };
+
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
@@ -51,7 +57,8 @@ export default function Setting() {
         const photoUrl = uploadAvatar.url;
         data.photo = photoUrl;
       }
-      await handleUpdateInfo(data);
+      const response = await handleUpdateInfo(data);
+      dispatch(setUserSuccess(response.data));
       toast.success("Cập nhật thành công", {
         position: "top-center",
         autoClose: 5000,
