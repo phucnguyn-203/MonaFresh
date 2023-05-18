@@ -1,0 +1,39 @@
+/* .pagination li span {
+  padding: 5px 15px;
+  margin: 0 15px;
+  font-size: 18px;
+  cursor: pointer;
+  
+  color: rgb(100 116 139);
+  border-radius: 5px;
+  font-weight: 500;
+} */
+/* .pagination li span:hover {
+  
+  color: #6abd45;
+} */
+
+/* .currentNumberPage {
+  background-color: #6abd45;
+  color: #fff !important;
+} */
+.pagination li span {
+  padding: 10px 15px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #4c4f52;
+  border-radius: 5px;
+  font-weight: 700;
+}
+.pagination li span:hover {
+  background-color: #f4f5f7;
+}
+
+.currentNumberPage {
+  background-color: var(--color-primary);
+  color: #fff !important;
+}
+
+.currentNumberPage:hover {
+  background-color: #057a55 !important;
+}

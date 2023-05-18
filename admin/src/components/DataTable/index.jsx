@@ -1,6 +1,8 @@
 import React from "react";
+
 import { IconPrevious, IconNext } from "../icon";
 import styles from "./styles.module.css";
+import Pagination from "../Pagination";
 
 function DataTable({
   columnData,
@@ -10,6 +12,11 @@ function DataTable({
   isSelected = [],
   handleSelected,
   handleSelectAll,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
 }) {
   return (
     <React.Fragment>
@@ -73,36 +80,13 @@ function DataTable({
               </tbody>
             </table>
           </div>
-          <div className="px-4 py-3 bg-white border-t border-gray-200 text-gray-500">
-            <div className="flex items-center justify-between">
-              <p className="flex items-center font-semibold tracking-wide uppercase text-xs">Hiển thị 1-10 trên 100</p>
-
-              <ul className={`flex justify-end items-center ${styles.pagination}`}>
-                <li>
-                  <button className="text-base px-[10px] h-3 ">
-                    <IconPrevious />
-                  </button>
-                </li>
-                <li>
-                  <a className={styles.currentNumberPage}>1</a>
-                </li>
-                <li>
-                  <a>2</a>
-                </li>
-                <li>
-                  <a>3</a>
-                </li>
-                <li>
-                  <a>...</a>
-                </li>
-                <li>
-                  <button className="text-base px-[10px] h-3">
-                    <IconNext />
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <Pagination
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
+          />
         </div>
       )}
     </React.Fragment>
