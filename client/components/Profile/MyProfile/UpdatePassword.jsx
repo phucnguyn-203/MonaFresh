@@ -2,16 +2,28 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "../../../utils/yupGlobal";
 import styles from "../MyProfile/styles.module.css";
+import userAPI from "@/api/userAPI";
+import Loading from "@/components/loading";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function UpdatePassword() {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const schema = yup.object().shape({
     password: yup.string().required("Vui lòng nhập mật khẩu cũ"),
-    newpassword: yup.string().required("Vui lòng nhập mật khẩu mới"),
-    cpassword: yup
+    newPassword: yup
+      .string()
+      .required("Vui lòng nhập mật khẩu mới")
+      .min(8, "Mật khẩu có ít nhất 8 ký tự"),
+    passwordConfirm: yup
       .string()
       .required("Vui lòng xác nhận lại mật khẩu mới")
-      .oneOf([yup.ref("newpassword")], "Mật khẩu không trùng khớp"),
+      .oneOf([yup.ref("newPassword")], "Mật khẩu không trùng khớp"),
   });
+
   const {
     register,
     handleSubmit,
@@ -19,7 +31,40 @@ export default function UpdatePassword() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
+
+  const handleUpdatePassword = async (data) => {
+    await userAPI.updatePassword({
+      currentPassword: data.password,
+      password: data.newPassword,
+      passwordConfirm: data.passwordConfirm,
+    });
+  };
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      await handleUpdatePassword(data);
+      await userAPI.logout();
+      router.push("/login");
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Thay đổi mật khẩu thành công",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (err) {
+      Swal.fire({
+        position: "top-center",
+        icon: "error",
+        title: "Mật khẩu cũ không chính xác",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg">
@@ -54,13 +99,13 @@ export default function UpdatePassword() {
             <div className="col-span-8 sm:col-span-4">
               <input
                 type="password"
-                className={` ${errors.newpassword ? "border-red-500" : ""} ${
+                className={` ${errors.newPassword ? "border-red-500" : ""} ${
                   styles.input
                 }`}
-                {...register("newpassword")}
+                {...register("newPassword")}
               />
-              {errors.newpassword && (
-                <p className="text-red-500 text-sm italic">{`*${errors.newpassword.message}`}</p>
+              {errors.newPassword && (
+                <p className="text-red-500 text-sm italic">{`*${errors.newPassword.message}`}</p>
               )}
             </div>
           </div>
@@ -71,20 +116,26 @@ export default function UpdatePassword() {
             <div className="col-span-8 sm:col-span-4">
               <input
                 type="password"
-                className={`${errors.cpassword ? "border-red-500" : ""} ${
+                className={`${errors.passwordConfirm ? "border-red-500" : ""} ${
                   styles.input
                 }`}
-                {...register("cpassword")}
+                {...register("passwordConfirm")}
               />
-              {errors.cpassword && (
-                <p className="text-red-500 text-sm italic ">{`*${errors.cpassword.message}`}</p>
+              {errors.passwordConfirm && (
+                <p className="text-red-500 text-sm italic ">{`*${errors.passwordConfirm.message}`}</p>
               )}
             </div>
           </div>
         </div>
         <div className="flex flex-row-reverse pr-6 pb-6">
-          <button className="align-bottom uppercase inline-flex items-center justify-center cursor-pointer transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-[#6abd45] border border-transparent active:bg-green-600 hover:bg-[#5faf3d] focus:ring focus:ring-purple-300 h-12 ">
-            Cập nhật mật khẩu
+          <button
+            disabled={isLoading}
+            onClick={() => handleUpdatePassword}
+            className={`${
+              isLoading ? "cursor-not-allowed" : ""
+            } align-bottom uppercase inline-flex items-center justify-center cursor-pointer transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-[#6abd45] border border-transparent active:bg-green-600 hover:bg-[#5faf3d] focus:ring focus:ring-purple-300 h-12 `}
+          >
+            {isLoading ? <Loading size={30} /> : "Cập nhật mật khẩu"}
           </button>
         </div>
       </form>

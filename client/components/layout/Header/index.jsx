@@ -8,10 +8,11 @@ import navigation from "@/utils/nav";
 import SearchBar from "@/components/search/SearchBar";
 import Profile from "@/components/profile/ProfileAvatar";
 import styles from "./styles.module.css";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
+  const currentUser = useSelector((state) => state.auth.currentUser);
 
   return (
     <header className={styles.header}>
@@ -50,8 +51,8 @@ export default function Header() {
               <p className="text-xs text-white font-semibold">0</p>
             </div>
           </Link>
-          {isLogin ? (
-            <Profile />
+          {currentUser ? (
+            <Profile url={currentUser?.photo} size={35} isActive={false} />
           ) : (
             <div className="text-textHeaderPrimary text-sm">
               <Link className="hover:text-black" href="/login">

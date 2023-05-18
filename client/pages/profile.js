@@ -3,9 +3,11 @@ import styles from "@/styles/Profile.module.css";
 import MyProfile from "@/components/profile/MyProfile";
 import MyOders from "@/components/profile/MyOders/";
 import Image from "next/image";
-import Avatar from "@/public/assets/img/avatar.png";
-export default function Profile() {
+import { useSelector } from "react-redux";
+
+export default function Profile({ size = 24 }) {
   const [sidebar, setSidebar] = useState(0);
+  const currentUser = useSelector((state) => state.auth.currentUser);
 
   return (
     <div className="container my-32">
@@ -15,15 +17,17 @@ export default function Profile() {
             <div className="flex w-full justify-center items-center">
               <div className="max-w-[30%]">
                 <Image
-                  src={Avatar}
+                  src={currentUser?.photo}
                   className="w-auto min-w-[30px] h-[80%] min-h-[30px] drop-shadow-xl"
                   alt="userprofile"
                   priority
+                  width={size}
+                  height={size}
                 />
               </div>
               <div className="max-w-[70%] basis-[70%] py-[10px] pr-[10px]">
                 <div className="w-full max-h-[50%] basis-[50%] h-full text-[17px] font-[550]">
-                  Nguyễn Hoàng Phúc
+                  {currentUser?.name}
                 </div>
                 <div className="w-full max-h-[50%] basis-[50%] h-full text-[13px] text-gray-400">
                   Chỉnh sửa thông tin
