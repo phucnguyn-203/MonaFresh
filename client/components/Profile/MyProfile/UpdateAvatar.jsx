@@ -29,7 +29,7 @@ export default function UpdateAvatar() {
       <div className="my-[30px] justify-center px-auto flex">
         <Image
           src={previewAvatar ? previewAvatar : currentUser.photo}
-          className={styles.avatar}
+          className="rounded-full w-36 h-36"
           alt="userProfile"
           width="150"
           height="150"

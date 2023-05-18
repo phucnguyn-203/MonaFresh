@@ -37,7 +37,8 @@ const userAPI = {
   },
   updateInfo: async (data) => {
     const url = "/users/updateMe";
-    await axios.patch(url, data);
+    const response = await axios.patch(url, data);
+    return response;
   },
 };
 

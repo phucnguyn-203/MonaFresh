@@ -5,7 +5,7 @@ import MyOders from "@/components/profile/MyOders/";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 
-export default function Profile({ size = 24 }) {
+export default function Profile() {
   const [sidebar, setSidebar] = useState(0);
   const currentUser = useSelector((state) => state.auth.currentUser);
 
@@ -18,11 +18,11 @@ export default function Profile({ size = 24 }) {
               <div className="max-w-[30%]">
                 <Image
                   src={currentUser?.photo}
-                  className="w-auto min-w-[30px] h-[80%] min-h-[30px] drop-shadow-xl"
+                  className="w-16 h-16 drop-shadow-xl border rounded-full"
                   alt="userprofile"
                   priority
-                  width={size}
-                  height={size}
+                  width="150"
+                  height="150"
                 />
               </div>
               <div className="max-w-[70%] basis-[70%] py-[10px] pr-[10px]">
