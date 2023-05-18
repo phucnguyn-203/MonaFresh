@@ -4,13 +4,16 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const validator = require("validator");
 const { USER_ROLES } = require("../utils/Constant");
+const removeAccents = require("../utils/removeAccents");
 
 const userSchema = new Schema(
     {
         name: {
             type: String,
             required: [true, "Vui lòng nhập tên của bạn"],
+            trim: true,
         },
+        searchName: String,
         email: {
             type: String,
             required: [true, "Vui lòng nhập email của bạn"],
@@ -26,12 +29,12 @@ const userSchema = new Schema(
         },
         passwordConfirm: {
             type: String,
-            required: [true, "Vui lòng nhập lại mật khẩu"],
+            required: [true, "Vui lòng nhập lại mật khẩu."],
             validate: {
                 validator: function (val) {
                     return val === this.password;
                 },
-                message: "Mật khẩu không khớp",
+                message: "Mật khẩu không khớp.",
             },
         },
         phone: {
@@ -71,6 +74,11 @@ userSchema.pre("save", async function (next) {
         this.password = await bcrypt.hash(this.password, 12);
         this.passwordConfirm = undefined;
     }
+    next();
+});
+
+userSchema.pre("save", function (next) {
+    this.searchName = removeAccents(this.name).toLowerCase();
     next();
 });
 

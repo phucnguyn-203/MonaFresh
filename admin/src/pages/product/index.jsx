@@ -298,7 +298,6 @@ export default function Product() {
                         rounded-md focus:border-gray-200 border-gray-200 bg-gray-100 ring-1 ring-gray-200
                         focus:bg-white border-transparent"
                 type="text"
-                name="search"
                 placeholder="Tìm theo tên sản phẩm"
                 onChange={(e) => setSearchKeyWord(e.target.value)}
               />

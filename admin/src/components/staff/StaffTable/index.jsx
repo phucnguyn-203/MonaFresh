@@ -2,8 +2,10 @@ import { Tooltip } from "react-tooltip";
 import { IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import ToggleSwitch from "../../ToggleSwitch";
+import formatTimestamp from "../../../utils/formatTimestamp";
+import jsUcfirst from "../../../utils/jsUcfirst";
 
-export default function StaffTable() {
+export default function StaffTable({ staffs, handleShowEditStaff, handleUpdateStaff }) {
   const columnData = [
     {
       field: "name",
@@ -12,9 +14,9 @@ export default function StaffTable() {
         return (
           <div className="flex gap-x-2 items-center">
             <div className="w-[50px] h-[50px] ring-1 ring-gray-300">
-              <img src={item.avatar} className="w-full h-full object-cover" />
+              <img src={item.photo} className="w-full h-full object-cover" />
             </div>
-            <p className="text-sm">{item.name}</p>
+            <p className="text-sm">{jsUcfirst(item.name)}</p>
           </div>
         );
       },
@@ -37,14 +39,14 @@ export default function StaffTable() {
       field: "joinDate",
       headerName: "Ngày tham gia",
       renderCell: (item) => {
-        return <span className="text-sm">{item.joinDate}</span>;
+        return <span className="text-sm">{formatTimestamp(item.createdAt)}</span>;
       },
     },
     {
       field: "role",
       headerName: "Chức vụ",
       renderCell: (item) => {
-        return <span className="text-sm">{item.role}</span>;
+        return <span className="text-sm">{item.role === 3 ? "Nhân viên" : "Quản lý"}</span>;
       },
     },
     {
@@ -68,24 +70,29 @@ export default function StaffTable() {
         );
       },
     },
-    {
-      field: "active",
-      headerName: "Hiển thị",
-      renderCell: (item) => {
-        return (
-          <div className="flex justify-center">
-            <ToggleSwitch id={item.id} isActive={item.isActive} />
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "active",
+    //   headerName: "Hiển thị",
+    //   renderCell: (item) => {
+    //     return (
+    //       <div className="flex justify-center">
+    //         <ToggleSwitch id={item.id} isActive={item.isActive} />
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       field: "actions",
       headerName: "Thao tác",
-      renderCell: () => {
+      renderCell: (item) => {
         return (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
-            <button data-tooltip-id="edit" data-tooltip-content="Chỉnh sửa" className="hover:text-green-600">
+            <button
+              data-tooltip-id="edit"
+              data-tooltip-content="Chỉnh sửa"
+              className="hover:text-green-600"
+              onClick={() => handleShowEditStaff(item)}
+            >
               <IconEdit />
             </button>
             <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
@@ -98,17 +105,6 @@ export default function StaffTable() {
       },
     },
   ];
-  const rowData = [
-    {
-      _id: 1,
-      name: "Võ Anh Phụng",
-      email: "phung12@gmail.com",
-      phone: "0796884386",
-      joinDate: "25/04/2023",
-      role: "Quản lý",
-      avatar: "https://vapa.vn/wp-content/uploads/2022/12/anh-avatar-cute-002.jpg",
-      isActive: true,
-    },
-  ];
-  return <DataTable columnData={columnData} rowData={rowData} select />;
+
+  return <DataTable columnData={columnData} rowData={staffs} select />;
 }
