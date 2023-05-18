@@ -8,12 +8,14 @@ import { useDispatch } from "react-redux";
 import userAPI from "@/api/userAPI";
 import { setLogoutUser } from "@/features/auth/authSlice";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
-export default function Profile({ url, size = 24 }) {
+export default function Profile({ url }) {
   const [isDropdown, setIsDropdown] = useState();
   const router = useRouter();
   const profile = useRef(null);
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.currentUser);
 
   console.log(router);
 
@@ -51,13 +53,21 @@ export default function Profile({ url, size = 24 }) {
       className="relative cursor-pointer"
       onClick={handleDropdownMenu}
     >
-      <Image
-        src={url}
-        alt="avatar"
-        width={size}
-        height={size}
-        className="w-[size] h-[size] rounded-full"
-      />
+      <div className="flex-row flex items-center">
+        <Image
+          src={url}
+          alt="avatar"
+          width="150"
+          height="150"
+          className="w-10 h-10 rounded-full"
+        />
+        {currentUser?.name && (
+          <p className="text-textHeaderPrimary text-sm pl-2 items-center justify-center">
+            Xin chào {currentUser.name}
+          </p>
+        )}
+      </div>
+
       {isDropdown && (
         <div className="absolute w-[200px] top-[100% + 20px] bg-gray-50 shadow-xl rounded-lg flex flex-col top-12 right-0 overflow-hidden ">
           <Link

@@ -4,15 +4,17 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "@/utils/yupGlobal";
 import UpdatePassword from "./UpdatePassword";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import userAPI from "@/api/userAPI";
 import Loading from "@/components/loading";
 import Swal from "sweetalert2";
 import uploadFileApi from "@/api/uploadFileApi";
+import { setUserSuccess } from "@/features/auth/authSlice";
 
 export default function MyProfile() {
   const currentUser = useSelector((state) => state.auth.currentUser);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
@@ -34,6 +36,7 @@ export default function MyProfile() {
   });
   const handleUpdateInfo = async (data) => {
     await userAPI.updateInfo(data);
+    return await userAPI.updateInfo(data);
   };
   const [avatar, setAvatar] = useState();
   const [previewAvatar, setPreviewAvatar] = useState();
@@ -57,6 +60,8 @@ export default function MyProfile() {
         data.photo = photoUrl;
       }
       await handleUpdateInfo(data);
+      const response = await handleUpdateInfo(data);
+      dispatch(setUserSuccess(response.data));
       Swal.fire({
         icon: "success",
         title: "Cập nhật thành công",
@@ -194,7 +199,7 @@ export default function MyProfile() {
             <div className="my-[30px] justify-center px-auto flex">
               <img
                 src={previewAvatar ? previewAvatar : currentUser?.photo}
-                className={styles.avatar}
+                className="w-36 h-36 rounded-full"
                 alt="userProfile"
                 width="150"
                 height="150"
