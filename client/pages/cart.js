@@ -5,16 +5,21 @@ import formatCurrency from "@/utils/formatCurrency";
 import CartItem from "@/components/cart/CardItem";
 import WithAuth from "@/components/layout/WithAuth";
 import { carts } from "@/api/data";
+import Checkout from "../components/MyCart/Checkout/index";
 
 function Cart() {
   const router = useRouter();
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isChecked, setIsChecked] = useState([]);
   const [list, setList] = useState([]);
+  const [isShowCheckout, setIsShowCheckout] = useState(false);
 
+  const handleShowCheckout = () => {
+    setIsShowCheckout(!isShowCheckout);
+  }
   useEffect(() => {
     setList(carts);
-  }, [list]);
+  }, [list, isShowCheckout]);
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
@@ -143,7 +148,7 @@ function Cart() {
 
             <div className="border-t-[2px] border-[#ececec] pt-[20px]">
               <button
-                onClick={() => router.push("/checkout")}
+                onClick={() => handleShowCheckout() }
                 disabled={isChecked.length === 0}
                 className={`${
                   isChecked.length === 0
@@ -157,7 +162,10 @@ function Cart() {
           </div>
         </div>
       </div>
+      {isShowCheckout&&(<Checkout products={carts} close={handleShowCheckout}/>)}
     </div>
+    
+    
   );
 }
 
