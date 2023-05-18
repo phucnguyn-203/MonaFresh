@@ -14,6 +14,11 @@ export default function ProductDeletedTable({
   isSelected,
   handleSelectAll,
   handleSelected,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
 }) {
   const columnData = [
     {
@@ -157,6 +162,11 @@ export default function ProductDeletedTable({
       isSelected={isSelected}
       handleSelected={handleSelected}
       handleSelectAll={handleSelectAll}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
     />
   );
 }

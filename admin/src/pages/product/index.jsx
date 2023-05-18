@@ -23,10 +23,14 @@ export default function Product() {
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
   const [isShowProductDeletedTable, setIsShowProductDeletedTable] = useState(false);
+  //
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [limitPerPage, setLimitPerPage] = useState(10);
 
   useEffect(() => {
     getAllProduct();
-  }, [debounceValue, filterByCategory, sortValue, isShowProductDeletedTable]);
+  }, [debounceValue, filterByCategory, sortValue, isShowProductDeletedTable, currentPage, limitPerPage]);
 
   useEffect(() => {
     getAllCategory();
@@ -49,7 +53,7 @@ export default function Product() {
   };
 
   const getAllProduct = async () => {
-    let params = {};
+    let params = { page: currentPage, limit: limitPerPage };
     if (debounceValue) {
       params.search = debounceValue.trim();
     }
@@ -67,6 +71,8 @@ export default function Product() {
     try {
       const response = await productAPI.getAllProduct(params);
       setProducts(response.data);
+      setTotalPageCount(response.totalPages);
+      console.log(response.totalPages, currentPage);
     } catch (err) {
       console.log(err);
     }
@@ -130,7 +136,7 @@ export default function Product() {
   };
   const handleSoftDeleteMany = async () => {
     try {
-      await productAPI.updateManyProduct({productIds: isSelected, isActive: false});
+      await productAPI.updateManyProduct({ productIds: isSelected, isActive: false });
       getAllProduct();
     } catch (err) {
       console.log(err);
@@ -148,7 +154,7 @@ export default function Product() {
 
   const handleRestoreMany = async () => {
     try {
-      await productAPI.updateManyProduct({productIds: isSelected, isActive: true});
+      await productAPI.updateManyProduct({ productIds: isSelected, isActive: true });
       getAllProduct();
     } catch (err) {
       console.log(err);
@@ -207,7 +213,6 @@ export default function Product() {
                   Khôi phục
                 </button>
 
-                
                 <button
                   disabled={isSelected.length <= 0}
                   onClick={() => {
@@ -256,7 +261,11 @@ export default function Product() {
                     }).then((result) => {
                       if (result.isConfirmed) {
                         handleSoftDeleteMany();
-                        Swal.fire({ title: "Đã xoá", text: "Các sản phẩm đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                        Swal.fire({
+                          title: "Đã xoá",
+                          text: "Các sản phẩm đã được chuyển vào thùng rác.",
+                          confirmButtonColor: "#0E9F6E",
+                        });
                       }
                     });
                   }}
@@ -392,6 +401,11 @@ export default function Product() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             isSelectAll={isSelectAll}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       ) : (
@@ -405,6 +419,11 @@ export default function Product() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             isSelectAll={isSelectAll}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       )}

@@ -4,7 +4,6 @@ import jsUcfirst from "../../../utils/jsUcfirst";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
-import ToggleSwitch from "../../ToggleSwitch";
 import Swal from "sweetalert2";
 
 export default function ProductTable({
@@ -15,6 +14,11 @@ export default function ProductTable({
   isSelected,
   handleSelectAll,
   handleSelected,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
 }) {
   const columnData = [
     {
@@ -100,17 +104,6 @@ export default function ProductTable({
         return <p className="text-sm">{formatTimestamp(item.updatedAt)}</p>;
       },
     },
-    // {
-    //   field: "active",
-    //   headerName: "Hiển thị",
-    //   renderCell: (item) => {
-    //     return (
-    //       <div className="flex justify-center">
-    //         <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateProduct} />
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "actions",
       headerName: "Thao tác",
@@ -118,7 +111,9 @@ export default function ProductTable({
         return (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
-              onClick={() => {handleShowEditProduct(item)}}
+              onClick={() => {
+                handleShowEditProduct(item);
+              }}
               data-tooltip-id="edit"
               data-tooltip-content="Chỉnh sửa"
               className="hover:text-green-600"
@@ -140,7 +135,11 @@ export default function ProductTable({
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Sản phẩm đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({
+                      title: "Đã chuyển vào thùng rác",
+                      text: "Sản phẩm đã được chuyển vào thùng rác.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
                   }
                 });
               }}
@@ -166,6 +165,11 @@ export default function ProductTable({
       isSelected={isSelected}
       handleSelected={handleSelected}
       handleSelectAll={handleSelectAll}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
     />
   );
 }
