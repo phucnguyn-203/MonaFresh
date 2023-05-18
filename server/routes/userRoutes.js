@@ -14,7 +14,17 @@ const {
     deleteMe,
     logout,
 } = require("../controllers/userControllers");
-const { createStaff, getAllStaff, updateStaff, getOneStaff } = require("../controllers/staffControllers");
+const { 
+    createStaff, 
+    getOneStaff,
+    getAllStaff, 
+    updateStaff,
+    updateStaffStatus,
+    updateManyStaffStatus, 
+    deleteStaff,
+    deleteManyStaff,
+
+} = require("../controllers/staffControllers");
 
 const { authenticate } = require("../middlewares/auth");
 
@@ -25,14 +35,19 @@ router.patch("/resetPassword/:token", resetPassword);
 router.get("/resetPassword/:token", getStatusResetPasswordToken);
 router.patch("/updatePassword", authenticate, updatePassword);
 router.patch("/updateMe", authenticate, updateMe);
+
 router.delete("/deleteMe", authenticate, deleteMe);
 router.get("/check-login", checkLogin);
 router.get("/get-new-accessToken", getNewAccessToken);
 router.get("/logout", logout);
 
 router.post("/register-staff", authenticate, createStaff);
-router.get("/", getAllStaff);
-router.get("/:id", getOneStaff);
+router.get("/", authenticate, getAllStaff);
+router.get("/:id",authenticate, getOneStaff);
+router.patch("/updateStatus", authenticate, updateManyStaffStatus);
 router.patch("/:id", authenticate, updateStaff);
+router.patch("/updateStatus/:id", authenticate, updateStaffStatus);
+router.delete("/:id", authenticate, deleteStaff);
+router.delete("/", authenticate, deleteManyStaff);
 
 module.exports = router;

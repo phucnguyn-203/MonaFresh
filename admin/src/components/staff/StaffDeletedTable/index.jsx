@@ -1,19 +1,21 @@
+import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
-import { IconEdit, IconDelete } from "../../icon";
+import { IconRestore, IconDelete, IconBack } from "../../icon";
 import DataTable from "../../DataTable";
 import ToggleSwitch from "../../ToggleSwitch";
-import formatTimestamp from "../../../utils/formatTimestamp";
 import jsUcfirst from "../../../utils/jsUcfirst";
+import formatTimestamp from "../../../utils/formatTimestamp";
 import Swal from "sweetalert2";
-export default function StaffTable({ 
-  staffs, 
-  handleSoftDelete,
-  handleShowEditStaffModal, 
+
+export default function CategoryDeletedTable({
+  staffs,
+  handleDelete,
+  handleRestore,
   isSelectAll,
   isSelected,
   handleSelectAll,
   handleSelected,
-  }) {
+}) {
   const columnData = [
     {
       field: "name",
@@ -78,37 +80,17 @@ export default function StaffTable({
         );
       },
     },
-    // {
-    //   field: "active",
-    //   headerName: "Hiển thị",
-    //   renderCell: (item) => {
-    //     return (
-    //       <div className="flex justify-center">
-    //         <ToggleSwitch id={item.id} isActive={item.isActive} />
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "actions",
       headerName: "Thao tác",
+      customClassName: "text-center",
       renderCell: (item) => {
         return (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
-              data-tooltip-id="edit"
-              data-tooltip-content="Chỉnh sửa"
-              className="hover:text-green-600"
-              onClick={() => handleShowEditStaffModal(item)}
-            >
-              <IconEdit />
-            </button>
-            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
-            <button
               onClick={() => {
                 Swal.fire({
-                  title: "Bạn chắc chắn muốn xoá?",
-                  text: "Nhân viên sẽ được chuyển vào thùng rác.",
+                  title: "Bạn chắc chắn muốn Khôi phục?",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -117,8 +99,37 @@ export default function StaffTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Nhân viên đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    handleRestore(item._id);
+                    Swal.fire({
+                      title: "Đã khôi phục",
+                      text: "Nhân viên đã được khôi phục.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
+                  }
+                });
+              }}
+              data-tooltip-id="restore"
+              data-tooltip-content="Khôi phục"
+              className="hover:text-primary"
+            >
+              <IconRestore />
+            </button>
+            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} />
+            <button
+              onClick={() => {
+                Swal.fire({
+                  title: "Bạn chắc chắn muốn xoá?",
+                  text: "Nhân viên sẽ được xoá và không thể khôi phục.",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonColor: "#0E9F6E",
+                  cancelButtonColor: "#d33",
+                  cancelButtonText: "Huỷ bỏ",
+                  confirmButtonText: "Đồng ý!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleDelete(item._id);
+                    Swal.fire({ title: "Đã xoá", text: "Nhân viên đã được xoá.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}

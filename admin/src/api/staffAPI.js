@@ -25,5 +25,21 @@ const staffAPI = {
     const url = `/users/${id}`;
     await axios.patch(url, data);
   },
+  updateStaffStatus: async (id, data) => {
+    const url = `/users/updateStatus/${id}`;
+    await axios.patch(url, data);
+  },
+  updateManyStaffStatus: async (data) => {
+    const url = "/users/updateStatus";
+    await axios.patch(url, { data});
+  },
+  deleteStaff: async (id) => {
+    const url = `/users/${id}`;
+    await axios.delete(url);
+  },
+  deleteManyStaff: async (data) => {
+    const url = "/users";
+    await axios.delete(url, {data: {staffIds: data}});
+  },
 };
 export default staffAPI;
