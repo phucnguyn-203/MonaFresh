@@ -10,10 +10,7 @@ const categoryRouter = require("./routes/categoryRoutes");
 const cartRouter = require("./routes/cartRoutes");
 const orderRouter = require("./routes/orderRoutes");
 const productRouter = require("./routes/productRoutes");
-
 const supplierRouter = require("./routes/supplierRoutes");
-
-// const feedbackRouter = require("./routes/feedbackRoutes");
 const userRouter = require("./routes/userRoutes");
 const addressRouter = require("./routes/addressRoutes");
 const uploadFileRouter = require("./routes/uploadFileRoutes");
@@ -26,10 +23,10 @@ if (process.env.NODE_ENV === "development") {
 app.use(cookieParser());
 
 //CORS
-const whitelist = [process.env.FRONT_END_ADMIN_URL];
+const whitelist = [process.env.FRONT_END_ADMIN_URL, process.env.FRONT_END_CLIENT_URL];
 const corsOptions = {
     origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
@@ -48,10 +45,7 @@ app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/carts", cartRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/products", productRouter);
-
 app.use("/api/v1/suppliers", supplierRouter);
-
-// app.use("/api/v1/feedbacks", feedbackRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/upload", uploadFileRouter);

@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthLayout from "@/components/layout/AuthLayout";
 import Link from "next/link";
+import userAPI from "@/api/userAPI";
+import yup from "@/utils/yupGlobal";
+import Loading from "@/components/loading";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import yup from "@/utils/yupGlobal";
+import { useDispatch } from "react-redux";
+import { setUserSuccess, setUserFail } from "@/features/auth/authSlice";
 
 function Login() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -20,7 +30,23 @@ function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+    try {
+      setIsLoading(true);
+      const response = await userAPI.login(email, password);
+      dispatch(setUserSuccess(response.data));
+      router.push("/");
+    } catch (errors) {
+      dispatch(setUserFail());
+      setIsError(true);
+      console.log(errors);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="p-8 px-9">
       <h2 className="text-4xl font-bold text-center text-teal-700">
@@ -55,22 +81,27 @@ function Login() {
             <p className="text-red-500 text-sm italic">{`*${errors.password.message}`}</p>
           )}
         </div>
-        <div className="justify-between flex">
-          <div>
-            <p className="text-sm italic flex items-cente text-teal-800">
-              <input type="checkbox" className="mr-2 " />
-              Ghi nhớ đăng nhập
-            </p>
-          </div>
-          <a
-            href="#"
+        <div className="flex justify-end">
+          <Link
+            href="/forget-password"
             className="text-sm underline italic text-teal-800 flex-start mr-0  ml-12 "
           >
             Quên mật khẩu?
-          </a>
+          </Link>
         </div>
-        <button className="w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg  text-teal-800">
-          ĐĂNG NHẬP
+        <button
+          disabled={isLoading}
+          className={`w-full my-5 py-2 bg-green-300 shadow-lg rounded-lg  text-teal-800 ${
+            isLoading ? "cursor-not-allowed" : ""
+          }`}
+        >
+          {isLoading ? (
+            <div className="flex justify-center items-center">
+              <Loading size={30} />
+            </div>
+          ) : (
+            "ĐĂNG NHẬP"
+          )}
         </button>
       </form>
       <div className="flex justify-between items-center">

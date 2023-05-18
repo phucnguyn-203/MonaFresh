@@ -1,12 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
+import categoryAPI from "@/api/categoryAPI";
+import formatCurrency from "@/utils/formatCurrency";
 import styles from "./styles.module.css";
+import "rc-slider/assets/index.css";
 
-import { categories } from "../../../api/data";
-
-export default function Sidebar() {
+export default function Sidebar({
+  filterByCategory,
+  setFilterByCategory,
+  rangePriceFilter,
+  setRangePriceFilter,
+}) {
   const [cost, setCost] = useState([0, 1000000]);
+  const [categories, setCategories] = useState([]);
+  const [allProductsFilter, setAllProductsFilter] = useState(true);
+
+  const getAllCategory = async () => {
+    try {
+      const response = await categoryAPI.getAllCategory({ isActive: true });
+      setCategories(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleAllProductsClick = () => {
+    setFilterByCategory("");
+    setAllProductsFilter(true);
+  };
+
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
   return (
     <div className="w-1/4 pb-[30px] gap-x-1">
       <aside className="shadow-lg">
@@ -16,10 +42,29 @@ export default function Sidebar() {
 
         <div className="mb-[30px] ">
           <ul
-            className={`text-black font-semibold border-solid max-h-[228px] overflow-y-scroll  ${styles.list}`}
+            className={`text-black font-semibold uppercase border-solid max-h-[228px] overflow-y-scroll  ${styles.list}`}
           >
+            <li
+              className={`${allProductsFilter ? `${styles.isActive}` : ""}`}
+              onClick={handleAllProductsClick}
+            >
+              TẤT CẢ
+            </li>
+
             {categories.map((item) => (
-              <li key={item.id}>{item.title}</li>
+              <li
+                value={item._id}
+                key={item._id}
+                onClick={() => {
+                  setFilterByCategory(item._id);
+                  setAllProductsFilter(false);
+                }}
+                className={`${
+                  filterByCategory === item._id ? `${styles.isActive}` : ""
+                }`}
+              >
+                {item.name}
+              </li>
             ))}
           </ul>
         </div>
@@ -34,8 +79,8 @@ export default function Sidebar() {
             <div className="flex items-center py-[10px]">
               <Slider
                 range
-                defaultValue={cost}
-                onChange={setCost}
+                defaultValue={rangePriceFilter}
+                onChange={setRangePriceFilter}
                 min={0}
                 max={1000000}
                 trackStyle={[{ background: "#ABABAB" }]}
@@ -57,23 +102,14 @@ export default function Sidebar() {
             </div>
 
             <div className="flex justify-between ">
-              <button className="rounded-xl cursor-pointer px-3 text-[10px] mr-4 bg-gray-500 text-white font-medium text-center">
-                LỌC
-              </button>
               <div>
                 <span className="text-xs mr-[5px]">Giá</span>
                 <span className="text-xs font-semibold ">
-                  {new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(cost[0])}
+                  {formatCurrency(rangePriceFilter[0])}
                 </span>
                 <span className="text-xs font-semibold"> - </span>
                 <span className="text-xs font-semibold">
-                  {new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(cost[1])}
+                  {formatCurrency(rangePriceFilter[1])}
                 </span>
               </div>
             </div>

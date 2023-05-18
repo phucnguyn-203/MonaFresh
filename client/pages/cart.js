@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import formatCurrency from "@/utils/formatCurrency";
 import CartItem from "@/components/cart/CardItem";
-
+import WithAuth from "@/components/layout/WithAuth";
 import { carts } from "@/api/data";
 
-export default function Cart() {
+function Cart() {
   const router = useRouter();
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isChecked, setIsChecked] = useState([]);
@@ -160,3 +160,5 @@ export default function Cart() {
     </div>
   );
 }
+
+export default WithAuth(Cart);

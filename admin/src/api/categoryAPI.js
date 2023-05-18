@@ -1,12 +1,8 @@
 import axios from "./axios";
 
 const categoryAPI = {
-  getAllCategory: async (searchKeyWord) => {
+  getAllCategory: async (params) => {
     const url = "/categories";
-    const params = {};
-    if (searchKeyWord) {
-      params.search = searchKeyWord.trim();
-    }
     const response = await axios.get(url, { params });
     return response;
   },
@@ -18,6 +14,10 @@ const categoryAPI = {
   updateCategory: async (id, data) => {
     const url = `/categories/${id}`;
     await axios.patch(url, data);
+  },
+  updateManyCategory: async (data) => {
+    const url = "/categories";
+    await axios.patch(url, { data });
   },
   deleteCategory: async (id) => {
     const url = `/categories/${id}`;

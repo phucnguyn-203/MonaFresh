@@ -6,6 +6,7 @@ const {
     getAllCategory,
     createCategory,
     updateCategory,
+    updateManyCategory,
     deleteCategory,
     deleteManyCategory,
 } = require("../controllers/categoryControllers");
@@ -16,6 +17,7 @@ router.get("/", getAllCategory);
 router.get("/:id", getOneCategory);
 router.post("/", authenticate, createCategory);
 router.patch("/:id", authenticate, updateCategory);
+router.patch("/", authenticate, updateManyCategory)
 router.delete("/:id", authenticate, deleteCategory);
 router.delete("/", authenticate, deleteManyCategory);
 

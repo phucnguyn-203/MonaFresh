@@ -63,7 +63,7 @@ function App() {
     <React.Fragment>
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">
-          <Loading size={64} />
+          <Loading size={40} />
         </div>
       ) : (
         <RouterProvider router={router} />

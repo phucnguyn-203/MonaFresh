@@ -3,14 +3,30 @@ const catchAsync = require("../utils/catchAsync");
 const ApiFeatures = require("../utils/ApiFeatures");
 
 exports.getAllProduct = catchAsync(async (req, res) => {
-    const features = new ApiFeatures(Product, req.query).filter().sort().limitFields().paginate();
+    const features = new ApiFeatures(Product, req.query).filter().sort().limitFields();
+    const { query, totalPages, currentPage } = await features.paginate();
+    const products = await query;
+    res.status(200).json({
+        status: "success",
+        currentPage: currentPage,
+        totalPages: totalPages,
+        totalResults: products.length,
+        data: products,
+    });
+});
+
+exports.getSimilarProducts = catchAsync(async (req, res) => {
+    const features = new ApiFeatures(
+        Product.find({
+            $and: [{ category: req.query.category }, { _id: { $ne: req.query._id } }],
+        }),
+        req.query,
+    );
     const products = await features.query;
     res.status(200).json({
         status: "success",
         results: products.length,
         data: products,
-        currentPage: req.query.page * 1 || 1,
-        totalPages: Math.ceil(products.length / (req.query.limit || 10)),
     });
 });
 
@@ -34,6 +50,17 @@ exports.updateProduct = catchAsync(async (req, res) => {
     res.status(200).json({
         status: "success",
         data: product,
+    });
+});
+exports.updateManyProduct = catchAsync(async (req, res) => {
+    console.log(req.body);
+    await Product.updateMany(
+        { _id: { $in: req.body.data.productIds } },
+        { $set: { isActive: req.body.data.isActive } },
+        { multi: true },
+    );
+    res.status(200).json({
+        status: "success",
     });
 });
 

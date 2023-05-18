@@ -5,12 +5,14 @@ import Customer from "../pages/customer";
 import Order from "../pages/order";
 import Staff from "../pages/staff";
 import Setting from "../pages/setting";
-
+import CustomerOrder from "../pages/customer/CustomerOrder/index";
+import Supplier from "../pages/supplier";
 const adminRouter = [
   {
     path: "",
     element: Dashboard,
   },
+
   {
     path: "/products",
     element: Product,
@@ -24,6 +26,10 @@ const adminRouter = [
     element: Customer,
   },
   {
+    path: "/customers/:id",
+    element: CustomerOrder,
+  },
+  {
     path: "/orders",
     element: Order,
   },
@@ -34,6 +40,10 @@ const adminRouter = [
   {
     path: "/setting",
     element: Setting,
+  },
+  {
+    path: "/supplier",
+    element: Supplier,
   },
 ];
 
@@ -61,6 +71,12 @@ const staffRouter = [
   {
     path: "/setting",
     element: Setting,
+  },
+  {
+    path: "/customer-order/:id",
+    element: CustomerOrder,
+    path: "/supplier",
+    element: Supplier,
   },
 ];
 

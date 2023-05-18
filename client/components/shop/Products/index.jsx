@@ -1,15 +1,20 @@
+import { useEffect, useState } from "react";
 import ProductItem from "@/components/product/ProductItem";
 import Pagination from "@/components/shared/Pagination";
 
-import { products } from "@/api/data";
-export default function Products() {
+export default function Products({
+  products,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+}) {
   return (
     <div className="w-3/4 ">
       <div className="grid grid-cols-4 gap-4 mb-[30px]">
-        {products.map(({ id, name, price, thumbnail, percentageDiscount }) => (
+        {products.map(({ _id, name, price, thumbnail, percentageDiscount }) => (
           <ProductItem
-            key={id}
-            id={id}
+            key={_id}
+            id={_id}
             name={name}
             price={price}
             thumbnail={thumbnail}
@@ -17,9 +22,12 @@ export default function Products() {
           />
         ))}
       </div>
-      <div>
-        <Pagination />
-      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        totalPageCount={totalPageCount}
+      />
     </div>
   );
 }

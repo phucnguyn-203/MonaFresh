@@ -9,9 +9,8 @@ import Swal from "sweetalert2";
 
 export default function ProductTable({
   products,
-  handleDeteletProduct,
+  handleSoftDelete,
   handleShowEditProduct,
-  handleUpdateProduct,
   isSelectAll,
   isSelected,
   handleSelectAll,
@@ -119,7 +118,7 @@ export default function ProductTable({
         return (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
-              onClick={() => handleShowEditProduct(item)}
+              onClick={() => {handleShowEditProduct(item)}}
               data-tooltip-id="edit"
               data-tooltip-content="Chỉnh sửa"
               className="hover:text-green-600"
@@ -131,6 +130,7 @@ export default function ProductTable({
               onClick={() => {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
+                  text: "Sản phẩm sẽ được chuyển vào thùng rác.",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -139,8 +139,8 @@ export default function ProductTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleDeteletProduct(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Sản phẩm đã xoá.", confirmButtonColor: "#0E9F6E" });
+                    handleSoftDelete(item._id);
+                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Sản phẩm đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}

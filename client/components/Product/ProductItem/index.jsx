@@ -1,4 +1,5 @@
 import Link from "next/link";
+import jsUcfirst from "@/utils/jsUcfirst";
 import formatCurrency from "@/utils/formatCurrency";
 import styles from "./styles.module.css";
 
@@ -30,7 +31,7 @@ export default function ProductItem({
       </div>
       <div className="text-center mt-[10px] mx-[10px] mb-[20px]">
         <p className="text-[#1C1C1C] hover:text-[#6abd45] font-semibold truncate">
-          {name}
+          {jsUcfirst(name)}
         </p>
         <div className="flex justify-center items-center gap-x-4">
           {percentageDiscount ? (

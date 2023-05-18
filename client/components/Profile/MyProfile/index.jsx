@@ -47,7 +47,6 @@ export default function MyProfile() {
 
     setImg(file);
   };
-  console.log(img);
   return (
     <div className="w-full h-full px-[30px]  ">
       <div className="bg-white px-[20px] rounded-[8px]">

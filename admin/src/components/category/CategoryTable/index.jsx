@@ -8,9 +8,8 @@ import Swal from "sweetalert2";
 
 export default function CategoryTable({
   categories,
-  handleDeleteCategory,
+  handleSoftDelete,
   handleShowEditCategoryModal,
-  handleUpdateCategory,
   isSelectAll,
   isSelected,
   handleSelectAll,
@@ -25,17 +24,6 @@ export default function CategoryTable({
         return <p className="text-sm text-center">{jsUcfirst(item.name)}</p>;
       },
     },
-    // {
-    //   field: "active",
-    //   headerName: "Hiển thị",
-    //   renderCell: (item) => {
-    //     return (
-    //       <div className="flex justify-start">
-    //         <ToggleSwitch id={item._id} isActive={item.isActive} handleIsActive={handleUpdateCategory} />
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "createdAt",
       headerName: "Ngày thêm",
@@ -72,7 +60,7 @@ export default function CategoryTable({
               onClick={() => {
                 Swal.fire({
                   title: "Bạn chắc chắn muốn xoá?",
-                  text: "Các sản phẩm thuộc danh mục này cũng sẽ bị xoá và sẽ không thể khôi phục",
+                  text: "Các sản phẩm thuộc danh mục này cũng sẽ bị chuyển vào thùng rác.",
                   icon: "question",
                   showCancelButton: true,
                   confirmButtonColor: "#0E9F6E",
@@ -81,8 +69,8 @@ export default function CategoryTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleDeleteCategory(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã xoá.", confirmButtonColor: "#0E9F6E" });
+                    handleSoftDelete(item._id);
+                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}
