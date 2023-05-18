@@ -28,7 +28,7 @@ export default function MoreOderInfor({ order, close }) {
           <div className="justify-end absolute z-5 right-0 top-0  ">
             <div
               onClick={close}
-              className="flex  items-center  w-[50px] text-left rounded-tr-[8px] bg-[#ee4d2d] text-[#fff] h-[40px] text-[25px] cursor-pointer hover:bg-[#e8340c]"
+              className="flex  items-center  w-[50px] text-left rounded-bl-[8px] rounded-tr-[8px] bg-[#ee4d2d] text-[#fff] h-[40px] text-[25px] cursor-pointer hover:bg-[#e8340c]"
             >
               <IconClose />
             </div>
