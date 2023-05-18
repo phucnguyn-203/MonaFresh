@@ -72,7 +72,6 @@ export default function Product() {
       const response = await productAPI.getAllProduct(params);
       setProducts(response.data);
       setTotalPageCount(response.totalPages);
-      console.log(response.totalPages, currentPage);
     } catch (err) {
       console.log(err);
     }

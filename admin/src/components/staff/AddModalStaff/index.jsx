@@ -19,17 +19,17 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
-    email: yup.string().required("Vui lòng nhập Email của bạn ").email("Vui lòng nhập đúng định dạng của Email"),
-    password: yup.string().required("Vui lòng nhập mật khẩu của bạn").min(8, "Mật khẩu có ít nhất 8 kí tự."),
+    email: yup.string().required("Vui lòng nhập Email của bạn.").email("Vui lòng nhập đúng định dạng của Email."),
+    password: yup.string().required("Vui lòng nhập mật khẩu của bạn.").min(8, "Mật khẩu có ít nhất 8 kí tự."),
     passwordConfirm: yup
       .string()
-      .required("Vui lòng nhập lại mật khẩu của bạn")
+      .required("Vui lòng nhập lại mật khẩu của bạn.")
       .oneOf([yup.ref("password")], "Mật khẩu không trùng khớp."),
     phone: yup
       .string()
-      .required("Vui lòng nhập số điện thoại của bạn")
-      .phone("Vui lòng nhập đúng định dạng số điện thoại"),
-    role: yup.string().required("Vui lòng nhập chức vụ"),
+      .required("Vui lòng nhập số điện thoại của bạn.")
+      .phone("Vui lòng nhập đúng định dạng số điện thoại."),
+    role: yup.string().required("Vui lòng nhập chức vụ."),
   });
   const {
     register,
@@ -241,8 +241,8 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
                   {...register("role")}
                   className="block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none"
                 >
-                  <option>Nhân viên</option>
-                  <option>Quản lý</option>
+                  <option value={3}>Nhân viên</option>
+                  <option value={1}>Quản lý</option>
                 </select>
               </div>
             </div>

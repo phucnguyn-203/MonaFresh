@@ -35,12 +35,15 @@ export default function Pagination({
       <div className="flex items-center justify-between">
         <p className="flex items-center font-semibold tracking-wide uppercase text-xs">
           Hiển thị
-          <select className="mx-[5px]" defaultValue={limitPerPage} onChange={(e) => setLimitPerPage(e.target.value)}>
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-            <option value={20}>20</option>
+          <select
+            className="mx-[5px] text-[12px] uppercase"
+            defaultValue={limitPerPage}
+            onChange={(e) => setLimitPerPage(e.target.value)}
+          >
+            <option value={10}>10 kết quả</option>
+            <option value={15}>15 kết quả</option>
+            <option value={20}>20 kết quả</option>
           </select>
-          sản phẩm.
         </p>
         <div className="flex items-center justify-center my-[10px]">
           <button
