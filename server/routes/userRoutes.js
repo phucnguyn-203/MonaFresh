@@ -14,7 +14,7 @@ const {
     deleteMe,
     logout,
 } = require("../controllers/userControllers");
-const { createStaff } = require("../controllers/staffControllers");
+const { createStaff, getAllStaff, updateStaff, getOneStaff } = require("../controllers/staffControllers");
 
 const { authenticate } = require("../middlewares/auth");
 
@@ -31,4 +31,8 @@ router.get("/get-new-accessToken", getNewAccessToken);
 router.get("/logout", logout);
 
 router.post("/register-staff", authenticate, createStaff);
+router.get("/", getAllStaff);
+router.get("/:id", getOneStaff);
+router.patch("/:id", authenticate, updateStaff);
+
 module.exports = router;

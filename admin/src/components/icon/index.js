@@ -15,3 +15,5 @@ export { default as IconEdit } from "./edit";
 export { default as IconDelete } from "./delete";
 export { default as IconPrevious } from "./arrowPrevious";
 export { default as IconNext } from "./arrowNext";
+export { default as IconEye } from "./eye";
+export { default as IconEyeClose } from "./eyeClose";
