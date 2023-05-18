@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-
-import { IconAdd } from "../../components/icon";
-import { IconDelete } from "../../components/icon";
+import React, { useEffect, useState } from "react";
+import { IconAdd, IconDelete, IconBack, IconRestore } from "../../components/icon";
 import PageLayout from "../../components/layout/pageLayout";
 import StaffTable from "../../components/staff/StaffTable";
+import StaffDeletedTable from "../../components/staff/StaffDeletedTable";
 import AddModalStaff from "../../components/staff/AddModalStaff";
 import EditModalStaff from "../../components/staff/EditModalStaff";
 import staffAPI from "../../api/staffAPI";
 import { USER_ROLES } from "../../utils/Constant";
 import useDebounce from "../../hooks/useDebounce";
+import { get } from "react-hook-form";
+import Swal from "sweetalert2";
 
 export default function Staff() {
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
@@ -18,15 +19,18 @@ export default function Staff() {
   const [filterByRole, setFilterByRole] = useState();
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
+  const [isSelectAll, setIsSelectAll] = useState(false);
+  const [isSelected, setIsSelected] = useState ([]);
+  const [isShowStaffDeletedTable, setIsShowStaffDeletedTable] = useState (false);
 
   useEffect(() => {
     getAllStaff();
-  }, [debounceValue, filterByRole]);
+  }, [debounceValue, filterByRole, isShowStaffDeletedTable]);
 
-  const handleCloseAddModal = () => {
+  const handleShowAddModal = () => {
     setShowAddStaffModal(!showAddStaffModal);
   };
-  const handleShowEditStaff = (item) => {
+  const handleShowEditStaffModal = (item) => {
     setShowEditStaffModal(!showEditStaffModal);
     setEditStaffData(item);
   };
@@ -40,6 +44,11 @@ export default function Staff() {
     }
     if (filterByRole) {
       params.role = filterByRole;
+    }
+    if (isShowStaffDeletedTable){
+      params.isActive = false;
+    }else {
+      params.isActive = true;
     }
     try {
       const response = await staffAPI.getAllStaff(params);
@@ -74,9 +83,206 @@ export default function Staff() {
       console.log(error);
     }
   };
-
+  const handleSelectAll = () => {
+    setIsSelectAll(!isSelectAll);
+    setIsSelected(staffs.map((staff) => staff._id));
+    if(isSelectAll){
+      setIsSelected([]);
+    }
+  };
+  const handleSelected = (event) => {
+    const { id, checked } = event.target;
+    setIsSelected([...isSelected, id]);
+    if(!checked) {
+      setIsSelected(isSelected.filter((staffId) => staffId !== id));
+    }
+  };
+  const handleUpdateStaffStatus = async (id, data) => {
+    await staffAPI.updateStaffStatus(id, data);
+    await getAllStaff();
+    
+  };
+  const handleDeleteStaff = async (id) => {
+    try {
+      await staffAPI.deleteStaff(id);
+      getAllStaff();
+    }catch (err) {
+      console.log(err);
+    }
+  }; 
+  const handleDeleteManyStaff = async() => {
+    try {
+      await staffAPI.deleteManyStaff({staffIds: isSelected});
+      getAllStaff();
+    }catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSoftDeleteStaff = async(id) => {
+    try {
+      await staffAPI.updateStaffStatus(id, {isActive: false});
+      getAllStaff();
+    }catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSoftDeleteManyStaff = async() => {
+    try {
+      await staffAPI.updateManyStaffStatus({staffIds: isSelected, isActive: false});
+      getAllStaff();
+    }catch (err) {
+      console.log(err);
+    }
+  };
+  const handleRestoreStaff = async(id) => {
+    try {
+      await staffAPI.updateStaffStatus(id, {isActive: true});
+      getAllStaff();
+    }catch (err) {
+      console.log(err);
+    }
+  };
+  const handleRestoreManyStaff = async() => {
+    try {
+      await staffAPI.updateManyStaffStatus({staffIds: isSelected, isActive: true});
+      getAllStaff();
+    }catch (err) {
+      console.log(err);
+    }
+  };
+  const handleShowDeletedTable = () => {
+    setIsShowStaffDeletedTable(!isShowStaffDeletedTable);
+  };
   return (
     <PageLayout title="Nhân viên">
+      <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
+        <div className="p-4">
+          <div className="flex justify-end items-center py-3 gap-x-4">
+            {isShowStaffDeletedTable ? (
+              <React.Fragment>
+                <button
+                  disabled={isSelected.length <= 0}
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Bạn chắc chắn muốn khôi phục?",
+                      text: "Các nhân viên sẽ được khôi phục.",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonColor: "#0E9F6E",
+                      cancelButtonColor: "#d33",
+                      cancelButtonText: "Huỷ bỏ",
+                      confirmButtonText: "Đồng ý!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleRestoreManyStaff();
+                        Swal.fire({
+                          title: "Đã Khôi phục",
+                          text: "Các nhân viên đã được khôi phục.",
+                          confirmButtonColor: "#0E9F6E",
+                        });
+                      }
+                    });
+                  }}
+                  className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white border border-transparent ${
+                          isSelected.length > 0 ? "bg-yellow-400 cursor-pointer" : "bg-yellow-200 cursor-not-allowed"
+                        }`}
+                >
+                  <span className="mr-3">
+                    <IconRestore />
+                  </span>
+                  Khôi phục
+                </button>
+
+                <button
+                  disabled={isSelected.length <= 0}
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Bạn chắc chắn muốn xoá?",
+                      text: "Các nhân viên sẽ được xoá và không thể khôi phục.",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonColor: "#0E9F6E",
+                      cancelButtonColor: "#d33",
+                      cancelButtonText: "Huỷ bỏ",
+                      confirmButtonText: "Đồng ý!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleDeleteManyStaff();
+                        Swal.fire({
+                          title: "Đã xoá",
+                          text: "Các nhân viên đã được xoá.",
+                          confirmButtonColor: "#0E9F6E",
+                        });
+                      }
+                    });
+                  }}
+                  className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white border border-transparent ${
+                          isSelected.length > 0 ? "bg-red-600 cursor-pointer" : "bg-red-300 cursor-not-allowed"
+                        }`}
+                >
+                  <span className="mr-3">
+                    <IconDelete />
+                  </span>
+                  Xoá
+                </button>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <button
+                  disabled={isSelected.length <= 0}
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Bạn chắc chắn muốn xoá?",
+                      text: "Các nhân viên sẽ được chuyển vào thùng rác.",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonColor: "#0E9F6E",
+                      cancelButtonColor: "#d33",
+                      cancelButtonText: "Huỷ bỏ",
+                      confirmButtonText: "Đồng ý!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleSoftDeleteManyStaff();
+                        Swal.fire({
+                          title: "Đã xoá",
+                          text: "Các nhân viên đã được chuyển vào thùng rác.",
+                          confirmButtonColor: "#0E9F6E",
+                        });
+                      }
+                    });
+                  }}
+                  className={`h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white border border-transparent ${
+                          isSelected.length > 0 ? "bg-red-600 cursor-pointer" : "bg-red-300 cursor-not-allowed"
+                        }`}
+                >
+                  <span className="mr-3">
+                    <IconDelete />
+                  </span>
+                  Xoá
+                </button>
+              </React.Fragment>
+            )}
+
+            <button
+              className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
+                        text-white bg-primary border border-transparent hover:bg-emerald-700 "
+              onClick={handleShowAddModal}
+            >
+              <span className="mr-3">
+                <IconAdd />
+              </span>
+              Thêm Nhân Viên
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
         <div className="p-4">
           <div className="flex justify-end items-center py-3 gap-x-4">
@@ -97,33 +303,75 @@ export default function Staff() {
               <option value={USER_ROLES.STAFF}>Nhân viên</option>
               <option value={USER_ROLES.ADMIN}>Quản lý</option>
             </select>
-            <button
-              className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
-                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
-                        text-white bg-red-300 cursor-not-allowed border border-transparent"
-            >
-              <span className="mr-2">
-                <IconDelete />
-              </span>
-              Xoá
-            </button>
-            <button
-              onClick={handleCloseAddModal}
-              className="h-12 w-[500px] align-bottom inline-flex leading-5 items-center justify-center 
-                        cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 
-                        text-white bg-primary border border-transparent hover:bg-emerald-700 "
-            >
-              <span className="mr-3">
-                <IconAdd />
-              </span>
-              Thêm nhân viên
-            </button>
+            
           </div>
         </div>
       </div>
+      <div className="flex justify-end mb-5 px-[20px]">
+        {isShowStaffDeletedTable ? (
+          <button
+            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                          transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                          text-white  bg-primary border border-transparent hover:bg-emerald-700"
+            onClick={() => {
+              handleShowDeletedTable();
+              setIsSelected([]);
+              setIsSelectAll(false);
+            }}
+          >
+            <span className="mr-3">
+              <IconBack />
+            </span>
+            Quay lại
+          </button>
+        ) : (
+          <button
+            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white bg-red-500 hover:bg-red-700 border border-transparent"
+            onClick={() => {
+              handleShowDeletedTable();
+              setIsSelected([]);
+              setIsSelectAll(false);
+            }}
+          >
+            <span className="mr-3">
+              <IconDelete />
+            </span>
+            Thùng rác
+          </button>
+        )}
+      </div>
+      {isShowStaffDeletedTable ? (
+        <React.Fragment>
+          <h1 className="text-black font-bold mb-5">Thùng rác</h1>
+          <StaffDeletedTable
+            staffs={staffs}
+            handleDelete={handleDeleteStaff}
+            handleRestore={handleRestoreStaff}
+            handleSelected={handleSelected}
+            isSelected={isSelected}
+            handleSelectAll={handleSelectAll}
+            isSelectAll={isSelectAll}
+          />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <h1 className="text-black font-bold mb-5">Danh sách</h1>
+          <StaffTable
+            staffs={staffs}
+            handleSoftDelete={handleSoftDeleteStaff}
+            handleShowEditStaffModal={handleShowEditStaffModal}
+            isSelectAll={isSelectAll}
+            isSelected={isSelected}
+            handleSelectAll={handleSelectAll}
+            handleSelected={handleSelected}
+          />
+        </React.Fragment>
+      )}
       {showAddStaffModal && (
         <AddModalStaff
-          closeModal={handleCloseAddModal}
+          closeModal={handleShowAddModal}
           title="THÊM NHÂN VIÊN"
           titleBtnFooter="THÊM"
           handleAddStaff={handleAddStaff}
@@ -131,14 +379,14 @@ export default function Staff() {
       )}
       {showEditStaffModal && (
         <EditModalStaff
-          closeModal={handleShowEditStaff}
+          closeModal={handleShowEditStaffModal}
           title="CẬP NHẬT NHÂN VIÊN"
           titleBtnFooter="CẬP NHẬT"
           staff={editStaffData}
           handleUpdateStaff={handleUpdateStaff}
         />
       )}
-      <StaffTable staffs={staffs} handleShowEditStaff={handleShowEditStaff} />
+      
     </PageLayout>
   );
 }
