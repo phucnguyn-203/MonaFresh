@@ -4,14 +4,15 @@ const ApiFeatures = require("../utils/ApiFeatures");
 
 exports.getAllSupplier = catchAsync(async (req, res) => {
     // const suppliers = await Supplier.find();
-    const features = new ApiFeatures(Supplier, req.query).filter().paginate();
-    const suppliers = await features.query;
+    const features = new ApiFeatures(Supplier, req.query).filter();
+    const { query, totalPages, currentPage } = await features.paginate();
+    const suppliers = await query;
     res.status(200).json({
         status: "success",
-        results: suppliers.length,
+        currentPage: currentPage,
+        totalPages: totalPages,
+        totalResults: suppliers.length,
         data: suppliers,
-        currentPage: req.query.page * 1 || 1,
-        totalPages: Math.ceil(suppliers.length / req.query.limit || 10),
     });
 });
 
@@ -33,7 +34,7 @@ exports.createSupplier = catchAsync(async (req, res) => {
 
 exports.updateSupplier = catchAsync(async (req, res) => {
     const supplier = await Supplier.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    
+
     res.status(200).json({
         status: "success",
         data: supplier,
@@ -42,14 +43,14 @@ exports.updateSupplier = catchAsync(async (req, res) => {
 
 exports.updateManySupplier = catchAsync(async (req, res) => {
     await Supplier.updateMany(
-        {_id: { $in: req.body.data.supplierIds}},
-        { $set : { isActive: req.body.data.isActive }},
-        {multi: true}
+        { _id: { $in: req.body.data.supplierIds } },
+        { $set: { isActive: req.body.data.isActive } },
+        { multi: true },
     );
     res.status(200).json({
         status: "success",
     });
-})
+});
 
 exports.deleteSupplier = catchAsync(async (req, res) => {
     await Supplier.findByIdAndDelete(req.params.id);
