@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+
 import { IconAdd, IconDelete, IconBack, IconRestore } from "../../components/icon";
 import PageLayout from "../../components/layout/pageLayout";
 import StaffTable from "../../components/staff/StaffTable";
@@ -8,8 +10,6 @@ import EditModalStaff from "../../components/staff/EditModalStaff";
 import staffAPI from "../../api/staffAPI";
 import { USER_ROLES } from "../../utils/Constant";
 import useDebounce from "../../hooks/useDebounce";
-import { get } from "react-hook-form";
-import Swal from "sweetalert2";
 
 export default function Staff() {
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
@@ -20,12 +20,16 @@ export default function Staff() {
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
   const [isSelectAll, setIsSelectAll] = useState(false);
-  const [isSelected, setIsSelected] = useState ([]);
-  const [isShowStaffDeletedTable, setIsShowStaffDeletedTable] = useState (false);
+  const [isSelected, setIsSelected] = useState([]);
+  const [isShowStaffDeletedTable, setIsShowStaffDeletedTable] = useState(false);
+  //
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [limitPerPage, setLimitPerPage] = useState(10);
 
   useEffect(() => {
     getAllStaff();
-  }, [debounceValue, filterByRole, isShowStaffDeletedTable]);
+  }, [debounceValue, filterByRole, isShowStaffDeletedTable, currentPage, limitPerPage]);
 
   const handleShowAddModal = () => {
     setShowAddStaffModal(!showAddStaffModal);
@@ -36,23 +40,22 @@ export default function Staff() {
   };
 
   const getAllStaff = async () => {
-    let params = {
-      // role: [USER_ROLES.ADMIN, USER_ROLES.STAFF],
-    };
+    let params = { page: currentPage, limit: limitPerPage, role: [USER_ROLES.ADMIN, USER_ROLES.STAFF] };
     if (debounceValue) {
       params.search = debounceValue.trim();
     }
     if (filterByRole) {
       params.role = filterByRole;
     }
-    if (isShowStaffDeletedTable){
+    if (isShowStaffDeletedTable) {
       params.isActive = false;
-    }else {
+    } else {
       params.isActive = true;
     }
     try {
       const response = await staffAPI.getAllStaff(params);
       setStaffs(response.data);
+      setTotalPageCount(response.totalPages);
     } catch (err) {
       console.log(err);
     }
@@ -86,67 +89,66 @@ export default function Staff() {
   const handleSelectAll = () => {
     setIsSelectAll(!isSelectAll);
     setIsSelected(staffs.map((staff) => staff._id));
-    if(isSelectAll){
+    if (isSelectAll) {
       setIsSelected([]);
     }
   };
   const handleSelected = (event) => {
     const { id, checked } = event.target;
     setIsSelected([...isSelected, id]);
-    if(!checked) {
+    if (!checked) {
       setIsSelected(isSelected.filter((staffId) => staffId !== id));
     }
   };
   const handleUpdateStaffStatus = async (id, data) => {
     await staffAPI.updateStaffStatus(id, data);
     await getAllStaff();
-    
   };
   const handleDeleteStaff = async (id) => {
     try {
       await staffAPI.deleteStaff(id);
       getAllStaff();
-    }catch (err) {
-      console.log(err);
-    }
-  }; 
-  const handleDeleteManyStaff = async() => {
-    try {
-      await staffAPI.deleteManyStaff({staffIds: isSelected});
-      getAllStaff();
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
-  const handleSoftDeleteStaff = async(id) => {
+  const handleDeleteManyStaff = async () => {
     try {
-      await staffAPI.updateStaffStatus(id, {isActive: false});
+      await staffAPI.deleteManyStaff({ staffIds: isSelected });
       getAllStaff();
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
-  const handleSoftDeleteManyStaff = async() => {
+  const handleSoftDeleteStaff = async (id) => {
     try {
-      await staffAPI.updateManyStaffStatus({staffIds: isSelected, isActive: false});
+      await staffAPI.updateStaffStatus(id, { isActive: false });
       getAllStaff();
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
-  const handleRestoreStaff = async(id) => {
+  const handleSoftDeleteManyStaff = async () => {
     try {
-      await staffAPI.updateStaffStatus(id, {isActive: true});
+      await staffAPI.updateManyStaffStatus({ staffIds: isSelected, isActive: false });
       getAllStaff();
-    }catch (err) {
+    } catch (err) {
       console.log(err);
     }
   };
-  const handleRestoreManyStaff = async() => {
+  const handleRestoreStaff = async (id) => {
     try {
-      await staffAPI.updateManyStaffStatus({staffIds: isSelected, isActive: true});
+      await staffAPI.updateStaffStatus(id, { isActive: true });
       getAllStaff();
-    }catch (err) {
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleRestoreManyStaff = async () => {
+    try {
+      await staffAPI.updateManyStaffStatus({ staffIds: isSelected, isActive: true });
+      getAllStaff();
+    } catch (err) {
       console.log(err);
     }
   };
@@ -298,12 +300,15 @@ export default function Staff() {
             />
             <select
               className="block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none"
-              onChange={(e) => setFilterByRole(e.target.value)}
+              onChange={(e) => {
+                setFilterByRole(e.target.value);
+                setCurrentPage(1);
+              }}
             >
+              <option value={""}>Tất cả</option>
               <option value={USER_ROLES.STAFF}>Nhân viên</option>
               <option value={USER_ROLES.ADMIN}>Quản lý</option>
             </select>
-            
           </div>
         </div>
       </div>
@@ -353,6 +358,11 @@ export default function Staff() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             isSelectAll={isSelectAll}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       ) : (
@@ -366,6 +376,11 @@ export default function Staff() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             handleSelected={handleSelected}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       )}
@@ -386,7 +401,6 @@ export default function Staff() {
           handleUpdateStaff={handleUpdateStaff}
         />
       )}
-      
     </PageLayout>
   );
 }

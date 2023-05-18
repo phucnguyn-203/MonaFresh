@@ -15,6 +15,11 @@ export default function CategoryDeletedTable({
   isSelected,
   handleSelectAll,
   handleSelected,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
 }) {
   const columnData = [
     {
@@ -155,6 +160,11 @@ export default function CategoryDeletedTable({
       isSelected={isSelected}
       handleSelected={handleSelected}
       handleSelectAll={handleSelectAll}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
     />
   );
 }

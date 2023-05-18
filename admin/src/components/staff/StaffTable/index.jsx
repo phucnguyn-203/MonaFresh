@@ -1,19 +1,23 @@
 import { Tooltip } from "react-tooltip";
 import { IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
-import ToggleSwitch from "../../ToggleSwitch";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import jsUcfirst from "../../../utils/jsUcfirst";
 import Swal from "sweetalert2";
-export default function StaffTable({ 
-  staffs, 
+export default function StaffTable({
+  staffs,
   handleSoftDelete,
-  handleShowEditStaffModal, 
+  handleShowEditStaffModal,
   isSelectAll,
   isSelected,
   handleSelectAll,
   handleSelected,
-  }) {
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
+}) {
   const columnData = [
     {
       field: "name",
@@ -78,17 +82,6 @@ export default function StaffTable({
         );
       },
     },
-    // {
-    //   field: "active",
-    //   headerName: "Hiển thị",
-    //   renderCell: (item) => {
-    //     return (
-    //       <div className="flex justify-center">
-    //         <ToggleSwitch id={item.id} isActive={item.isActive} />
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       field: "actions",
       headerName: "Thao tác",
@@ -118,7 +111,11 @@ export default function StaffTable({
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Nhân viên đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({
+                      title: "Đã xoá",
+                      text: "Nhân viên đã được chuyển vào thùng rác.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
                   }
                 });
               }}
@@ -144,6 +141,11 @@ export default function StaffTable({
       isSelected={isSelected}
       handleSelected={handleSelected}
       handleSelectAll={handleSelectAll}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
     />
   );
 }
