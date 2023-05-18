@@ -4,12 +4,13 @@
     overflow-y: scroll;
     
 }
-.navbar:hover{
+/* .navbar:hover{
     overflow-y: scroll;
-}
+} */
 
 .navbar::-webkit-scrollbar {
     width: 6px;
+    display: none;
 }
   
 

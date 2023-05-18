@@ -268,7 +268,7 @@ export default function MyOders() {
                 {index === orderDropdown ? (
                   <div
                     onClick={handleClose}
-                    className="hover:scale-[110%] flex justify-center items-center text-[white]"
+                    className="underline hover:scale-[110%] flex justify-center items-center text-[white]"
                   >
                     Chi tiết đơn hàng
                   </div>
