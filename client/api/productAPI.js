@@ -11,6 +11,11 @@ const productAPI = {
     const response = await axios.get(url);
     return response;
   },
+  getSimilarProducts: async (params) => {
+    const url = "/products/similar";
+    const response = await axios.get(url, { params });
+    return response;
+  },
   getAllFeedback: async (id, params) => {
     const url = `/products/${id}/feedbacks`;
     const response = await axios.get(url, { params });

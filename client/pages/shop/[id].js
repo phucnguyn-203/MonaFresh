@@ -237,7 +237,7 @@ export default function Shop({ product, similarProducts }) {
         <h1 className="text-center text-2xl font-semibold py-[10px]">
           SẢN PHẨM TƯƠNG TỰ
         </h1>
-        {/* <ProductsCarousel products={similarProducts} /> */}
+        <ProductsCarousel products={similarProducts} />
       </div>
     </div>
   );
@@ -246,22 +246,19 @@ export default function Shop({ product, similarProducts }) {
 export async function getServerSideProps(context) {
   const id = context.params.id;
   try {
-    const product = (await productAPI.getOneProduct(id)).data;
-    const similarProducts = (
-      await productAPI.getAllProduct({
-        category: product.category._id,
-      })
-    ).data;
-
+    const product = await productAPI.getOneProduct(id);
+    const similarProducts = await productAPI.getSimilarProducts({
+      _id: product.data._id,
+      category: product.data.category._id,
+    });
     return {
-      props: { product, similarProducts },
+      props: { product: product.data, similarProducts: similarProducts.data },
     };
   } catch (err) {
     return {
       props: {
         product: null,
         similarProducts: null,
-        feedbacks: null,
       },
     };
   }

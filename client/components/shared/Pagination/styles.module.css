@@ -1,4 +1,4 @@
-.pagination li a {
+.pagination li span {
     padding: 5px 15px;
     margin: 0 15px;
     font-size: 18px;
@@ -8,14 +8,10 @@
     border-radius: 5px;
     font-weight: 500;
   }
-  .pagination li a:hover {
+  .pagination li span:hover {
     color: #6abd45;
   }
   
-  .pagination li a:active {
-    background-color: #6abd45;
-    color: #fff;
-  }
   .currentNumberPage {
     background-color: #6abd45;
     color: #fff !important;

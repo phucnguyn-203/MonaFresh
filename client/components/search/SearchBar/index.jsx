@@ -1,6 +1,6 @@
 import { IconSearch } from "@/components/icons/";
 import productAPI from "@/api/productAPI";
-import useDebounce from "@/components/hooks/useDebounce";
+import useDebounce from "@/hooks/useDebounce";
 import { useState, useEffect } from "react";
 import SearchResult from "../SearchResults";
 

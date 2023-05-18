@@ -16,3 +16,8 @@
   background-color: #6abd45;
   color: #fff;
 }
+
+.list li.isActive {
+  background-color: var(--primary-color);
+  color: white;
+}

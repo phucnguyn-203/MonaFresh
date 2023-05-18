@@ -12,7 +12,7 @@ exports.getOneCategory = catchAsync(async (req, res) => {
 });
 
 exports.getAllCategory = catchAsync(async (req, res) => {
-    const features = new ApiFeatures(Category, req.query).filter().paginate();
+    const features = new ApiFeatures(Category, req.query).filter();
     const categories = await features.query;
     res.status(200).json({
         status: "success",
@@ -31,14 +31,10 @@ exports.createCategory = catchAsync(async (req, res) => {
     });
 });
 
-exports.updateCategory = catchAsync(async (req, res) => {  
+exports.updateCategory = catchAsync(async (req, res) => {
     const category = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-    if(req.body.isActive===false){
-        await Product.updateMany(
-            {category: req.params.id},
-            {$set: {isActive: false}},
-            {multi: true}
-        );
+    if (req.body.isActive === false) {
+        await Product.updateMany({ category: req.params.id }, { $set: { isActive: false } }, { multi: true });
     }
     res.status(200).json({
         status: "success",
@@ -48,20 +44,19 @@ exports.updateCategory = catchAsync(async (req, res) => {
 
 exports.updateManyCategory = catchAsync(async (req, res) => {
     await Category.updateMany(
-        { _id: { $in: req.body.data.categoryIds}},
-        { $set: { isActive: req.body.data.isActive}},
-        { multi: true}
+        { _id: { $in: req.body.data.categoryIds } },
+        { $set: { isActive: req.body.data.isActive } },
+        { multi: true },
     );
     await Product.updateMany(
-        {category: { $in: req.body.data.categoryIds}},
-        {$set: {isActive: false}},
-        {multi: true}
+        { category: { $in: req.body.data.categoryIds } },
+        { $set: { isActive: false } },
+        { multi: true },
     );
     res.status(200).json({
         status: "success",
-        
-    })
-})
+    });
+});
 
 exports.deleteCategory = catchAsync(async (req, res) => {
     await Category.findByIdAndDelete(req.params.id);

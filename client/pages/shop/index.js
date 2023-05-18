@@ -1,7 +1,7 @@
+import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/shared/Breadcrumb";
 import Sidebar from "@/components/shop/Sidebar";
 import Products from "@/components/shop/Products";
-import { useState, useEffect } from "react";
 import productAPI from "@/api/productAPI";
 
 export default function Shop() {
@@ -15,36 +15,42 @@ export default function Shop() {
       path: "/shop",
     },
   ];
-  const [filterByCategory, setFilterByCategory] = useState("");
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [filterByCategory, setFilterByCategory] = useState("");
   const [sortValue, setSortValue] = useState("");
+  const [rangePriceFilter, setRangePriceFilter] = useState([0, 0]);
 
   useEffect(() => {
     getAllProduct();
-  }, [filterByCategory, sortValue]);
+  }, [filterByCategory, sortValue, rangePriceFilter, currentPage]);
 
   const getAllProduct = async () => {
-    let params = {};
+    let params = {
+      page: currentPage,
+      limit: 12,
+    };
     if (filterByCategory) {
       params.category = filterByCategory;
     }
     if (sortValue) {
       params = { ...params, ...sortValue };
     }
+    if (rangePriceFilter[0] !== 0 || rangePriceFilter[1] !== 0) {
+      params = {
+        ...params,
+        "price[gte]": rangePriceFilter[0],
+        "price[lte]": rangePriceFilter[1],
+      };
+    }
     try {
       const response = await productAPI.getAllProduct(params);
-      if (response.data.length > 0) {
-        setProducts(response.data);
-      } else {
-        setProducts([]);
-      }
+      setProducts(response.data);
+      setTotalPageCount(response.totalPages);
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleCategoryClick = (category) => {
-    setFilterByCategory(category);
   };
 
   return (
@@ -80,11 +86,23 @@ export default function Shop() {
         </div>
       </div>
       <div className="flex mt-[40px] gap-x-6  ">
-        <Sidebar onCategoryClick={handleCategoryClick} />
+        <Sidebar
+          filterByCategory={filterByCategory}
+          setFilterByCategory={setFilterByCategory}
+          rangePriceFilter={rangePriceFilter}
+          setRangePriceFilter={setRangePriceFilter}
+        />
         {products.length > 0 ? (
-          <Products products={products} />
+          <Products
+            products={products}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+          />
         ) : (
-          <p className="italic text-xl">Không tìm thấy sản phẩm</p>
+          <p className="italic text-xl flex-1 text-center">
+            Không tìm thấy sản phẩm
+          </p>
         )}
       </div>
     </div>

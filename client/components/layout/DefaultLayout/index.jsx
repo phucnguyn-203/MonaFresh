@@ -28,7 +28,9 @@ export default function DefaultLayout({ children }) {
   return (
     <React.Fragment>
       {isLoading ? (
-        <Loading />
+        <div className="flex justify-center items-center h-screen">
+          <Loading />
+        </div>
       ) : (
         <div className={styles.app}>
           <Header />
