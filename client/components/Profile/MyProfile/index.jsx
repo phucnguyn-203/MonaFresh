@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./styles.module.css";
-import Image from "next/image";
-import Avatar from "@/public/assets/img/avatar.png";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yup from "@/utils/yupGlobal";
 import UpdatePassword from "./UpdatePassword";
+import { useSelector } from "react-redux";
+import userAPI from "@/api/userAPI";
+import Loading from "@/components/loading";
+import Swal from "sweetalert2";
+import uploadFileApi from "@/api/uploadFileApi";
 
 export default function MyProfile() {
-  const [img, setImg] = useState(Avatar);
+  const currentUser = useSelector((state) => state.auth.currentUser);
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
@@ -20,16 +24,6 @@ export default function MyProfile() {
       .string()
       .required("Vui lòng nhập số điện thoại của bạn")
       .phone("Vui lòng nhập đúng số điện thoại của bạn"),
-    password: yup
-      .string()
-      .required("Vui lòng nhập mật khẩu hiện tại cho tài khoản của bạn"),
-    newPassword: yup
-      .string()
-      .required("Vui lòng nhập mật khẩu mới cho tài khoản của bạn"),
-    cNewPassword: yup
-      .string()
-      .required("Vui lòng xác nhận lại mật khẩu mới cho tài khoản của bạn")
-      .oneOf([yup.ref("newPassword")], "Mật khẩu không trùng khớp"),
   });
   const {
     register,
@@ -38,15 +32,78 @@ export default function MyProfile() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
-
-  const handleSetImg = (e) => {
-    const file = e.target.files[0];
-
-    file.preview = URL.createObjectURL(file);
-
-    setImg(file);
+  const handleUpdateInfo = async (data) => {
+    await userAPI.updateInfo(data);
   };
+  const [avatar, setAvatar] = useState();
+  const [previewAvatar, setPreviewAvatar] = useState();
+
+  const handlePreviewAvatar = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+    setPreviewAvatar(URL.createObjectURL(file));
+  };
+  const handleAvatarUpload = async () => {
+    const formData = new FormData();
+    formData.append("file", avatar);
+    return await uploadFileApi.uploadSingleFile(formData);
+  };
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      if (avatar) {
+        const uploadAvatar = await handleAvatarUpload();
+        const photoUrl = uploadAvatar.url;
+        data.photo = photoUrl;
+      }
+      await handleUpdateInfo(data);
+      Swal.fire({
+        icon: "success",
+        title: "Cập nhật thành công",
+        position: "top-right",
+        timer: 5000,
+        toast: true,
+        showConfirmButton: false,
+        showCloseButton: false,
+        customClass: {
+          container: "absolute top-[80px] right-4",
+          title: "my-swal-title",
+          closeButton: "my-swal-close-button",
+        },
+        willOpen: () => {
+          document.querySelector("header").style.zIndex = 1;
+        },
+        willClose: () => {
+          document.querySelector("header").style.zIndex = "";
+        },
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Cập nhật thất bại",
+        position: "top-right",
+        timer: 5000,
+        toast: true,
+        showConfirmButton: false,
+        showCloseButton: false,
+        customClass: {
+          container: "absolute top-[80px] right-4",
+          title: "my-swal-title",
+          closeButton: "my-swal-close-button",
+        },
+        willOpen: () => {
+          document.querySelector("header").style.zIndex = 1;
+        },
+        willClose: () => {
+          document.querySelector("header").style.zIndex = "";
+        },
+      });
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="w-full h-full px-[30px]  ">
       <div className="bg-white px-[20px] rounded-[8px]">
@@ -54,7 +111,7 @@ export default function MyProfile() {
           <div className="w-full uppercase text-[18px] font-[600]">
             Thông tin tài khoản
           </div>
-          <div className="w-full text-[15px] font-[300]">
+          <div className="w-full  text-[15px] font-[300]">
             Quản lý và bảo vệ tài khoản của bạn
           </div>
         </div>
@@ -73,7 +130,7 @@ export default function MyProfile() {
                     id="name"
                     type="text"
                     name="name"
-                    // defaultValue="Nguyễn Hoàng Phúc"
+                    defaultValue={currentUser?.name}
                     {...register("name")}
                   />
                   {errors.name && (
@@ -93,7 +150,7 @@ export default function MyProfile() {
                     id="email"
                     type="text"
                     name="email"
-                    // defaultValue="phuttocdai123@gmail.com"
+                    defaultValue={currentUser?.email}
                     {...register("email")}
                   />
                   {errors.email && (
@@ -113,7 +170,7 @@ export default function MyProfile() {
                     id="phoneNumber"
                     type="text"
                     name="phoneNumber"
-                    // defaultValue="0123456789"
+                    defaultValue={currentUser?.phone}
                     {...register("phone")}
                   />
                   {errors.phone && (
@@ -122,24 +179,28 @@ export default function MyProfile() {
                 </div>
               </div>
               <div className="flex justify-center">
-                <button className="rounded-[8px] m-[20px] mt-[85px] bg-[#6abd45] text-[white] min-h-[40px] min-w-[150px] w-[20%] flex items-center text-center justify-center uppercase hover:bg-[#5faf3d]">
-                  Lưu chỉnh sửa
+                <button
+                  disabled={isLoading}
+                  className={`${
+                    isLoading ? "cursor-not-allowed" : ""
+                  } rounded-[8px] m-[20px] mt-[85px] bg-[#6abd45] text-[white] min-h-[40px] min-w-[150px] w-[20%] flex items-center text-center justify-center uppercase hover:bg-[#5faf3d]`}
+                >
+                  {isLoading ? <Loading size={30} /> : "Lưu chỉnh sửa"}
                 </button>
               </div>
             </form>
           </div>
-
           <div className="px-[50px] max-w-[40%] basis-[40%] border-l-[1px] border-[#ececec] text-center items-center justify-center">
             <div className="my-[30px] justify-center px-auto flex">
-              <Image
-                src={img.preview ?? Avatar}
-                // w-[65%] min-w-[30px] h-auto min-h-[30px]
-                className="w-[120px] h-[120px] drop-shadow-xl rounded-full"
+              <img
+                src={previewAvatar ? previewAvatar : currentUser?.photo}
+                className={styles.avatar}
                 alt="userProfile"
                 width="150"
                 height="150"
               />
             </div>
+
             <div className="my-[30px] justify-center px-auto flex">
               <label
                 htmlFor="chooseImg"
@@ -153,7 +214,7 @@ export default function MyProfile() {
                 accept="image/*"
                 className="w-full border-[1px] border-solid outline-none"
                 type="file"
-                onChange={handleSetImg}
+                onChange={handlePreviewAvatar}
               />
             </div>
             <div className="my-[20px]">
@@ -161,11 +222,7 @@ export default function MyProfile() {
                 Kích thước: không vượt quá 1MB Phần mở rộng tệp: .JPEG, .PNG
               </div>
             </div>
-            <div className="flex justify-center ">
-              <button className="rounded-[8px] m-[20px] bg-[#6abd45] text-[white] min-h-[40px] min-w-[150px] w-[20%] flex items-center text-center justify-center uppercase hover:bg-[#5faf3d]">
-                Cập nhật
-              </button>
-            </div>
+            <div className="flex justify-center "></div>
           </div>
         </div>
       </div>
