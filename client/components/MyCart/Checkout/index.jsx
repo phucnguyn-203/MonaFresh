@@ -32,23 +32,23 @@ export default function Checkout({ products, close }) {
       ></div>
 
       <div
-        className={`${styles.navbar}  h-[85%] mt-[40px] px-[20px] rounded-[8px] z-10 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  min-w-[60%] bg-white`}
+        className={`  h-[85%] mt-[40px] px-[10px] rounded-[8px] z-10 fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[70%] basis-[70%] min-w-[60%] bg-white`}
       >
         <div className="flex">
           <div className="justify-end absolute z-5 right-0 top-0  ">
             <div
               onClick={close}
-              className="flex  items-center  w-[50px] text-left rounded-tr-[8px] bg-[#ee4d2d] text-[#fff] h-[40px] text-[25px] cursor-pointer hover:bg-[#e8340c]"
+              className="flex  items-center  w-[50px] text-left rounded-bl-[8px] rounded-tr-[8px] bg-[#ee4d2d] text-[#fff] h-[40px] text-[25px] cursor-pointer hover:bg-[#e8340c]"
             >
               <IconClose />
             </div>
           </div>
         </div>
-
+        <div className={`${styles.navbar} w-full h-full`}>
         <div className="container bg-[white]  mb-[20px] p-[20px]">
           <div className="flex">
-            <div className="w-[60%]">
-              <div className="box-border max-w-[1240px] w-full flex mx-auto">
+            <div className="w-[50%] basis-[50%]">
+              <div className="box-border max-w-5xl w-full flex mx-auto">
                 <div className="w-full ">
                   <div className="border-t-[2px] border-[#ececec] w-full py-[20px] px-[10px]">
                     <h1 className="font-[600] text-[18px] uppercase mb-[10px]">
@@ -155,7 +155,7 @@ export default function Checkout({ products, close }) {
               </div>
             </div>
 
-            <div className="max-w-[40%] basis-[40%] w-full px-[1%]">
+            <div className="max-w-[50%] basis-[50%] w-full px-[1%]">
               <div className="w-full p-[5%] border-[2px] border-[#6abd45]">
                 <table className="w-full box-border mt-0">
                   <thead className="h-[55px] bg-[white] border-b-[3px] border-[#ececec] box-border uppercase leading-[1.05] tracking-[.05em] text-left p-[0.5em] w-[14%] text-[15px] ">
@@ -257,6 +257,7 @@ export default function Checkout({ products, close }) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </React.Fragment>
   );
