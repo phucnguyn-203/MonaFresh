@@ -8,8 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import userAPI from "@/api/userAPI";
 import Loading from "@/components/loading";
 import Swal from "sweetalert2";
-import uploadFileApi from "@/api/uploadFileApi";
 import { setUserSuccess } from "@/features/auth/authSlice";
+import UpdateAvatar from "./UpdateAvatar";
 
 export default function MyProfile() {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -38,27 +38,11 @@ export default function MyProfile() {
     await userAPI.updateInfo(data);
     return await userAPI.updateInfo(data);
   };
-  const [avatar, setAvatar] = useState();
-  const [previewAvatar, setPreviewAvatar] = useState();
 
-  const handlePreviewAvatar = (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
-    setPreviewAvatar(URL.createObjectURL(file));
-  };
-  const handleAvatarUpload = async () => {
-    const formData = new FormData();
-    formData.append("file", avatar);
-    return await uploadFileApi.uploadSingleFile(formData);
-  };
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      if (avatar) {
-        const uploadAvatar = await handleAvatarUpload();
-        const photoUrl = uploadAvatar.url;
-        data.photo = photoUrl;
-      }
+
       await handleUpdateInfo(data);
       const response = await handleUpdateInfo(data);
       dispatch(setUserSuccess(response.data));
@@ -195,40 +179,8 @@ export default function MyProfile() {
               </div>
             </form>
           </div>
-          <div className="px-[50px] max-w-[40%] basis-[40%] border-l-[1px] border-[#ececec] text-center items-center justify-center">
-            <div className="my-[30px] justify-center px-auto flex">
-              <img
-                src={previewAvatar ? previewAvatar : currentUser?.photo}
-                className="w-36 h-36 rounded-full"
-                alt="userProfile"
-                width="150"
-                height="150"
-              />
-            </div>
-
-            <div className="my-[30px] justify-center px-auto flex">
-              <label
-                htmlFor="chooseImg"
-                className="rounded-[8px] border-[1px] bg-[white] text-[15px] min-w-[90px] w-[10%] min-h-[30px] flex items-center text-center justify-center hover:bg-gray-50"
-              >
-                Chọn ảnh
-              </label>
-              <input
-                id="chooseImg"
-                hidden
-                accept="image/*"
-                className="w-full border-[1px] border-solid outline-none"
-                type="file"
-                onChange={handlePreviewAvatar}
-              />
-            </div>
-            <div className="my-[20px]">
-              <div className="text-gray-400 text-[15px]">
-                Kích thước: không vượt quá 1MB Phần mở rộng tệp: .JPEG, .PNG
-              </div>
-            </div>
-            <div className="flex justify-center "></div>
-          </div>
+          {/* Cập nhật avatar */}
+          <UpdateAvatar />
         </div>
       </div>
       {/* Cập nhật mất khẩu */}

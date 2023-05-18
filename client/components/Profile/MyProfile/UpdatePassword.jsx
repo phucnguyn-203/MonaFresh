@@ -127,13 +127,13 @@ export default function UpdatePassword() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row-reverse pr-6 pb-6">
+        <div className="flex justify-center items-center ">
           <button
             disabled={isLoading}
             onClick={() => handleUpdatePassword}
             className={`${
               isLoading ? "cursor-not-allowed" : ""
-            } align-bottom uppercase inline-flex items-center justify-center cursor-pointer transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-[#6abd45] border border-transparent active:bg-green-600 hover:bg-[#5faf3d] focus:ring focus:ring-purple-300 h-12 `}
+            } rounded-[8px] m-7  bg-[#6abd45] text-[white] min-h-[40px] min-w-[150px] w-[20%] flex items-center text-center justify-center uppercase hover:bg-[#5faf3d]`}
           >
             {isLoading ? <Loading size={30} /> : "Cập nhật mật khẩu"}
           </button>
