@@ -19,5 +19,5 @@ export { default as IconEye } from "./eye";
 export { default as IconEyeClose } from "./eyeClose";
 export { default as IconSupplier } from "./supplier";
 export { default as IconBack } from "./back";
-export { default as IconRestore } from "./restore"
-
+export { default as IconRestore } from "./restore";
+export { default as IconBin } from "./bin";

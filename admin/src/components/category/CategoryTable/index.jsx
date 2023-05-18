@@ -70,7 +70,7 @@ export default function CategoryTable({
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã xoá", text: "Danh mục đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Danh mục đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
                   }
                 });
               }}

@@ -68,7 +68,9 @@ exports.deleteCategory = catchAsync(async (req, res) => {
 });
 
 exports.deleteManyCategory = catchAsync(async (req, res) => {
+    console.log(req.body.data)
     await Category.deleteMany({ _id: { $in: req.body.categoryIds } });
+    await Product.deleteMany({ category: { $in: req.body.categoryIds } });
     res.status(204).json({
         status: "success",
         data: null,

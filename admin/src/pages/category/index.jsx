@@ -3,7 +3,7 @@ import useDebounce from "../../hooks/useDebounce";
 import categoryAPI from "../../api/categoryAPI";
 import productAPI from "../../api/productAPI";
 import PageLayout from "../../components/layout/pageLayout";
-import { IconAdd, IconDelete, IconBack, IconRestore } from "../../components/icon";
+import { IconAdd, IconDelete, IconBin, IconBack, IconRestore } from "../../components/icon";
 import CategoryTable from "../../components/category/CategoryTable";
 import AddCategoryModal from "../../components/category/AddCategoryModal";
 import EditCategoryModal from "../../components/category/EditCategoryModal";
@@ -24,7 +24,7 @@ export default function Category() {
   // const handleSoftDeleteProduct = async (category) => {
   //   try {
   //     await productAPI.updateProduct(category, { isActive: false });
-      
+
   //   } catch (err) {
   //     console.log(err);
   //   }
@@ -42,7 +42,7 @@ export default function Category() {
   }, [debounceValue, isShowCategoryDeletedTable]);
   useEffect(() => {
     getAllCategory();
-  },[]);
+  }, []);
 
   const handleSelectAll = () => {
     setIsSelectAll(!isSelectAll);
@@ -72,7 +72,7 @@ export default function Category() {
     }
     try {
       const response = await categoryAPI.getAllCategory(params);
-      console.log(response)
+      console.log(response);
       setCategories(response.data);
     } catch (err) {
       console.log(err);
@@ -121,7 +121,6 @@ export default function Category() {
     } catch (err) {
       console.log(err);
     }
-    
   };
 
   const handleSoftDeleteManyCategory = async () => {
@@ -258,7 +257,7 @@ export default function Category() {
                       if (result.isConfirmed) {
                         handleSoftDeleteManyCategory();
                         Swal.fire({
-                          title: "Đã xoá",
+                          title: "Đã chuyển vào thùng rác",
                           text: "Các danh mục và sản phẩm thuộc danh mục đã được chuyển vào thùng rác.",
                           confirmButtonColor: "#0E9F6E",
                         });
@@ -295,54 +294,56 @@ export default function Category() {
       </div>
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
         <div className="p-4">
-          <form className="py-3 grid gap-4 ">
-            <div className="flex-grow-0">
+          <div className="py-3 flex gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow ">
               <input
-                value={searchKeyWord}
+                className="block w-full h-12 px-3 py-1 text-sm focus:outline-none leading-5 
+                        rounded-md focus:border-gray-200 border-gray-200 bg-gray-100 ring-1 ring-gray-200
+                        focus:bg-white border-transparent"
+                type="text"
+                placeholder="Tìm theo tên danh mục"
                 onChange={(e) => setSearchKeyWord(e.target.value)}
-                type="search"
-                placeholder="Nhập tên danh mục"
-                className="block w-full px-3 py-1 text-sm focus:outline-none leading-5 rounded-md focus:border-gray-200 border-gray-200 border h-12 bg-gray-100 border-transparent focus:bg-white"
               />
             </div>
-          </form>
-        </div>
-      </div>
-      <div className="flex justify-end mb-5 px-[20px]">
-        {isShowCategoryDeletedTable ? (
-          <button
-            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+            {isShowCategoryDeletedTable ? (
+              <button
+                className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
                           transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
                           text-white  bg-primary border border-transparent hover:bg-emerald-700"
-            onClick={() => {
-              handleShowDeletedTable();
-              setIsSelected([]);
-              setIsSelectAll(false);
-            }}
-          >
-            <span className="mr-3">
-              <IconBack />
-            </span>
-            Quay lại
-          </button>
-        ) : (
-          <button
-            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                onClick={() => {
+                  handleShowDeletedTable();
+                  setIsSelected([]);
+                  setIsSelectAll(false);
+                }}
+              >
+                <span className="mr-3">
+                  <IconBack />
+                </span>
+                Quay lại
+              </button>
+            ) : (
+              <button
+                className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
                         transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
                         text-white bg-red-500 hover:bg-red-700 border border-transparent"
-            onClick={() => {
-              handleShowDeletedTable();
-              setIsSelected([]);
-              setIsSelectAll(false);
-            }}
-          >
-            <span className="mr-3">
-              <IconDelete />
-            </span>
-            Thùng rác
-          </button>
-        )}
+                onClick={() => {
+                  handleShowDeletedTable();
+                  setIsSelected([]);
+                  setIsSelectAll(false);
+                }}
+              >
+                <span className="mr-3">
+                  <IconBin />
+                </span>
+                Thùng rác
+              </button>
+            )}
+          </div>
+        </div>
       </div>
+      {/* <div className="flex justify-end mb-5 px-[20px]">
+        
+      </div> */}
       {isShowCategoryDeletedTable ? (
         <React.Fragment>
           <h1 className="text-black font-bold mb-5">Thùng rác</h1>
@@ -358,7 +359,7 @@ export default function Category() {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <h1 className="text-black font-bold mb-5">Kho hàng</h1>
+          <h1 className="text-black font-bold mb-5">Danh sách</h1>
           <CategoryTable
             categories={categories}
             handleSoftDelete={handleSoftDeleteCategory}
