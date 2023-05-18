@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-import { IconAdd, IconDelete, IconBack, IconRestore } from "../../components/icon";
+import { IconBin, IconAdd, IconDelete, IconBack, IconRestore } from "../../components/icon";
 import PageLayout from "../../components/layout/pageLayout";
 import StaffTable from "../../components/staff/StaffTable";
 import StaffDeletedTable from "../../components/staff/StaffDeletedTable";
@@ -250,7 +250,7 @@ export default function Staff() {
                       if (result.isConfirmed) {
                         handleSoftDeleteManyStaff();
                         Swal.fire({
-                          title: "Đã xoá",
+                          title: "Đã chuyển vào thùng rác",
                           text: "Các nhân viên đã được chuyển vào thùng rác.",
                           confirmButtonColor: "#0E9F6E",
                         });
@@ -287,66 +287,69 @@ export default function Staff() {
       </div>
       <div className="bg-white rounded-lg ring-1 ring-gray-200 ring-opacity-4 overflow-hidden mb-5 shadow-xs">
         <div className="p-4">
-          <div className="flex justify-end items-center py-3 gap-x-4">
-            <input
-              value={searchKeyWord}
-              className="block w-full h-12 px-3 py-1 text-sm focus:outline-none leading-5 
+          <div className="py-3 flex gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+              <input
+                value={searchKeyWord}
+                className="block w-full h-12 px-3 py-1 text-sm focus:outline-none leading-5 
                         rounded-md focus:border-gray-200 border-gray-200 bg-gray-100 ring-1 ring-gray-200
                         focus:bg-white border-transparent"
-              type="text"
-              name="searchKeyWord"
-              placeholder="Tìm theo tên nhân viên"
-              onChange={(e) => setSearchKeyWord(e.target.value)}
-            />
-            <select
-              className="block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none"
-              onChange={(e) => {
-                setFilterByRole(e.target.value);
-                setCurrentPage(1);
-              }}
-            >
-              <option value={""}>Tất cả</option>
-              <option value={USER_ROLES.STAFF}>Nhân viên</option>
-              <option value={USER_ROLES.ADMIN}>Quản lý</option>
-            </select>
+                type="text"
+                name="searchKeyWord"
+                placeholder="Tìm theo tên nhân viên"
+                onChange={(e) => setSearchKeyWord(e.target.value)}
+              />
+            </div>
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+              <select
+                className="block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none"
+                onChange={(e) => {
+                  setFilterByRole(e.target.value);
+                  setCurrentPage(1);
+                }}
+              >
+                <option value={""}>Tất cả</option>
+                <option value={USER_ROLES.STAFF}>Nhân viên</option>
+                <option value={USER_ROLES.ADMIN}>Quản lý</option>
+              </select>
+            </div>
+            {isShowStaffDeletedTable ? (
+              <button
+                className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                          transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                          text-white  bg-primary border border-transparent hover:bg-emerald-700"
+                onClick={() => {
+                  handleShowDeletedTable();
+                  setIsSelected([]);
+                  setIsSelectAll(false);
+                }}
+              >
+                <span className="mr-3">
+                  <IconBack />
+                </span>
+                Quay lại
+              </button>
+            ) : (
+              <button
+                className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
+                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
+                        text-white bg-red-500 hover:bg-red-700 border border-transparent"
+                onClick={() => {
+                  handleShowDeletedTable();
+                  setIsSelected([]);
+                  setIsSelectAll(false);
+                }}
+              >
+                <span className="mr-3">
+                  <IconBin />
+                </span>
+                Thùng rác
+              </button>
+            )}
           </div>
         </div>
       </div>
-      <div className="flex justify-end mb-5 px-[20px]">
-        {isShowStaffDeletedTable ? (
-          <button
-            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
-                          transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
-                          text-white  bg-primary border border-transparent hover:bg-emerald-700"
-            onClick={() => {
-              handleShowDeletedTable();
-              setIsSelected([]);
-              setIsSelectAll(false);
-            }}
-          >
-            <span className="mr-3">
-              <IconBack />
-            </span>
-            Quay lại
-          </button>
-        ) : (
-          <button
-            className="h-12 align-bottom inline-flex leading-5 items-center justify-center 
-                        transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm 
-                        text-white bg-red-500 hover:bg-red-700 border border-transparent"
-            onClick={() => {
-              handleShowDeletedTable();
-              setIsSelected([]);
-              setIsSelectAll(false);
-            }}
-          >
-            <span className="mr-3">
-              <IconDelete />
-            </span>
-            Thùng rác
-          </button>
-        )}
-      </div>
+      <div className="flex justify-end mb-5 px-[20px]"></div>
       {isShowStaffDeletedTable ? (
         <React.Fragment>
           <h1 className="text-black font-bold mb-5">Thùng rác</h1>
