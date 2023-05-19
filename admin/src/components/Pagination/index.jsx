@@ -36,7 +36,7 @@ export default function Pagination({
         <p className="flex items-center font-semibold tracking-wide uppercase text-xs">
           Hiển thị
           <select
-            className="mx-[5px] text-[12px] uppercase"
+            className="mx-[4px] text-[12px] uppercase"
             defaultValue={limitPerPage}
             onChange={(e) => setLimitPerPage(e.target.value)}
           >

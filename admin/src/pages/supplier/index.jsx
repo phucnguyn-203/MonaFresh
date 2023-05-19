@@ -19,13 +19,14 @@ export default function Product() {
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
   const [isShowSupplierDeletedTable, setIsShowSupplierDeletedTable] = useState(false);
+  //
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [limitPerPage, setLimitPerPage] = useState(10);
 
   useEffect(() => {
     getAllSupplier();
-  }, [debounceValue, isShowSupplierDeletedTable]);
-  useEffect(() => {
-    getAllSupplier();
-  }, []);
+  }, [debounceValue, isShowSupplierDeletedTable, currentPage, limitPerPage]);
 
   const handleSelectAll = () => {
     setIsSelectAll(!isSelectAll);
@@ -53,11 +54,11 @@ export default function Product() {
 
   const handleShowDeletedTable = () => {
     setIsShowSupplierDeletedTable(!isShowSupplierDeletedTable);
-  }
+  };
 
   const handleSoftDelete = async (id) => {
     try {
-      await supplierAPI.updateSupplier(id, {isActive: false});
+      await supplierAPI.updateSupplier(id, { isActive: false });
       getAllSupplier();
     } catch (err) {
       console.log(err);
@@ -65,8 +66,8 @@ export default function Product() {
   };
   const handleSoftDeleteMany = async () => {
     try {
-      await supplierAPI.updateManySupplier({supplierIds: isSelected, isActive: false});
-      getAllSupplier();
+      await supplierAPI.updateManySupplier({ supplierIds: isSelected, isActive: false });
+      await getAllSupplier();
     } catch (err) {
       console.log(err);
     }
@@ -74,7 +75,7 @@ export default function Product() {
 
   const handleRestore = async (id) => {
     try {
-      await supplierAPI.updateSupplier(id, { isActive: true});
+      await supplierAPI.updateSupplier(id, { isActive: true });
       getAllSupplier();
     } catch (err) {
       console.log(err);
@@ -83,7 +84,7 @@ export default function Product() {
 
   const handleRestoreMany = async () => {
     try {
-      await supplierAPI.updateManySupplier({supplierIds: isSelected, isActive: true});
+      await supplierAPI.updateManySupplier({ supplierIds: isSelected, isActive: true });
       getAllSupplier();
     } catch (err) {
       console.log(err);
@@ -110,9 +111,8 @@ export default function Product() {
     }
   };
 
-
   const getAllSupplier = async () => {
-    let params = {};
+    let params = { page: currentPage, limit: limitPerPage };
     if (debounceValue) {
       params.search = debounceValue.trim();
     }
@@ -123,7 +123,11 @@ export default function Product() {
     }
     try {
       const response = await supplierAPI.getAllSupplier(params);
+      if (response.data.length === 0 && response.currentPage !== 1) {
+        setCurrentPage(response.currentPage - 1);
+      }
       setSupplier(response.data);
+      setTotalPageCount(response.totalPages);
     } catch (err) {
       console.log(err);
     }
@@ -150,8 +154,6 @@ export default function Product() {
       console.log(err);
     }
   };
-
-
 
   return (
     <PageLayout title="Nhà cung cấp">
@@ -360,6 +362,11 @@ export default function Product() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             handleSelected={handleSelected}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       ) : (
@@ -374,6 +381,11 @@ export default function Product() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             handleSelected={handleSelected}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       )}

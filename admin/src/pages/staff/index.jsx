@@ -54,6 +54,9 @@ export default function Staff() {
     }
     try {
       const response = await staffAPI.getAllStaff(params);
+      if (response.data.length === 0 && response.currentPage !== 1) {
+        setCurrentPage(response.currentPage - 1);
+      }
       setStaffs(response.data);
       setTotalPageCount(response.totalPages);
     } catch (err) {
