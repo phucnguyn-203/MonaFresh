@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import { setUserSuccess, setUserFail } from "@/features/auth/authSlice";
+import Swal from "sweetalert2";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,11 @@ function Login() {
     } catch (errors) {
       dispatch(setUserFail());
       setIsError(true);
+      Swal.fire({
+        icon: "error",
+        title: "Đăng nhập thất bại",
+        text: "Email hoặc mật khẩu không chính xác!",
+      });
       console.log(errors);
     } finally {
       setIsLoading(false);
