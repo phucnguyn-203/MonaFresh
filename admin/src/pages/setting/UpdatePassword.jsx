@@ -86,37 +86,22 @@ export default function UpdatePassword() {
     <div className="bg-white rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="p-6 mt-9 flex-grow w-full max-h-full ">
-          {/* <div className="grid grid-cols-6 gap-3 mb-6">
-            <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
-              Mật khẩu cũ
-            </label>
-            <div className="col-span-8 sm:col-span-4">
-              <input
-                type="password"
-                className={`${
-                  errors.password ? "border-red-500" : ""
-                } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 border-[1px] focus:bg-transparent focus:outline-none`}
-                {...register("password")}
-              />
-              {errors.password && <p className="text-red-500 text-sm">{`*${errors.password.message}`}</p>}
-            </div>
-          </div> */}
           <div className={`${styles.item}`}>
             <div className="w-1/3 text-sm text-gray-700 font-medium dark:text-gray-400">
               <label>Mật khẩu hiện tại</label>
             </div>
             <div className="flex flex-col w-2/3 ">
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center relative">
                 <input
                   type={showCurrentPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu hiện tại"
                   spellcheck="false"
                   className={`${
                     errors.password ? "border-red-500" : ""
-                  }  block w-11/12 px-3 py-1 text-sm h-12 border-r-0 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
+                  }  block w-full px-3 py-1 text-sm h-12 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
                   {...register("password")}
                 />
-                <div className="bg-gray-100 w-1/12 h-[48px] flex items-center justify-center rounded-r border-[1px] border-l-0">
+                <div className="absolute right-0 bg-transparent w-1/12 h-[48px] flex items-center justify-center rounded-r border-0">
                   {showCurrentPassword ? (
                     <button
                       type="button"
@@ -144,17 +129,17 @@ export default function UpdatePassword() {
               <label>Mật khẩu mới</label>
             </div>
             <div className="flex flex-col w-2/3 ">
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu mới"
                   spellcheck="false"
                   className={`${
                     errors.newPassword ? "border-red-500" : ""
-                  }  block w-11/12 px-3 py-1 text-sm h-12 border-r-0 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
+                  }  block w-full px-3 py-1 text-sm h-12 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
                   {...register("newPassword")}
                 />
-                <div className="bg-gray-100 w-1/12 h-[48px] flex items-center justify-center rounded-r border-[1px] border-l-0">
+                <div className="absolute right-0 bg-transparent w-1/12 h-[48px] flex items-center justify-center rounded-r border-0">
                   {showPassword ? (
                     <button
                       type="button"
@@ -182,17 +167,17 @@ export default function UpdatePassword() {
               <label>Nhập lại mật khẩu mới</label>
             </div>
             <div className="flex flex-col w-2/3 ">
-              <div className="flex items-center justify-center">
+              <div className="flex items-center justify-center relative">
                 <input
                   type={showPasswordConfirm ? "text" : "password"}
                   placeholder="Nhập lại mật khẩu mới"
                   spellcheck="false"
                   className={`${
                     errors.passwordConfirm ? "border-red-500" : ""
-                  }  block w-11/12 px-3 py-1 text-sm h-12 border-r-0 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
+                  }  block w-full px-3 py-1 text-sm h-12 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
                   {...register("passwordConfirm")}
                 />
-                <div className="bg-gray-100 w-1/12 h-[48px] flex items-center justify-center rounded-r border-[1px] border-l-0">
+                <div className="absolute right-0 bg-transparent w-1/12 h-[48px] flex items-center justify-center rounded-r border-0">
                   {showPasswordConfirm ? (
                     <button
                       type="button"
