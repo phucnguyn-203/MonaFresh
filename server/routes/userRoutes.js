@@ -14,17 +14,18 @@ const {
     deleteMe,
     logout,
 } = require("../controllers/userControllers");
-const { 
-    createStaff, 
+const {
+    createStaff,
     getOneStaff,
-    getAllStaff, 
+    getAllStaff,
     updateStaff,
     updateStaffStatus,
-    updateManyStaffStatus, 
+    updateManyStaffStatus,
     deleteStaff,
     deleteManyStaff,
-
 } = require("../controllers/staffControllers");
+
+const { getAllCustomer } = require("../controllers/customerController");
 
 const { authenticate } = require("../middlewares/auth");
 
@@ -43,11 +44,13 @@ router.get("/logout", logout);
 
 router.post("/register-staff", authenticate, createStaff);
 router.get("/", authenticate, getAllStaff);
-router.get("/:id",authenticate, getOneStaff);
+router.get("/:id", authenticate, getOneStaff);
 router.patch("/updateStatus", authenticate, updateManyStaffStatus);
 router.patch("/:id", authenticate, updateStaff);
 router.patch("/updateStatus/:id", authenticate, updateStaffStatus);
 router.delete("/:id", authenticate, deleteStaff);
 router.delete("/", authenticate, deleteManyStaff);
+
+router.get("/", authenticate, getAllCustomer);
 
 module.exports = router;
