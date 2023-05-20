@@ -8,6 +8,7 @@ import toastMessage from "../../../utils/toastMessage";
 import yup from "../../../utils/yupGlobal";
 import categoryAPI from "../../../api/categoryAPI";
 import uploadFileApi from "../../../api/uploadFileApi";
+import supplierAPI from "../../../api/supplierAPI";
 
 import styles from "./styles.module.css";
 import TextEditor from "../TextEditor";
@@ -26,6 +27,7 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
       .min(0, "Giá trị nên lớn hơn hoặc bằng 0")
       .max(100, "Giá trị nên nhỏ hơn hoặc bằng 100")
       .default(0),
+    supplier: yup.string().required("Vui lòng chọn danh mục cho sản phẩm"),
   });
 
   const {
@@ -47,15 +49,28 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
   const [images, setImages] = useState([]);
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [suppliers, setSupplier] = useState([]);
 
   useEffect(() => {
     getAllCategory();
+    getAllSupplier();
   }, []);
+
+  console.log(suppliers);
 
   const getAllCategory = async () => {
     try {
       const response = await categoryAPI.getAllCategory();
       setCategories(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getAllSupplier = async () => {
+    try {
+      const response = await supplierAPI.getAllSupplier();
+      setSupplier(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -281,6 +296,27 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
                     ))}
                   </select>
                   {errors.category && <p className="text-red-500 text-sm">{`*${errors.category.message}`}</p>}
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 mb-6">
+                <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                  Nhà cung cấp sản phẩm
+                </label>
+                <div className="col-span-8 sm:col-span-4 ">
+                  <select
+                    className={`block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none ${
+                      errors.supplier ? "border-red-500" : ""
+                    }`}
+                    {...register("supplier")}
+                  >
+                    <option value="">Nhà cung cấp</option>
+                    {suppliers.map((item) => (
+                      <option key={item._id} value={item._id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.supplier && <p className="text-red-500 text-sm">{`*${errors.supplier.message}`}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">

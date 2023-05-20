@@ -17,6 +17,11 @@ const productSchema = new Schema(
             ref: "Category",
             required: [true, "Vui lòng cung cấp danh mục của sản phẩm"],
         },
+        supplier: {
+            type: Schema.Types.ObjectId,
+            ref: "Supplier",
+            required: [true, "Vui lòng cung cấp nhà cung cấp của sản phẩm"],
+        },
         description: {
             type: String,
             trim: true,
@@ -62,6 +67,13 @@ productSchema.pre("save", function (next) {
 productSchema.pre(/^find/, function (next) {
     this.populate({
         path: "category",
+        select: "name",
+    });
+    next();
+});
+productSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "supplier",
         select: "name",
     });
     next();
