@@ -5,6 +5,7 @@ const Ward = require("../models/wardModel");
 
 exports.getAllProvince = catchAsync(async (req, res, next) => {
     const provinces = await Province.find();
+    provinces.sort((a, b) => a.name.localeCompare(b.name));
     res.status(200).json({
         status: "success",
         results: provinces.length,
@@ -15,6 +16,7 @@ exports.getAllProvince = catchAsync(async (req, res, next) => {
 exports.getDistricts = catchAsync(async (req, res) => {
     const provinceCode = req.query.province_code * 1;
     const districts = await District.find({ province_code: provinceCode });
+    districts.sort((a, b) => a.name.localeCompare(b.name));
     res.status(200).json({
         status: "success",
         result: districts.length,
@@ -25,6 +27,7 @@ exports.getDistricts = catchAsync(async (req, res) => {
 exports.getWards = catchAsync(async (req, res, next) => {
     const districtCode = req.query.district_code * 1;
     const wards = await Ward.find({ district_code: districtCode });
+    wards.sort((a, b) => a.name.localeCompare(b.name));
     res.status(200).json({
         status: "success",
         result: wards.length,
