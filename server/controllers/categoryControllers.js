@@ -13,13 +13,14 @@ exports.getOneCategory = catchAsync(async (req, res) => {
 
 exports.getAllCategory = catchAsync(async (req, res) => {
     const features = new ApiFeatures(Category, req.query).filter();
+    const { query, totalPages, currentPage } = await features.paginate();
     const categories = await features.query;
     res.status(200).json({
         status: "success",
         results: categories.length,
         data: categories,
-        currentPage: req.query.page * 1 || 1,
-        totalPages: Math.ceil(categories.length / (req.query.limit || 10)),
+        currentPage: currentPage,
+        totalPages: totalPages,
     });
 });
 
@@ -68,7 +69,7 @@ exports.deleteCategory = catchAsync(async (req, res) => {
 });
 
 exports.deleteManyCategory = catchAsync(async (req, res) => {
-    console.log(req.body.data)
+    console.log(req.body.data);
     await Category.deleteMany({ _id: { $in: req.body.categoryIds } });
     await Product.deleteMany({ category: { $in: req.body.categoryIds } });
     res.status(204).json({

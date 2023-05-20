@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import categoryAPI from "../../api/categoryAPI";
-import productAPI from "../../api/productAPI";
 import PageLayout from "../../components/layout/pageLayout";
 import { IconAdd, IconDelete, IconBin, IconBack, IconRestore } from "../../components/icon";
 import CategoryTable from "../../components/category/CategoryTable";
@@ -20,6 +19,10 @@ export default function Category() {
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
   const [isShowCategoryDeletedTable, setIsShowCategoryDeletedTable] = useState(false);
+  //
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPageCount, setTotalPageCount] = useState(0);
+  const [limitPerPage, setLimitPerPage] = useState(10);
 
   // const handleSoftDeleteProduct = async (category) => {
   //   try {
@@ -39,10 +42,7 @@ export default function Category() {
 
   useEffect(() => {
     getAllCategory();
-  }, [debounceValue, isShowCategoryDeletedTable]);
-  useEffect(() => {
-    getAllCategory();
-  }, []);
+  }, [debounceValue, isShowCategoryDeletedTable, currentPage, limitPerPage]);
 
   const handleSelectAll = () => {
     setIsSelectAll(!isSelectAll);
@@ -61,7 +61,7 @@ export default function Category() {
   };
 
   const getAllCategory = async () => {
-    let params = {};
+    let params = { page: currentPage, limit: limitPerPage };
     if (debounceValue) {
       params.search = debounceValue.trim();
     }
@@ -72,8 +72,11 @@ export default function Category() {
     }
     try {
       const response = await categoryAPI.getAllCategory(params);
-      console.log(response);
+      if (response.data.length === 0 && response.currentPage !== 1) {
+        setCurrentPage(response.currentPage - 1);
+      }
       setCategories(response.data);
+      setTotalPageCount(response.totalPages);
     } catch (err) {
       console.log(err);
     }
@@ -355,6 +358,11 @@ export default function Category() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             isSelectAll={isSelectAll}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       ) : (
@@ -368,6 +376,11 @@ export default function Category() {
             isSelected={isSelected}
             handleSelectAll={handleSelectAll}
             handleSelected={handleSelected}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalPageCount={totalPageCount}
+            limitPerPage={limitPerPage}
+            setLimitPerPage={setLimitPerPage}
           />
         </React.Fragment>
       )}
