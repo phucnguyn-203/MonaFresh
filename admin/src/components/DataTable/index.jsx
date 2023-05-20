@@ -80,13 +80,13 @@ function DataTable({
               </tbody>
             </table>
           </div>
-          {/* <Pagination
+          <Pagination
             currentPage={currentPage}
             onPageChange={setCurrentPage}
             totalPageCount={totalPageCount}
             limitPerPage={limitPerPage}
             setLimitPerPage={setLimitPerPage}
-          /> */}
+          />
         </div>
       )}
     </React.Fragment>

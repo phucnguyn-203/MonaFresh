@@ -1,7 +1,6 @@
 import { Tooltip } from "react-tooltip";
 import { IconEdit, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
-import ToggleSwitch from "../../ToggleSwitch";
 import jsUcfirst from "../../../utils/jsUcfirst";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import Swal from "sweetalert2";
@@ -14,6 +13,11 @@ export default function CategoryTable({
   isSelected,
   handleSelectAll,
   handleSelected,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
 }) {
   const columnData = [
     {
@@ -70,7 +74,11 @@ export default function CategoryTable({
                 }).then((result) => {
                   if (result.isConfirmed) {
                     handleSoftDelete(item._id);
-                    Swal.fire({ title: "Đã chuyển vào thùng rác", text: "Danh mục đã được chuyển vào thùng rác.", confirmButtonColor: "#0E9F6E" });
+                    Swal.fire({
+                      title: "Đã chuyển vào thùng rác",
+                      text: "Danh mục đã được chuyển vào thùng rác.",
+                      confirmButtonColor: "#0E9F6E",
+                    });
                   }
                 });
               }}
@@ -96,6 +104,11 @@ export default function CategoryTable({
       isSelected={isSelected}
       handleSelected={handleSelected}
       handleSelectAll={handleSelectAll}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
     />
   );
 }

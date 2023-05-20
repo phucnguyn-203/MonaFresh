@@ -70,6 +70,9 @@ export default function Product() {
     }
     try {
       const response = await productAPI.getAllProduct(params);
+      if (response.data.length === 0 && response.currentPage !== 1) {
+        setCurrentPage(response.currentPage - 1);
+      }
       setProducts(response.data);
       setTotalPageCount(response.totalPages);
     } catch (err) {
@@ -227,7 +230,11 @@ export default function Product() {
                     }).then((result) => {
                       if (result.isConfirmed) {
                         handleDeleteManyProduct();
-                        Swal.fire({ title: "Đã xoá", text: "Các sản phẩm đã được xoá.", confirmButtonColor: "#0E9F6E" });
+                        Swal.fire({
+                          title: "Đã xoá",
+                          text: "Các sản phẩm đã được xoá.",
+                          confirmButtonColor: "#0E9F6E",
+                        });
                       }
                     });
                   }}

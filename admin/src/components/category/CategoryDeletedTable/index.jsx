@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Tooltip } from "react-tooltip";
 import { IconRestore, IconDelete, IconBack } from "../../icon";
 import DataTable from "../../DataTable";
@@ -15,6 +15,11 @@ export default function CategoryDeletedTable({
   isSelected,
   handleSelectAll,
   handleSelected,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
 }) {
   const columnData = [
     {
@@ -116,6 +121,11 @@ export default function CategoryDeletedTable({
       isSelected={isSelected}
       handleSelected={handleSelected}
       handleSelectAll={handleSelectAll}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
     />
   );
 }
