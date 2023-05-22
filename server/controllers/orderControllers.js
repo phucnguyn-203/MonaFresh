@@ -17,6 +17,15 @@ exports.getOneOrder = catchAsync(async (req, res) => {
     });
 });
 
+exports.getMyOrders = catchAsync(async (req, res) => {
+    const customerId = req.user._id;
+    const orders = await Order.find({ customer: customerId });
+    res.status(200).json({
+        status: "success",
+        data: orders,
+    });
+});
+
 exports.createOrder = catchAsync(async (req, res) => {
     const customerId = req.user._id;
     const orderData = req.body;
