@@ -82,5 +82,13 @@ const orderSchema = new Schema(
     },
 );
 
+orderSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "orderDetail.product",
+        select: "name thumbnail price percentageDiscount -category",
+    });
+    next();
+});
+
 const Order = mongoose.model("Order", orderSchema);
 module.exports = Order;
