@@ -8,6 +8,9 @@ import BillCustomer from "../Bill/BillCustomerOrder/BillCustomer";
 import { useSelector } from "react-redux";
 import orderAPI from "../../../api/orderAPI";
 import { useParams } from "react-router-dom";
+import { ORDER_STATUS } from "../../../utils/Constant";
+import { PAYMENT_METHOD } from "../../../utils/Constant";
+import { PAYMENT_STATUS } from "../../../utils/Constant";
 
 export default function CustomerOrderListTable() {
   const [order, setOrder] = useState("");
@@ -82,10 +85,21 @@ export default function CustomerOrderListTable() {
       field: "method",
       headerName: "Thanh toán",
       renderCell: (item) => {
-        if (item.paymentMethod === 1) {
+        if (item.paymentMethod === PAYMENT_METHOD.ONL) {
           return <span className="text-sm">Thanh toán online</span>;
         } else {
           return <span className="text-sm">Thanh toán bằng tiền mặt</span>;
+        }
+      },
+    },
+    {
+      field: "paymentStatus",
+      headerName: "Trạng thái thanh toán",
+      renderCell: (item) => {
+        if (item.paymentStatus === PAYMENT_STATUS.UNPAID) {
+          return <span className="text-sm">Chưa thanh toán</span>;
+        } else {
+          return <span className="text-sm">Đã thanh toán</span>;
         }
       },
     },
@@ -105,7 +119,7 @@ export default function CustomerOrderListTable() {
       headerName: "Trạng thái hiện tại",
       renderCell: (item) => {
         <div></div>;
-        if (item.status === 1) {
+        if (item.status === ORDER_STATUS.PENDING) {
           return (
             <>
               <span className="text-xs  text-yellow-800 rounded-full bg-yellow-200 px-2 leading-5 font-medium">
@@ -113,25 +127,25 @@ export default function CustomerOrderListTable() {
               </span>
             </>
           );
-        } else if (item.status === 2) {
+        } else if (item.status === ORDER_STATUS.CONFIRMED) {
           return (
             <span className="text-xs text-green-800 rounded-full bg-green-200 px-2 leading-5 font-medium">
               Đã xác nhận
             </span>
           );
-        } else if (item.status === 3) {
+        } else if (item.status === ORDER_STATUS.DELIVERING) {
           return (
             <span className="text-xs text-teal-800 rounded-full bg-teal-200 px-2 leading-5 font-medium">
               Đang giao hàng
             </span>
           );
-        } else if (item.status === 4) {
+        } else if (item.status === ORDER_STATUS.DELIVERED) {
           return (
             <span className="text-xs text-pink-800 rounded-full bg-pink-200 px-2 leading-5 font-medium">
               Đã giao hàng
             </span>
           );
-        } else if (item.status === 5) {
+        } else if (item.status === ORDER_STATUS.CANCELED) {
           return (
             <span className="text-xs text-red-800 rounded-full bg-red-200 px-2 leading-5 font-medium">Đã huỷ</span>
           );
@@ -146,13 +160,13 @@ export default function CustomerOrderListTable() {
     },
     {
       field: "status",
-      headerName: "Trạng thái cập nhật",
+      headerName: "Cập nhật trạng thái",
       renderCell: (item) => {
         const handleChangeStatus = (event) => {
           const selectedStatus = event.target.value;
           handleUpdateOder(item._id, { status: selectedStatus });
         };
-        if (item.status === 1) {
+        if (item.status === ORDER_STATUS.PENDING) {
           return (
             <button
               className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-emerald-700 font-semibold"
