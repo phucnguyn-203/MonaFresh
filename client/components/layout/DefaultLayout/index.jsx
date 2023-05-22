@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Header from "../Header";
 import Footer from "../Footer";
 import { useDispatch } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { fetchCart } from "@/features/cart/cartSlice";
 import { setUserSuccess, setUserFail } from "@/features/auth/authSlice";
 import userAPI from "@/api/userAPI";
 import Loading from "@/components/loading";
@@ -16,6 +18,7 @@ export default function DefaultLayout({ children }) {
       try {
         const response = await userAPI.checkIsLogin();
         dispatch(setUserSuccess(response.data));
+        unwrapResult(await dispatch(fetchCart()));
       } catch {
         dispatch(setUserFail);
       } finally {

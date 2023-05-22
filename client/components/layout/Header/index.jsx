@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 export default function Header() {
   const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
-
+  const cart = useSelector((state) => state.cart);
   return (
     <header className={styles.header}>
       <div className="container flex h-full items-center justify-between">
@@ -48,7 +48,9 @@ export default function Header() {
           >
             <IconCart />
             <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">
-              <p className="text-xs text-white font-semibold">0</p>
+              <p className="text-xs text-white font-semibold">
+                {cart.items.length}
+              </p>
             </div>
           </Link>
           {currentUser ? (

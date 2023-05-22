@@ -1,6 +1,10 @@
 import Link from "next/link";
 import jsUcfirst from "@/utils/jsUcfirst";
 import formatCurrency from "@/utils/formatCurrency";
+import { useSelector, useDispatch } from "react-redux";
+import { addAnItemToCart } from "@/features/cart/cartSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import Swal from "sweetalert2";
 import styles from "./styles.module.css";
 
 export default function ProductItem({
@@ -10,6 +14,24 @@ export default function ProductItem({
   price,
   percentageDiscount,
 }) {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const handleAddAnItemToCart = async (e) => {
+    e.preventDefault();
+    try {
+      unwrapResult(
+        await dispatch(addAnItemToCart({ productId: id, quantity: 1 })),
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Sản phẩm đã được thêm vào giỏ hàng",
+        confirmButtonColor: "#6abd45",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Link
       href={`/shop/${id}`}
@@ -50,9 +72,18 @@ export default function ProductItem({
           )}
         </div>
         <div>
-          <button className="bg-primary text-white px-5 py-3 text-xs hover:bg-lime-600 rounded-md">
-            THÊM VÀO GIỎ HÀNG
-          </button>
+          {cart.items.find((item) => item.product._id === id) ? (
+            <button className="bg-[#CCCCCC] text-white px-5 py-3 text-xs cursor-not-allowed rounded-md">
+              ĐÃ THÊM VÀO GIỎ
+            </button>
+          ) : (
+            <button
+              onClick={handleAddAnItemToCart}
+              className="bg-primary text-white px-5 py-3 text-xs hover:bg-lime-600 rounded-md"
+            >
+              THÊM VÀO GIỎ HÀNG
+            </button>
+          )}
         </div>
       </div>
     </Link>

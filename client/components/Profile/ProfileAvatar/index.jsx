@@ -1,14 +1,12 @@
-import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Avatar from "@/public/assets/img/avatar.png";
-import { IconProfile } from "@/components/icons";
-import { IconLogout } from "@/components/icons";
-import { useDispatch } from "react-redux";
-import userAPI from "@/api/userAPI";
+import { IconProfile, IconLogout } from "@/components/icons";
+import { useSelector, useDispatch } from "react-redux";
 import { setLogoutUser } from "@/features/auth/authSlice";
+import { setEmptyCart } from "@/features/cart/cartSlice";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import Link from "next/link";
+import Image from "next/image";
+import userAPI from "@/api/userAPI";
 
 export default function Profile({ url }) {
   const [isDropdown, setIsDropdown] = useState();
@@ -17,12 +15,11 @@ export default function Profile({ url }) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.currentUser);
 
-  console.log(router);
-
   const handleLogout = async () => {
     try {
       await userAPI.logout();
       dispatch(setLogoutUser());
+      dispatch(setEmptyCart());
       router.push("/");
     } catch (err) {
       console.log(err);
@@ -63,7 +60,7 @@ export default function Profile({ url }) {
         />
         {currentUser?.name && (
           <p className="text-textHeaderPrimary text-sm pl-2 items-center justify-center">
-            Xin chào {currentUser.name}
+            Xin chào, {currentUser.name}
           </p>
         )}
       </div>

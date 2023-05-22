@@ -10,7 +10,7 @@ export default function WithAuth(WrappedComponent) {
 
     useEffect(() => {
       if (!auth.isAuth || auth.currentUser.role !== USER_ROLES.CUSTOMER) {
-        router.push("/login");
+        router.replace("/login");
       }
     }, []);
 

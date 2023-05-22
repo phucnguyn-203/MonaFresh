@@ -1,21 +1,31 @@
-import styles from "./styles.module.css";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { IconClose } from "@/components/icons";
-import formatCurrency from "@/utils/formatCurrency";
-import { useSelector } from "react-redux";
-import yup from "@/utils/yupGlobal";
-import { useForm } from "react-hook-form";
+import { useSelector, useDispatch } from "react-redux";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { deleteManyItemInCart } from "@/features/cart/cartSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import Swal from "sweetalert2";
+import formatCurrency from "@/utils/formatCurrency";
+import yup from "@/utils/yupGlobal";
 import addressAPI from "@/api/addressAPI";
+import orderAPI from "@/api/orderAPI";
+import jsUcfirst from "@/utils/jsUcfirst";
+import styles from "./styles.module.css";
 
-export default function Checkout({ products, close }) {
+export default function Checkout({ purchase, close }) {
+  const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
-  const [paymentData, setPaymentData] = useState(null);
+  const dispatch = useDispatch();
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-  const [province_code, setProvince_code] = useState(null);
-  const [district_code, setDistrict_code] = useState(null);
+  const [districtCode, setDistrictCode] = useState(null);
+  const [provinceCode, setProvinceCode] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(1);
+  const total = purchase.reduce((total, item) => total + item?.total, 0);
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
@@ -23,23 +33,66 @@ export default function Checkout({ products, close }) {
       .string()
       .required("Vui lòng nhập số điện thoại của bạn")
       .phone("Vui lòng nhập đúng số điện thoại của bạn"),
-    address: yup.string().required("Vui lòng nhập địa chỉ của thể"),
+    province: yup.string().required("Vui lòng chọn tỉnh thành"),
+    district: yup.string().required("Vui lòng chọn quận, huyện"),
+    ward: yup.string().required("Vui lòng chọn xã, phường thị trấn"),
+    addressDetail: yup.string().required("Vui lòng nhập địa chỉ của thể"),
+    note: yup.string(),
   });
+
   const {
     register,
     handleSubmit,
+    control,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => {
-    setPaymentData(data);
+
+  const onSubmit = async (data) => {
+    const orderDetail = purchase.map((item) => {
+      return {
+        product: item.product._id,
+        quantity: item.quantity,
+        total: item.total,
+      };
+    });
+    const deliveryAddress = {
+      name: data.name,
+      phone: data.phone,
+      province: data.province,
+      district: data.district,
+      ward: data.ward,
+      addressDetail: data.addressDetail,
+      note: data.note,
+    };
+    const orderData = {
+      orderDetail,
+      orderTotal: total,
+      deliveryAddress,
+      paymentMethod,
+    };
+    const itemCartIdsToDelte = purchase.map((item) => item._id);
+
+    try {
+      await orderAPI.createOrder(orderData);
+      unwrapResult(await dispatch(deleteManyItemInCart(itemCartIdsToDelte)));
+      close();
+      Swal.fire({
+        icon: "success",
+        title: "Đặt hàng thành công.",
+        text: "Bạn có thể quay lại cửa hàng để tiếp tục mua sắm",
+        confirmButtonColor: "#6abd45",
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getAllProvinces = async () => {
     try {
       const response = await addressAPI.getAllProvinces();
-      getAllDistricts(response.data[0]?.code);
       setProvinces(response.data);
     } catch (err) {
       console.log(err);
@@ -68,17 +121,14 @@ export default function Checkout({ products, close }) {
   }, []);
 
   useEffect(() => {
-    if (province_code) {
-      getAllDistricts(province_code);
-    }
-  }, [province_code]);
+    getAllDistricts(provinceCode);
+  }, [provinceCode]);
 
   useEffect(() => {
-    if (district_code) {
-      getAllWards(district_code);
-    }
-  }, [district_code]);
-  const paymentMethod = [
+    getAllWards(districtCode);
+  }, [districtCode]);
+
+  const paymentMethods = [
     {
       id: 1,
       title: "Trả tiền mặt khi nhận hàng",
@@ -91,13 +141,6 @@ export default function Checkout({ products, close }) {
         "Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ đươc giao sau khi tiền đã chuyển.",
     },
   ];
-
-  let subtotal = 0;
-  products.map((item) => (subtotal = subtotal + item.total));
-  const deliveryCharge = 0;
-  const total = subtotal + deliveryCharge;
-
-  const [isChecked, setIsChecked] = useState(1);
 
   return (
     <React.Fragment>
@@ -176,57 +219,99 @@ export default function Checkout({ products, close }) {
                             Tỉnh/Thành phố
                             <span className="text-red-500">*</span>
                           </label>
-                          <select
-                            onChange={(e) => {
-                              const selectedProvinceCode = e.target.value;
-                              setProvince_code(selectedProvinceCode);
-                              getAllDistricts(selectedProvinceCode);
-                            }}
-                            className={styles.input}
-                            id="province"
+                          <Controller
                             name="province"
-                          >
-                            <option value="">Tỉnh/Thành phố</option>
-                            {provinces.map((item) => (
-                              <option key={item._id} value={item.code}>
-                                {item.name}
-                              </option>
-                            ))}
-                          </select>
+                            control={control}
+                            render={({ field }) => (
+                              <select
+                                id="province"
+                                name="province"
+                                className={styles.input}
+                                onChange={async (e) => {
+                                  const selectedOption =
+                                    e.target.options[e.target.selectedIndex];
+                                  const provinceCode = selectedOption.id;
+                                  const province = e.target.value;
+                                  field.onChange(e);
+                                  await trigger("province", province);
+                                  setProvinceCode(provinceCode);
+                                }}
+                              >
+                                <option value="">Tỉnh/Thành phố</option>
+                                {provinces.map((item) => (
+                                  <option
+                                    key={item._id}
+                                    id={item.code}
+                                    value={item._id}
+                                  >
+                                    {item.name}
+                                  </option>
+                                ))}
+                              </select>
+                            )}
+                          />
+                          {errors.province && (
+                            <p className="text-red-500 text-sm mb-2">{`*${errors.province.message}`}</p>
+                          )}
                           <br />
                           <label className="font-[550]" htmlFor="district">
                             Quận/Huyện<span className="text-red-500">*</span>
                           </label>
-                          <select
-                            onChange={(e) => {
-                              const selectedDistrictsCode = e.target.value;
-                              setDistrict_code(selectedDistrictsCode);
-                              getAllWards(selectedDistrictsCode);
-                            }}
-                            className={styles.input}
-                            id="district"
-                          >
-                            <option>Quận/Huyện</option>
-                            {districts &&
-                              districts.map((item) => (
-                                <option key={item._id} value={item.code}>
-                                  {item.name}
-                                </option>
-                              ))}
-                          </select>{" "}
+                          <Controller
+                            name="district"
+                            control={control}
+                            render={({ field }) => (
+                              <select
+                                id="district"
+                                className={styles.input}
+                                onChange={async (e) => {
+                                  const selectedOption =
+                                    e.target.options[e.target.selectedIndex];
+                                  const districtCode = selectedOption.id;
+                                  const district = e.target.value;
+                                  field.onChange(e);
+                                  await trigger("district", district);
+                                  setDistrictCode(districtCode);
+                                }}
+                              >
+                                <option value="">Quận/Huyện</option>
+                                {districts &&
+                                  districts.map((item) => (
+                                    <option
+                                      key={item._id}
+                                      id={item.code}
+                                      value={item._id}
+                                    >
+                                      {item.name}
+                                    </option>
+                                  ))}
+                              </select>
+                            )}
+                          />
+                          {errors.district && (
+                            <p className="text-red-500 text-sm mb-2">{`*${errors.district.message}`}</p>
+                          )}
                           <br />
                           <label className="font-[550]" htmlFor="ward">
-                            Phường/Xã<span className="text-red-500">*</span>
+                            Xã/Phường/Thị Trấn
+                            <span className="text-red-500">*</span>
                           </label>
-                          <select className={styles.input} id="ward">
-                            <option>Phường/Xã</option>
+                          <select
+                            name="ward"
+                            className={styles.input}
+                            {...register("ward")}
+                          >
+                            <option value="">Xã/Phường/Thị Trấn</option>
                             {wards &&
                               wards.map((item) => (
                                 <option key={item._id} value={item._id}>
                                   {item.name}
                                 </option>
                               ))}
-                          </select>{" "}
+                          </select>
+                          {errors.ward && (
+                            <p className="text-red-500 text-sm mb-2">{`*${errors.ward.message}`}</p>
+                          )}
                           <br />
                           <label
                             className="font-[550]"
@@ -240,28 +325,27 @@ export default function Checkout({ products, close }) {
                             className={`${
                               errors.address ? "border-red-500" : ""
                             } ${styles.input}`}
-                            id="specificAddress"
                             type="text"
                             name="specificAddress"
                             placeholder="VD: 210, Khu 1, Ấp Nam Chánh"
-                            {...register("address")}
+                            {...register("addressDetail")}
                           />
-                          {errors.address && (
-                            <p className="text-red-500 text-sm mb-2">{`*${errors.address.message}`}</p>
+                          {errors.addressDetail && (
+                            <p className="text-red-500 text-sm mb-2">{`*${errors.addressDetail.message}`}</p>
                           )}
                         </div>
                         <label className="font-[550]" htmlFor="note">
                           Ghi chú đơn hàng (tuỳ chọn)
-                        </label>{" "}
+                        </label>
                         <br />
                         <textarea
                           className={`w-full mt-[10px] p-[10px] border-solid border-[1px] border-[#ddd] pt-[0.7em] h-[120px] focus:shadow-[#ccc] focus:shadow-md focus:outline-none`}
-                          // className={`${styles.input} pt-[0.7em] h-[120px]`}
                           name="note"
                           id="note"
                           cols="5"
                           rows="2"
                           placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay chỉ dẫn địa điểm giao hàng chi tiết hơn."
+                          {...register("note")}
                         ></textarea>
                       </form>
                     </div>
@@ -293,16 +377,16 @@ export default function Checkout({ products, close }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {products.map((item, index) => (
+                      {purchase.map((item, index) => (
                         <tr key={index}>
                           <td className="border-y-[1.5px] py-[8px] text-left w-[55%] tracking-normal">
-                            {item.name}
+                            {jsUcfirst(item?.product?.name)}
                           </td>
                           <td className="border-y-[1.5px] py-[8px] text-center w-[20%] tracking-normal whitespace-nowrap text-[#000000] font-bold text-[16px]">
-                            {item.quantity}
+                            {item?.quantity}
                           </td>
                           <td className="border-y-[1.5px] py-[8px] text-right w-[20%] tracking-normal whitespace-nowrap text-[#6abd45] font-bold text-[16px]">
-                            {formatCurrency(item.total)}
+                            {formatCurrency(item?.total)}
                           </td>
                         </tr>
                       ))}
@@ -314,7 +398,7 @@ export default function Checkout({ products, close }) {
                         Tạm tính
                       </div>
                       <div className="w-[50%] p-[0.5em] items-center text-right text-[16px] font-bold whitespace-nowrap text-[#6abd45] ">
-                        {formatCurrency(subtotal)}
+                        {formatCurrency(total)}
                       </div>
                     </div>
                     <div className="border-b-[1px] border-[#ececec] flex">
@@ -330,19 +414,19 @@ export default function Checkout({ products, close }) {
                         Tổng
                       </div>
                       <div className="w-[50%] p-[0.5em] items-center text-right text-[16px] font-bold whitespace-nowrap text-[#6abd45] ">
-                        {formatCurrency(total)}đ
+                        {formatCurrency(total)}
                       </div>
                     </div>
                   </div>
                   <div className="bg-[white] border-t-[2px] border-[#ececec] pt-[10px]">
                     <ul>
-                      {paymentMethod.map((item) => (
+                      {paymentMethods.map((item) => (
                         <li key={item.id} className={`${styles.li} mt-[10px]`}>
                           <div className="items-center font-[550] text-[16px] flex">
                             <label className={styles.containerRadio}>
                               <input
-                                checked={item.id === isChecked}
-                                onChange={() => setIsChecked(item.id)}
+                                checked={item.id === paymentMethod}
+                                onChange={() => setPaymentMethod(item.id)}
                                 className={styles.radio}
                                 type="radio"
                               />
@@ -351,7 +435,7 @@ export default function Checkout({ products, close }) {
                             <label>{item.title}</label>
                           </div>
 
-                          {isChecked === item.id ? (
+                          {paymentMethod === item.id ? (
                             <div className="items-center font-[450] py-[10px] px-[20px] text-[15px] flex">
                               <p>{item.description}</p>
                             </div>
@@ -367,7 +451,7 @@ export default function Checkout({ products, close }) {
                       onClick={handleSubmit(onSubmit)}
                       className="bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c]"
                     >
-                      Tiến hành thanh toán
+                      Đặt hàng
                     </button>
                   </div>
                 </div>

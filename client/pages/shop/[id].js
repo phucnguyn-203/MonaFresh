@@ -9,12 +9,33 @@ import ProductsCarousel from "@/components/product/ProductsCarousel";
 import productAPI from "@/api/productAPI";
 import IconCheck from "@/components/icons/check";
 import jsUcfirst from "@/utils/jsUcfirst";
+import Swal from "sweetalert2";
+import { useSelector, useDispatch } from "react-redux";
+import { addAnItemToCart } from "@/features/cart/cartSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function Shop({ product, similarProducts }) {
   const [tab, setTab] = useState(0);
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const handleAddAnItemToCart = async () => {
+    try {
+      unwrapResult(
+        dispatch(addAnItemToCart({ productId: product._id, quantity })),
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Sản phẩm đã được thêm vào giỏ hàng",
+        confirmButtonColor: "#6abd45",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="container">
@@ -200,9 +221,18 @@ export default function Shop({ product, similarProducts }) {
                 </button>
               </div>
             </div>
-            <button className="text-[#6abd45] px-5 py-3 text-base font-semibold rounded-md border-solid border-2 border-[#6abd45] hover:bg-primary hover:text-white">
-              THÊM VÀO GIỎ HÀNG
-            </button>
+            {cart.items.find((item) => item.product._id === product._id) ? (
+              <button className="bg-[#CCCCCC] text-white px-5 py-3 text-base font-semibold rounded-md border-solid cursor-not-allowed">
+                Sản phẩm đã thêm vào giỏ
+              </button>
+            ) : (
+              <button
+                onClick={handleAddAnItemToCart}
+                className="text-[#6abd45] px-5 py-3 text-base font-semibold rounded-md border-solid border-2 border-[#6abd45] hover:bg-primary hover:text-white"
+              >
+                THÊM VÀO GIỎ HÀNG
+              </button>
+            )}
           </div>
         </div>
       </div>

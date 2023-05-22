@@ -13,8 +13,8 @@ exports.PAYMENT_STATUS = {
 };
 
 exports.PAYMENT_METHOD = {
-    ONL: 1, //Thanh toán online
-    COD: 2, //Thanh toán khi nhận hàng
+    COD: 1, //Thanh toán online
+    ONL: 2, //Thanh toán khi nhận hàng
 };
 
 exports.USER_ROLES = {

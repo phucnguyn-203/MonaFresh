@@ -13,23 +13,26 @@ const orderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
         },
-        orderDetail: [
-            {
-                product: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Product",
-                    required: [true, "Vui lòng cung cấp thông tin sản phẩm"],
+        orderDetail: {
+            type: [
+                {
+                    product: {
+                        type: Schema.Types.ObjectId,
+                        ref: "Product",
+                        required: [true, "Vui lòng cung cấp thông tin sản phẩm"],
+                    },
+                    quantity: {
+                        type: Number,
+                        required: [true, "Vui lòng nhập số lượng của sản phẩm"],
+                    },
+                    total: {
+                        type: Number,
+                        required: true,
+                    },
                 },
-                quantity: {
-                    type: Number,
-                    required: [true, "Vui lòng nhập số lượng của sản phẩm"],
-                },
-                total: {
-                    type: Number,
-                    required: true,
-                },
-            },
-        ],
+            ],
+            required: true,
+        },
         orderTotal: {
             type: Number,
             required: true,
@@ -55,14 +58,19 @@ const orderSchema = new Schema(
             type: Number,
             required: [true, "Vui lòng chọn phương thức thanh toán của đơn hàng"],
             enum: [PAYMENT_METHOD.ONL, PAYMENT_METHOD.COD],
+            default: PAYMENT_METHOD.COD,
         },
         deliveryAddress: {
-            name: String,
-            phone: String,
-            province: String,
-            district: String,
-            ward: String,
-            note: String,
+            type: {
+                name: String,
+                phone: String,
+                province: String,
+                district: String,
+                ward: String,
+                addressDetail: String,
+                note: String,
+            },
+            required: true,
         },
     },
     {

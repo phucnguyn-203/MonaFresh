@@ -32,5 +32,12 @@ const cartSchema = new Schema(
     },
 );
 
+cartSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "items.product",
+        select: "name thumbnail price percentageDiscount -category",
+    });
+    next();
+});
 const Cart = mongoose.model("Cart", cartSchema);
 module.exports = Cart;
