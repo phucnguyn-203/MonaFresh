@@ -22,3 +22,8 @@ exports.USER_ROLES = {
     CUSTOMER: 2,
     STAFF: 3,
 };
+
+exports.INVOICE_TYPE = {
+    IMPORT: 1, //Nhập kho
+    EXPORT: 2, //Xuất kho
+};
