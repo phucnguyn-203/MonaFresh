@@ -13,7 +13,7 @@ const {
 const { authenticate, authorize } = require("../middlewares/auth");
 
 router.get("/", getAllOrder);
-router.get("/my-orders", authenticate, getMyOrders);
+router.get("/my-orders", authenticate, authorize(USER_ROLES.CUSTOMER), getMyOrders);
 router.get("/:id", getOneOrder);
 router.post("/", authenticate, authorize(USER_ROLES.CUSTOMER), createOrder);
 router.patch("/:id", updateOrder);
