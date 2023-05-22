@@ -242,7 +242,7 @@ export default function Checkout({ purchase, close }) {
                                   <option
                                     key={item._id}
                                     id={item.code}
-                                    value={item._id}
+                                    value={item.name}
                                   >
                                     {item.name}
                                   </option>
@@ -280,7 +280,7 @@ export default function Checkout({ purchase, close }) {
                                     <option
                                       key={item._id}
                                       id={item.code}
-                                      value={item._id}
+                                      value={item.name}
                                     >
                                       {item.name}
                                     </option>
@@ -304,7 +304,7 @@ export default function Checkout({ purchase, close }) {
                             <option value="">Xã/Phường/Thị Trấn</option>
                             {wards &&
                               wards.map((item) => (
-                                <option key={item._id} value={item._id}>
+                                <option key={item._id} value={item.name}>
                                   {item.name}
                                 </option>
                               ))}
