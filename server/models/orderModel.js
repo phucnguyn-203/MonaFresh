@@ -29,6 +29,10 @@ const orderSchema = new Schema(
                         type: Number,
                         required: true,
                     },
+                    isFeedback: {
+                        type: Boolean,
+                        default: false,
+                    },
                 },
             ],
             required: true,

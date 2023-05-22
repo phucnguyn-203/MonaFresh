@@ -10,22 +10,30 @@ import productAPI from "@/api/productAPI";
 import IconCheck from "@/components/icons/check";
 import jsUcfirst from "@/utils/jsUcfirst";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { addAnItemToCart } from "@/features/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function Shop({ product, similarProducts }) {
+  const router = useRouter();
   const [tab, setTab] = useState(0);
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
+
+  const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleAddAnItemToCart = async () => {
+    if (!auth.isAuth) {
+      router.push("/login");
+      return;
+    }
     try {
       unwrapResult(
-        dispatch(addAnItemToCart({ productId: product._id, quantity })),
+        await dispatch(addAnItemToCart({ productId: product._id, quantity })),
       );
       Swal.fire({
         icon: "success",

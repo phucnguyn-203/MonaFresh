@@ -1,6 +1,7 @@
 import Link from "next/link";
 import jsUcfirst from "@/utils/jsUcfirst";
 import formatCurrency from "@/utils/formatCurrency";
+import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { addAnItemToCart } from "@/features/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -14,11 +15,17 @@ export default function ProductItem({
   price,
   percentageDiscount,
 }) {
+  const router = useRouter();
+  const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const handleAddAnItemToCart = async (e) => {
     e.preventDefault();
+    if (!auth.isAuth) {
+      router.push("/login");
+      return;
+    }
     try {
       unwrapResult(
         await dispatch(addAnItemToCart({ productId: id, quantity: 1 })),

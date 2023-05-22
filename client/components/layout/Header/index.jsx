@@ -47,11 +47,13 @@ export default function Header() {
             className="relative flex items-center justify-center cursor-pointer"
           >
             <IconCart />
-            <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">
-              <p className="text-xs text-white font-semibold">
-                {cart.items.length}
-              </p>
-            </div>
+            {currentUser ? (
+              <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-600 flex items-center justify-center">
+                <p className="text-xs text-white font-semibold">
+                  {cart.items.length}
+                </p>
+              </div>
+            ) : null}
           </Link>
           {currentUser ? (
             <Profile url={currentUser?.photo} size={35} isActive={false} />

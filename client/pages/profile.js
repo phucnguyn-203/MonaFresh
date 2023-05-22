@@ -3,9 +3,10 @@ import styles from "@/styles/Profile.module.css";
 import MyProfile from "@/components/profile/MyProfile";
 import MyOders from "@/components/profile/MyOders/";
 import Image from "next/image";
+import WithAuth from "@/components/layout/WithAuth";
 import { useSelector } from "react-redux";
 
-export default function Profile() {
+function Profile() {
   const [sidebar, setSidebar] = useState(0);
   const currentUser = useSelector((state) => state.auth.currentUser);
 
@@ -65,3 +66,5 @@ export default function Profile() {
     </div>
   );
 }
+
+export default WithAuth(Profile);
