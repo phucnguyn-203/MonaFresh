@@ -1,16 +1,6 @@
 import axios from "./axios";
 
 const supplierAPI = {
-  // getAllSupplier: async (searchKeyWord) => {
-  //   const url = "/suppliers";
-  //   const params = {};
-  //   if (searchKeyWord.trim()) {
-  //     params.searchKeyWord.trim();
-  //   }
-  //   const response = await axios.get(url, { params });
-  //   return response;
-  // },
-
   getAllSupplier: async (params) => {
     const url = "/suppliers";
     const response = await axios.get(url, { params });

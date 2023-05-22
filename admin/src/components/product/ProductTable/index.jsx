@@ -42,6 +42,14 @@ export default function ProductTable({
         return <p className="text-sm">{jsUcfirst(item.category?.name)}</p>;
       },
     },
+
+    {
+      field: "supplier",
+      headerName: "Nhà cung cấp",
+      renderCell: (item) => {
+        return <p className="text-sm">{item.supplier?.name}</p>;
+      },
+    },
     {
       field: "price",
       headerName: "Giá bán",

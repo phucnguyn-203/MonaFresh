@@ -90,11 +90,12 @@ export default function Product() {
   };
 
   const handleAddProduct = async (data) => {
-    const { images, thumbnail, category, description, name, price, quantity, percentageDiscount } = data;
+    const { images, thumbnail, category, supplier, description, name, price, quantity, percentageDiscount } = data;
     await productAPI.createProduct({
       images,
       thumbnail,
       category,
+      supplier,
       name,
       description,
       price,
