@@ -1,10 +1,29 @@
 const Order = require("../models/orderModel");
+const ApiFeature = require("../utils/ApiFeatures");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getAllOrder = catchAsync(async (req, res) => {
-    const orders = await Order.find();
+    const features = new ApiFeature(Order, req.query).filter().sort();
+    const { query, totalPages, currentPage } = await features.paginate();
+    const orders = await query;
     res.status(200).json({
         status: "success",
+        currentPage: currentPage,
+        totalPages: totalPages,
+        totalResults: orders.length,
+        data: orders,
+    });
+});
+
+exports.getOrdersByUserId = catchAsync(async (req, res) => {
+    const features = new ApiFeature(Order.find({ customer: req.params.userId }), req.query).filter().sort();
+    const { query, totalPages, currentPage } = await features.paginate();
+    const orders = await query;
+    res.status(200).json({
+        status: "success",
+        currentPage: currentPage,
+        totalPages: totalPages,
+        totalResults: orders.length,
         data: orders,
     });
 });
