@@ -6,6 +6,10 @@ const orderAPI = {
     const response = await axios.get(url);
     return response;
   },
+  updateOder: async (id, data) => {
+    const url = `orders/${id}`;
+    await axios.patch(url, data);
+  },
 };
 
 export default orderAPI;

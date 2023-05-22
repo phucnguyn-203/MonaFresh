@@ -1,0 +1,15 @@
+.navbar {
+    overflow-y: hidden;
+}
+.navbar:hover {
+    overflow-y: scroll;
+}
+
+.navbar::-webkit-scrollbar {
+    width: 0px;
+}
+
+.navbar::-webkit-scrollbar-thumb {
+    background: #a7a7a733;
+    border-radius: 10px;
+}
