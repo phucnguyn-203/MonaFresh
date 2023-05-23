@@ -104,30 +104,30 @@ export default function MoreOderInfor({ order, close }) {
               </div>
               {order.orderDetail.map((item) => (
                 <div
-                  key={item.product._id}
+                  key={item._id}
                   className="min-h-[40px] px-[20px] py-[20px] flex w-full text-center justify-center items-center border-b-[1px] border-[#ececec] last:border-0"
                 >
                   <div className="w-[40%] bassis-[40%] text-left text-[15px]">
                     {item.product.name}
                   </div>
                   <div className="w-[20%] bassis-[20%]">
-                    {item.product.percentageDiscount === 0 ? (
+                    {item.percentageDiscount === 0 ? (
                       <React.Fragment>
                         <p className="text-primary">
-                          {formatCurrency(item.product.price)}
+                          {formatCurrency(item.price)}
                         </p>
                       </React.Fragment>
                     ) : (
                       <React.Fragment>
                         <p className="text-primary">
                           {formatCurrency(
-                            item.product.price -
-                              item.product.price *
-                                item.product.percentageDiscount,
+                            item.price -
+                              item.price *
+                                item.percentageDiscount,
                           )}
                         </p>
                         <p className="text-sm text-[#0000008a] font-normal line-through">
-                          {formatCurrency(item.product.price)}
+                          {formatCurrency(item.price)}
                         </p>
                       </React.Fragment>
                     )}
