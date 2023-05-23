@@ -5,12 +5,17 @@ import MyOders from "@/components/profile/MyOders/";
 import Image from "next/image";
 import WithAuth from "@/components/layout/WithAuth";
 import { useSelector } from "react-redux";
-
+import { useRouter } from 'next/router';
 function Profile() {
-  const [sidebar, setSidebar] = useState(0);
+  
+  const router = useRouter();
+  const [sidebar, setSidebar] = useState(router.query.optionSidebar);
   const currentUser = useSelector((state) => state.auth.currentUser);
-
+  useEffect(()=>{
+    setSidebar(router.query.optionSidebar)
+  },[router.query.optionSidebar]);
   return (
+
     <div className="container my-32">
       <div className="flex">
         <div className="rounded-[8px] max-w-[25%] basis-[25%] w-full bg-white h-[250px] px-[30px] justify-center items-center text-right ">
@@ -39,14 +44,14 @@ function Profile() {
           <ul>
             <li
               className={`${
-                sidebar === 0 ? `${styles.active}` : ""
+                sidebar == 0 ? `${styles.active}` : ""
               } text-center mt-[15px] font-medium text-lg cursor-pointer py-2`}
             >
               <div onClick={() => setSidebar(0)}>Tài khoản của tôi</div>
             </li>
             <li
               className={`${
-                sidebar === 1 ? `${styles.active}` : ""
+                sidebar == 1 ? `${styles.active}` : ""
               } text-center mt-[15px] font-medium text-lg cursor-pointer py-2`}
             >
               <div
@@ -60,7 +65,7 @@ function Profile() {
           </ul>
         </div>
         <div className="max-w-[75%] basis-[75%] w-full ">
-          {sidebar === 0 ? <MyProfile /> : <MyOders />}
+          {sidebar == 0 ? <MyProfile /> : <MyOders />}
         </div>
       </div>
     </div>

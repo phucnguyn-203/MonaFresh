@@ -30,6 +30,9 @@ export default function Sidebar({
   };
 
   useEffect(() => {
+    if(filterByCategory){
+      setAllProductsFilter(false);
+    };
     getAllCategory();
   }, []);
 
