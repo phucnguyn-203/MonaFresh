@@ -36,7 +36,7 @@ export default function Shop() {
       limit: 12,
       isActive: true,
     };
-    params = {...params,...router.query};
+    params = {...params,...{sort: router.query.sort}};
     if (filterByCategory) {
       params.category = filterByCategory;
     }
