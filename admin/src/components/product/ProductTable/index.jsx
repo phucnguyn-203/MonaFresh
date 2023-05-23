@@ -51,6 +51,14 @@ export default function ProductTable({
       },
     },
     {
+      field: "importPrice",
+      headerName: "Giá nhập",
+      customClassName: "text-center",
+      renderCell: (item) => {
+        return <p className="text-sm font-semibold text-center">{formatCurrency(item.importPrice)}</p>;
+      },
+    },
+    {
       field: "price",
       headerName: "Giá bán",
       customClassName: "text-center",

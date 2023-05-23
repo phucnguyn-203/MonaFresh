@@ -19,8 +19,15 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
     name: yup.string().required("Vui lòng nhập tên sản phẩm"),
     category: yup.string().required("Vui lòng chọn danh mục cho sản phẩm"),
     description: yup.string().default("Đang cập nhật"),
-    price: yup.number().typeError("Vui lòng nhập đúng định dạng").required("Vui lòng nhập giá sản phẩm"),
-    quantity: yup.number().typeError("Vui lòng nhập đúng định dạng").required("Vui lòng nhập số lượng sản phẩm"),
+    price: yup
+      .number()
+      .typeError("Vui lòng nhập giá sản phẩm")
+      .test("price-greater-than-importPrice", "Giá bán sản phẩm phải cao hơn giá nhập sản phẩm", function (value) {
+        const importPrice = this.parent.importPrice;
+        return value > importPrice;
+      }),
+    importPrice: yup.number().typeError("Vui lòng nhập giá nhập sản phẩm").required("Vui lòng nhập giá nhập"),
+    quantity: yup.number().default(0),
     percentageDiscount: yup
       .number()
       .typeError("Vui lòng nhập đúng định dạng của giá trị")
@@ -345,18 +352,18 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
                 <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
-                  Số lượng sản phẩm
+                  Giá nhập sản phẩm
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
                     type="number"
-                    placeholder="Nhập số lượng sản phẩm"
+                    placeholder="Nhập giá nhập sản phẩm"
                     className={`${
-                      errors.quantity ? "border-red-500" : ""
+                      errors.importPrice ? "border-red-500" : ""
                     } block w-full px-3 py-1 text-sm h-12 rounded-md bg-gray-100 focus:bg-gray-50 focus:border-gray-600 border-[1px] focus:bg-transparent focus:outline-none`}
-                    {...register("quantity")}
+                    {...register("importPrice")}
                   />
-                  {errors.quantity && <p className="text-red-500 text-sm">{`*${errors.quantity.message}`}</p>}
+                  {errors.importPrice && <p className="text-red-500 text-sm">{`*${errors.importPrice.message}`}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">

@@ -30,6 +30,11 @@ const productSchema = new Schema(
             type: Number,
             required: [true, "Vui lòng cung cấp giá của sản phẩm"],
         },
+
+        importPrice: {
+            type: Number,
+            require: [true, "Vui lòng cung cấp giá nhập sản phẩm"],
+        },
         percentageDiscount: {
             type: Number,
             min: 0,
@@ -50,7 +55,10 @@ const productSchema = new Schema(
             type: Number,
             default: 0,
         },
-        quantity: Number,
+        quantity: {
+            type: Number,
+            default: 0,
+        },
         isActive: {
             type: Boolean,
             default: true,
