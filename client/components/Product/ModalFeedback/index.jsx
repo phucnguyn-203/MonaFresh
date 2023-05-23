@@ -1,13 +1,34 @@
 import React, { useState } from "react";
 import { Rating } from "react-simple-star-rating";
-
+import orderAPI from "@/api/orderAPI";
 import { IconClose } from "@/components/icons";
+import Swal from "sweetalert2";
 
-export default function ModalFeedback({ close }) {
-  const [rate, setRate] = useState(5);
+export default function ModalFeedback({ createFeedback, getMyOrder, close, _id, productId, itemId }) {
+  const [rating, setRating] = useState(5);
+  const [feedback, setFeedback] = useState("");
+
+
+  
+  const handleSubmit = async() => {
+    
+    let data = {
+      "rating" : rating,
+      "feedback" : feedback,
+    };
+    createFeedback(productId, data);
+    data = {
+      "_id" : _id,
+      "itemId": itemId,
+    };
+    await orderAPI.updateIsFeedbackOfOneItem(data);
+    getMyOrder();
+    close();
+  };
+
   // Catch Rating value
-  const handleRating = (rate) => {
-    setRate(rate);
+  const handleRating = (rating) => {
+    setRating(rating);
   };
   return (
     <React.Fragment>
@@ -30,7 +51,7 @@ export default function ModalFeedback({ close }) {
           <Rating
             onClick={handleRating}
             transition
-            initialValue={rate}
+            initialValue={rating}
             size={30}
             SVGclassName="react-start"
             showTooltip
@@ -44,9 +65,33 @@ export default function ModalFeedback({ close }) {
           />
           <div>
             <h3 className="my-[8px] font-medium">Nhận xét của bạn</h3>
-            <textarea className="w-full h-[120px] border-solid border-[1px] border-[#ddd] p-[10px] outline-none shadow-md"></textarea>
+            <textarea
+              onChange={(e)=> setFeedback(e.target.value)}
+              className="w-full h-[120px] border-solid border-[1px] border-[#ddd] p-[10px] outline-none shadow-md"></textarea>
           </div>
-          <button className="bg-[#6abd45] text-[#fff] px-5 py-3 text-base font-semibold hover:bg-[#38970f] rounded-md  border-solid border-2 border-[#6abd45] mt-[30px] w-[200px]">
+          <button 
+            onClick={() => {
+              Swal.fire({
+                title: "Bạn chắc chắn muốn xoá?",
+                text: "Các danh mục và sản phẩm thuộc danh mục sẽ được xoá và không thể khôi phục.",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#6abd45",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "Huỷ bỏ",
+                confirmButtonText: "Đồng ý!",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  handleSubmit();
+                  Swal.fire({
+                    title: "Đã xoá",
+                    text: "Các danh mục và sản phẩm thuộc doanh mục đã được xoá.",
+                    confirmButtonColor: "#6abd45",
+                  });
+                }
+              });
+            }}
+            className="bg-[#6abd45] text-[#fff] px-5 py-3 text-base font-semibold hover:bg-[#38970f] rounded-md  border-solid border-2 border-[#6abd45] mt-[30px] w-[200px]">
             GỬI
           </button>
         </div>

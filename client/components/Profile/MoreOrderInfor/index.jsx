@@ -1,20 +1,27 @@
 import styles from ".//styles.module.css";
 import formatCurrency from "@/utils/formatCurrency";
+import formatTimestamp from "@/utils/formatTimestamp";
 import React, { useState } from "react";
 import { IconClose } from "@/components/icons";
 {
   /* <p>{formatCurrency(price - price * percentageDiscount)}</p> */
 }
 export default function MoreOderInfor({ order, close }) {
+  const paymentStatus = ["", "Chưa thanh toán", "Đã thanh toán"];
+  const paymentMethod = ["", "Thanh toán tiền mặt", "Thanh toán qua ngân hàng"];
+  const status = [
+    "",
+    "Chờ xác nhận",
+    "Đã xác nhận",
+    "Đang giao",
+    "Đã giao",
+    "Đã huỷ",
+    "Trả hàng",
+  ];
   console.log(order);
-  const address =
-    order.deliveryAddress.note +
-    ", " +
-    order.deliveryAddress.ward +
-    ", " +
-    order.deliveryAddress.district +
-    ", " +
-    order.deliveryAddress.province;
+  const deliAdd = order.deliveryAddress;
+  const address = `${deliAdd.addressDetail}, ${deliAdd.ward}, ${deliAdd.district}, ${deliAdd.province}.`;
+
   return (
     <React.Fragment>
       <div
@@ -41,11 +48,11 @@ export default function MoreOderInfor({ order, close }) {
                 Thông tin đơn hàng
               </div>
               <div className="text-[20px] font-[450]">
-                Mã đơn hàng: #{order.id}
+                Mã đơn hàng: #{order._id.slice(-10)}
               </div>
             </div>
             <div className="text-[14px] flex justify-end items-center">
-              Ngày đặt hàng: {order.createdDate}
+              Ngày đặt hàng: {formatTimestamp(order.createdAt)}
             </div>
           </div>
 
@@ -60,6 +67,7 @@ export default function MoreOderInfor({ order, close }) {
                 </div>
                 <div className="mb-[3px]">{order.deliveryAddress.phone}</div>
                 <div>{address}</div>
+                {deliAdd.note !== "" ? <div>Ghi chú: {deliAdd.note}</div> : ""}
               </div>
             </div>
             <div className=" w-[40%] basis-[40%] justify-end">
@@ -67,14 +75,19 @@ export default function MoreOderInfor({ order, close }) {
                 Đơn hàng
               </div>
               <div className="text-gray-500 text-[14px] font-[400] ">
-                <div className=" mb-[5px] flex justify-end">{order.status}</div>
-                <div className="mb-[3px] flex justify-end">
-                  {order.paymentMethod}
+                <div className=" mb-[5px] flex justify-end">
+                  {status[order.status]}
                 </div>
-                <div className="flex justify-end">{order.paymentStatus}</div>
+                <div className="mb-[3px] flex justify-end">
+                  {paymentMethod[order.paymentMethod]}
+                </div>
+                <div className="flex justify-end">
+                  {paymentStatus[order.paymentStatus]}
+                </div>
               </div>
             </div>
           </div>
+
           <div className="my-[30px] px-[20px]">
             <div className="rounded-lg border-x-[1px] border-[#ececec]">
               <div className="rounded-t-lg uppercase text-[15px] font-[500] px-[20px] items-center justify-between bg-primary py-4 ">
@@ -91,28 +104,30 @@ export default function MoreOderInfor({ order, close }) {
               </div>
               {order.orderDetail.map((item) => (
                 <div
-                  key={item.id}
+                  key={item.product._id}
                   className="min-h-[40px] px-[20px] py-[20px] flex w-full text-center justify-center items-center border-b-[1px] border-[#ececec] last:border-0"
                 >
                   <div className="w-[40%] bassis-[40%] text-left text-[15px]">
-                    {item.name}
+                    {item.product.name}
                   </div>
                   <div className="w-[20%] bassis-[20%]">
-                    {item.percentageDiscount === 0 ? (
+                    {item.product.percentageDiscount === 0 ? (
                       <React.Fragment>
                         <p className="text-primary">
-                          {formatCurrency(item.price)}
+                          {formatCurrency(item.product.price)}
                         </p>
                       </React.Fragment>
                     ) : (
                       <React.Fragment>
                         <p className="text-primary">
                           {formatCurrency(
-                            item.price - item.price * item.percentageDiscount,
+                            item.product.price -
+                              item.product.price *
+                                item.product.percentageDiscount,
                           )}
                         </p>
                         <p className="text-sm text-[#0000008a] font-normal line-through">
-                          {formatCurrency(item.price)}
+                          {formatCurrency(item.product.price)}
                         </p>
                       </React.Fragment>
                     )}
