@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { addAnItemToCart } from "@/features/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import Loading from "@/components/loading";
 
 export default function Shop({ product, similarProducts }) {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function Shop({ product, similarProducts }) {
   const [nav1, setNav1] = useState();
   const [nav2, setNav2] = useState();
   const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
@@ -32,6 +34,7 @@ export default function Shop({ product, similarProducts }) {
       return;
     }
     try {
+      setIsLoading(true);
       unwrapResult(
         await dispatch(addAnItemToCart({ productId: product._id, quantity })),
       );
@@ -41,6 +44,7 @@ export default function Shop({ product, similarProducts }) {
         confirmButtonColor: "#6abd45",
       });
     } catch (err) {
+      setIsLoading(false);
       console.log(err);
     }
   };
@@ -236,9 +240,18 @@ export default function Shop({ product, similarProducts }) {
             ) : (
               <button
                 onClick={handleAddAnItemToCart}
-                className="text-[#6abd45] px-5 py-3 text-base font-semibold rounded-md border-solid border-2 border-[#6abd45] hover:bg-primary hover:text-white"
+                disabled={isLoading}
+                className={`text-[#6abd45] px-5 py-3 text-base font-semibold rounded-md border-solid border-2 border-[#6abd45] hover:bg-primary hover:text-white ${
+                  isLoading ? "cursor-not-allowed" : ""
+                }`}
               >
-                THÊM VÀO GIỎ HÀNG
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <Loading size={30} />
+                  </div>
+                ) : (
+                  "THÊM VÀO GIỎ HÀNG"
+                )}
               </button>
             )}
           </div>

@@ -7,6 +7,8 @@ import { addAnItemToCart } from "@/features/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Swal from "sweetalert2";
 import styles from "./styles.module.css";
+import Loading from "@/components/loading";
+import { useState } from "react";
 
 export default function ProductItem({
   id,
@@ -19,6 +21,7 @@ export default function ProductItem({
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddAnItemToCart = async (e) => {
     e.preventDefault();
@@ -27,6 +30,7 @@ export default function ProductItem({
       return;
     }
     try {
+      setIsLoading(true);
       unwrapResult(
         await dispatch(addAnItemToCart({ productId: id, quantity: 1 })),
       );
@@ -36,6 +40,7 @@ export default function ProductItem({
         confirmButtonColor: "#6abd45",
       });
     } catch (err) {
+      setIsLoading(false);
       console.log(err);
     }
   };
@@ -85,10 +90,20 @@ export default function ProductItem({
             </button>
           ) : (
             <button
+              disabled={isLoading}
               onClick={handleAddAnItemToCart}
-              className="bg-primary text-white px-5 py-3 text-xs hover:bg-lime-600 rounded-md"
+              className={`bg-primary text-white px-5 py-3 text-xs hover:bg-lime-600 rounded-md ${
+                isLoading ? "cursor-not-allowed" : ""
+              }`}
+              // className=""
             >
-              THÊM VÀO GIỎ HÀNG
+              {isLoading ? (
+                <div className="flex justify-center items-center">
+                  <Loading size={30} />
+                </div>
+              ) : (
+                "THÊM VÀO GIỎ HÀNG"
+              )}
             </button>
           )}
         </div>
