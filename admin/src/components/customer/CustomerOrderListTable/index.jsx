@@ -1,44 +1,24 @@
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
-import { useState, useEffect } from "react";
+import formatTimestamp from "../../../utils/formatTimestamp";
 import { Tooltip } from "react-tooltip";
 import { IconView } from "../../icon";
-import formatTimestamp from "../../../utils/formatTimestamp";
-import BillCustomer from "../Bill/BillCustomerOrder/BillCustomer";
 import { useSelector } from "react-redux";
-import orderAPI from "../../../api/orderAPI";
-import { useParams } from "react-router-dom";
 import { ORDER_STATUS } from "../../../utils/Constant";
 import { PAYMENT_METHOD } from "../../../utils/Constant";
 import { PAYMENT_STATUS } from "../../../utils/Constant";
 
-export default function CustomerOrderListTable() {
-  const [order, setOrder] = useState("");
-  const params = useParams();
-  const userId = params.id;
-  const [showBill, setShowBill] = useState(false);
+export default function CustomerOrderListTable({
+  orders,
+  handleUpdateOder,
+  handleShowBill,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
+}) {
   const currentUser = useSelector((state) => state.auth.currentUser);
-  const handleShowBill = () => {
-    setShowBill(!showBill);
-  };
-  console.log(currentUser.name);
-  const handleUpdateOder = async (id, data) => {
-    await orderAPI.updateOder(id, data);
-    await getOrdersByUserId(userId);
-  };
-  const getOrdersByUserId = async (userId) => {
-    try {
-      const response = await orderAPI.getOrdersByUserId(userId);
-      setOrder(response.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getOrdersByUserId(userId);
-  }, [userId]);
-
   const columnData = [
     {
       field: "orderName",
@@ -72,23 +52,19 @@ export default function CustomerOrderListTable() {
     },
     {
       field: "staffName",
-      headerName: "Nhân viên PT",
+      headerName: "Nhân viên xác nhận",
       renderCell: (item) => {
-        return (
-          <div className="flex gap-x-2 items-center">
-            <p className="text-sm ">{item.staff}</p>
-          </div>
-        );
+        return <div className="flex gap-x-2 items-center">{<p className="text-sm ">{item?.staff?.name}</p>}</div>;
       },
     },
     {
       field: "method",
       headerName: "Thanh toán",
       renderCell: (item) => {
-        if (item.paymentMethod === PAYMENT_METHOD.ONL) {
-          return <span className="text-sm">Thanh toán online</span>;
-        } else {
+        if (item.paymentMethod === PAYMENT_METHOD.COD) {
           return <span className="text-sm">Thanh toán bằng tiền mặt</span>;
+        } else {
+          return <span className="text-sm">Thanh toán online </span>;
         }
       },
     },
@@ -105,7 +81,7 @@ export default function CustomerOrderListTable() {
     },
     {
       field: "price",
-      headerName: "Giá",
+      headerName: "Giá Trị",
       renderCell: (item) => {
         return (
           <div className="text-sm font-semibold ">
@@ -118,14 +94,11 @@ export default function CustomerOrderListTable() {
       field: "status",
       headerName: "Trạng thái hiện tại",
       renderCell: (item) => {
-        <div></div>;
         if (item.status === ORDER_STATUS.PENDING) {
           return (
-            <>
-              <span className="text-xs  text-yellow-800 rounded-full bg-yellow-200 px-2 leading-5 font-medium">
-                {`Chờ xác nhận`}
-              </span>
-            </>
+            <span className="text-xs  text-yellow-800 rounded-full bg-yellow-200 px-2 leading-5 font-medium">
+              {`Chờ xác nhận`}
+            </span>
           );
         } else if (item.status === ORDER_STATUS.CONFIRMED) {
           return (
@@ -159,29 +132,29 @@ export default function CustomerOrderListTable() {
       },
     },
     {
-      field: "status",
+      field: "updatedStatus",
       headerName: "Cập nhật trạng thái",
       renderCell: (item) => {
-        const handleChangeStatus = (event) => {
-          const selectedStatus = event.target.value;
-          handleUpdateOder(item._id, { status: selectedStatus });
-        };
         if (item.status === ORDER_STATUS.PENDING) {
           return (
             <button
               className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-emerald-700 font-semibold"
-              onClick={() => handleUpdateOder(item._id, { staff: currentUser._id, status: 2 })}
+              onClick={() => handleUpdateOder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED })}
             >
               Xác nhận đơn hàng
             </button>
           );
         } else {
           return (
-            <select className=" text-sm " value={item.status} onChange={handleChangeStatus}>
+            <select
+              className=" text-sm "
+              value={item.status}
+              onChange={(e) => handleUpdateOder(item._id, { status: e.target.value })}
+            >
               <option value="">Cập nhật trạng thái</option>
-              <option value="3">Đang giao hàng</option>
-              <option value="4">Đã giao hàng</option>
-              <option value="6">Đã trả hàng</option>
+              <option value={ORDER_STATUS.DELIVERING}>Đang giao hàng</option>
+              <option value={ORDER_STATUS.DELIVERED}>Đã giao hàng</option>
+              <option value={ORDER_STATUS.RETURNS}>Đã trả hàng</option>
             </select>
           );
         }
@@ -197,12 +170,10 @@ export default function CustomerOrderListTable() {
               data-tooltip-id="view"
               data-tooltip-content="Xem chi tiết"
               className="text-left  cursor-pointer text-gray-400 hover:text-green-600"
-              onClick={handleShowBill}
+              onClick={() => handleShowBill(item)}
             >
               <IconView />
             </button>
-            {showBill && <BillCustomer order={order} close={handleShowBill} />}
-            {/* data={rowData.find((row) => row.OrderID)} */}
             <Tooltip id="view" style={{ backgroundColor: "var(--color-primary" }} />
           </span>
         );
@@ -210,5 +181,15 @@ export default function CustomerOrderListTable() {
     },
   ];
 
-  return <DataTable columnData={columnData} rowData={order} />;
+  return (
+    <DataTable
+      rowData={orders}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
+      columnData={columnData}
+    />
+  );
 }

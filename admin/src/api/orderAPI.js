@@ -6,13 +6,13 @@ const orderAPI = {
     const response = await axios.get(url, { params });
     return response;
   },
-  getOrdersByUserId: async (userId) => {
-    const url = `orders/user/${userId}`;
-    const response = await axios.get(url);
+  getOrdersByUserId: async (userId, params) => {
+    const url = `/orders/user/${userId}`;
+    const response = await axios.get(url, { params });
     return response;
   },
-  updateOder: async (id, data) => {
-    const url = `orders/${id}`;
+  updaterOrder: async (id, data) => {
+    const url = `/orders/${id}`;
     await axios.patch(url, data);
   },
 };

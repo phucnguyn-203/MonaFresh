@@ -86,6 +86,9 @@ orderSchema.pre(/^find/, function (next) {
     this.populate({
         path: "orderDetail.product",
         select: "name thumbnail price percentageDiscount -category",
+    }).populate({
+        path: "staff",
+        select: "name",
     });
     next();
 });

@@ -3,8 +3,10 @@ import { IconClose } from "../../../../icon";
 import formatCurrency from "../../../../../utils/formatCurrency";
 import BillTable from "../BillTable";
 import styles from "./styles.module.css";
+import formatTimestamp from "../../../../../utils/formatTimestamp";
+import formatOrderStatus from "../../../../../utils/formatOrderStatus";
 
-export default function BillCustomer({ close, data, order }) {
+export default function BillCustomer({ close, data }) {
   const columnData = [
     {
       field: "product",
@@ -12,7 +14,7 @@ export default function BillCustomer({ close, data, order }) {
       renderCell: (item) => {
         return (
           <div className="flex gap-x-2 items-center">
-            <p className="text-sm ">{item.orderDetail.product}</p>
+            <p className="text-sm ">{item.product.name}</p>
           </div>
         );
       },
@@ -29,6 +31,17 @@ export default function BillCustomer({ close, data, order }) {
       },
     },
     {
+      field: "price",
+      headerName: "Giá",
+      renderCell: (item) => {
+        return (
+          <div className="text-sm ">
+            <span>{formatCurrency(item.product.price)}</span>
+          </div>
+        );
+      },
+    },
+    {
       field: "percentDiscount",
       headerName: "Khuyến mãi",
       renderCell: (item) => {
@@ -40,12 +53,12 @@ export default function BillCustomer({ close, data, order }) {
       },
     },
     {
-      field: "price",
-      headerName: "Giá",
+      field: "total",
+      headerName: "Tổng",
       renderCell: (item) => {
         return (
           <div className="text-sm ">
-            <span>{formatCurrency(item.price * (1 - item.percentDiscount / 100) * item.amount)}</span>
+            <span>{formatCurrency(item.total)}</span>
           </div>
         );
       },
@@ -70,52 +83,52 @@ export default function BillCustomer({ close, data, order }) {
               <IconClose />
             </div>
           </div>
-          <h1 className="text-[25px] px-[20px] ">Mã hoá đơn: chsdhfa78435b</h1>
+          <h1 className="text-[25px] px-[20px] ">Mã hoá đơn: {data._id}</h1>
 
           <div className="p-[20px] flex gap-x-6 text-[16px]">
             <div className="w-[65%] min-h-[100px] border-r-[1px] border-solid">
               <h3>
-                Tên khách hàng: <span className="ml-[5px]"></span>
+                Tên khách hàng: <span className="ml-[5px]">{data.deliveryAddress.name}</span>
               </h3>
               <h3>
-                SĐT: <span className="ml-[5px]">023484113</span>
+                SĐT: <span className="ml-[5px]">{data.deliveryAddress.phone}</span>
               </h3>
               <h3>
                 Địa chỉ:
-                <span className="ml-[5px]">Xã Mỹ Hiệp, Huyện Phù Mỹ, Tỉnh Bình Định</span>
+                <span className="ml-[5px]">{`${data.deliveryAddress.addressDetail}, ${data.deliveryAddress.ward}, ${data.deliveryAddress.district}, ${data.deliveryAddress.province}`}</span>
               </h3>
             </div>
             <div className="w-[35%] ">
-              <h3>Thời gian đặt: 14/04/2023</h3>
+              <h3>Thời gian đặt: {formatTimestamp(data.createdAt)}</h3>
               <h3>
-                Tình trạng: <span className="ml-[5px]">Đã giao</span>
+                Trạng thái: <span className="ml-[5px]">{formatOrderStatus(data.paymentStatus)}</span>
               </h3>
               <h2>
-                Nhân viên phụ trách:
-                <span className="ml-[5px]">Hoàng Lan Anh</span>
+                Nhân viên xác nhận:
+                <span className="ml-[5px]">{data.staff ? data.staff.name : "Đang chờ"}</span>
               </h2>
             </div>
           </div>
           <div className="px-[20px] ">
-            <BillTable columnData={columnData} rowData={order} />
+            <BillTable columnData={columnData} rowData={data.orderDetail} />
           </div>
           <div className="p-[20px] ">
             <div className="flex gap-x-[40px] p-[20px] bg-[#F9FAFB] min-h-[55px] items-center justify-evenly">
               <div className="w-1/3 text-left flex flex-col">
                 <h2 className="font-semibold uppercase">Phương thức</h2>
-                <span className="text-[#707275] font-semibold">Tiền mặt</span>
+                <span className="text-[#707275] font-semibold">{data.paymentMethod}</span>
               </div>
               <div className="w-1/3 text-left">
                 <h2 className="font-semibold uppercase">Tạm tính</h2>
-                <span className="text-[#707275] ">{formatCurrency(200000000)}</span>
+                <span className="text-[#707275] ">{formatCurrency(data.orderTotal)}</span>
               </div>
               <div className="w-1/3 text-left">
                 <h2 className="font-semibold uppercase">Tiền vận chuyển</h2>
-                <span className="text-[#707275] ">{formatCurrency(200000)}</span>
+                <span className="text-[#707275] ">{formatCurrency(0)}</span>
               </div>
               <div className="w-1/3 text-left">
                 <h2 className="font-semibold uppercase">Tổng tiền</h2>
-                <span className="text-[red] ">{formatCurrency(200000 + 200000000)}</span>
+                <span className="text-[red] ">{formatCurrency(data.orderTotal)}</span>
               </div>
             </div>
           </div>

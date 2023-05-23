@@ -71,16 +71,6 @@ export default function CustomerTable({
       },
     },
   ];
-  // const rowData = [
-  //   {
-  //     _id: 1,
-  //     name: "Võ Anh Phụng",
-  //     email: "phung12@gmail.com",
-  //     phone: "0796884386",
-  //     avatar: "https://vapa.vn/wp-content/uploads/2022/12/anh-avatar-cute-002.jpg",
-  //     dateCreateAccount: "25/04/2023",
-  //   },
-  // ];
   return (
     <DataTable
       columnData={columnData}
