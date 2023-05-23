@@ -222,23 +222,23 @@ export default function MyOders() {
                           {formatCurrency(item.price)}
                         </div> */}
 
-                        {item.product.percentageDiscount === 0 ? (
+                        {item.percentageDiscount === 0 ? (
                           <React.Fragment>
                             <p className="text-primary">
-                              {formatCurrency(item.product.price)}
+                              {formatCurrency(item.price)}
                             </p>
                           </React.Fragment>
                         ) : (
                           <React.Fragment>
                             <p className="text-primary">
                               {formatCurrency(
-                                item.product.price -
-                                  item.product.price *
-                                    item.product.percentageDiscount,
+                                item.price -
+                                  item.price *
+                                    item.percentageDiscount,
                               )}
                             </p>
                             <p className="text-sm text-[#0000008a] font-normal line-through">
-                              {formatCurrency(item.product.price)}
+                              {formatCurrency(item.price)}
                             </p>
                           </React.Fragment>
                         )}
@@ -297,16 +297,14 @@ export default function MyOders() {
 
             <div className=" px-[20px] flex items-center text-white justify-between rounded-b-[8px] bg-[#9ac986] h-[40px] w-full">
               <div className="">
-                {index === orderDropdown ? (
+              
                   <div
                     onClick={handleClose}
                     className="underline hover:scale-[110%] flex justify-center items-center text-[white]"
                   >
                     Chi tiết đơn hàng
                   </div>
-                ) : (
-                  ""
-                )}
+                
               </div>
                   
               <div className=" flex justify-end items-center ">

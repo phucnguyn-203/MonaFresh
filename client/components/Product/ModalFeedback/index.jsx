@@ -72,8 +72,8 @@ export default function ModalFeedback({ createFeedback, getMyOrder, close, _id, 
           <button 
             onClick={() => {
               Swal.fire({
-                title: "Bạn chắc chắn muốn xoá?",
-                text: "Các danh mục và sản phẩm thuộc danh mục sẽ được xoá và không thể khôi phục.",
+                title: "Bạn chắc chắn muốn gửi?",
+                text: "Đánh giá sẽ được gửi và không thể thu hồi.",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: "#6abd45",
@@ -84,8 +84,8 @@ export default function ModalFeedback({ createFeedback, getMyOrder, close, _id, 
                 if (result.isConfirmed) {
                   handleSubmit();
                   Swal.fire({
-                    title: "Đã xoá",
-                    text: "Các danh mục và sản phẩm thuộc doanh mục đã được xoá.",
+                    title: "Đã gửi",
+                    text: "Đánh giá đã được gửi.",
                     confirmButtonColor: "#6abd45",
                   });
                 }
