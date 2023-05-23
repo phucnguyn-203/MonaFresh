@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { IconClose } from "@/components/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +15,7 @@ import jsUcfirst from "@/utils/jsUcfirst";
 import styles from "./styles.module.css";
 
 export default function Checkout({ purchase, close }) {
+  const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
   const [provinces, setProvinces] = useState([]);
@@ -80,10 +80,11 @@ export default function Checkout({ purchase, close }) {
       await orderAPI.createOrder(orderData);
       unwrapResult(await dispatch(deleteManyItemInCart(itemCartIdsToDelte)));
       close();
+      router.push("/shop");
       Swal.fire({
         icon: "success",
         title: "Đặt hàng thành công.",
-        text: "Bạn có thể quay lại cửa hàng để tiếp tục mua sắm",
+        text: "Bạn sẽ đưa lại cửa hàng để tiếp tục mua sắm",
         confirmButtonColor: "#6abd45",
       });
     } catch (err) {

@@ -32,11 +32,11 @@ export default function BillCustomer({ close, data }) {
     },
     {
       field: "price",
-      headerName: "Giá",
+      headerName: "Giá bán",
       renderCell: (item) => {
         return (
           <div className="text-sm ">
-            <span>{formatCurrency(item.product.price)}</span>
+            <span>{formatCurrency(item.price)}</span>
           </div>
         );
       },
@@ -47,7 +47,18 @@ export default function BillCustomer({ close, data }) {
       renderCell: (item) => {
         return (
           <div className="text-sm ">
-            <span>{item.percentDiscount}%</span>
+            <span>{item.percentageDiscount * 100} %</span>
+          </div>
+        );
+      },
+    },
+    {
+      field: "salePrice",
+      headerName: "Giảm còn",
+      renderCell: (item) => {
+        return (
+          <div className="text-sm ">
+            <span>{formatCurrency(item.price - item.price * item.percentageDiscount)}</span>
           </div>
         );
       },
@@ -101,7 +112,7 @@ export default function BillCustomer({ close, data }) {
             <div className="w-[35%] ">
               <h3>Thời gian đặt: {formatTimestamp(data.createdAt)}</h3>
               <h3>
-                Trạng thái: <span className="ml-[5px]">{formatOrderStatus(data.paymentStatus)}</span>
+                Trạng thái: <span className="ml-[5px]">{formatOrderStatus(data.status)}</span>
               </h3>
               <h2>
                 Nhân viên xác nhận:

@@ -5,6 +5,7 @@ import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import Bill from "../Bill";
+import Swal from "sweetalert2";
 import { PAYMENT_METHOD } from "../../../utils/Constant";
 import { PAYMENT_STATUS } from "../../../utils/Constant";
 import { ORDER_STATUS } from "../../../utils/Constant";
@@ -149,7 +150,25 @@ export default function OrderTable({
           return (
             <button
               className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-emerald-700 font-semibold"
-              onClick={() => handleUpdateOder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED })}
+              onClick={() => {
+                Swal.fire({
+                  title: "Xác nhận đơn đặt hàng?",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonColor: "#0E9F6E",
+                  cancelButtonColor: "#d33",
+                  cancelButtonText: "Huỷ bỏ",
+                  confirmButtonText: "Đồng ý!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleUpdateOder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED });
+                    Swal.fire({
+                      title: "Đơn hàng đã được xác nhận",
+                      confirmButtonColor: "#0E9F6E",
+                    });
+                  }
+                });
+              }}
             >
               Xác nhận đơn hàng
             </button>
@@ -157,6 +176,11 @@ export default function OrderTable({
         } else {
           return (
             <select
+              disabled={
+                item.status === ORDER_STATUS.DELIVERED ||
+                item.status === ORDER_STATUS.RETURNS ||
+                item.status === ORDER_STATUS.CANCELED
+              }
               className=" text-sm "
               value={item.status}
               onChange={(e) => handleUpdateOder(item._id, { status: e.target.value })}
