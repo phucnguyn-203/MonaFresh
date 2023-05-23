@@ -21,6 +21,12 @@ const productAPI = {
     const response = await axios.get(url, { params });
     return response;
   },
+  createFeedback: async (id, data) => {
+    const url = `/products/${id}/feedbacks`;
+    const response = await axios.post(url, data)
+    console.log(response);
+  },
+ 
 };
 
 export default productAPI;

@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ORDER_STATUS, PAYMENT_STATUS, PAYMENT_METHOD } = require("../utils/Constant");
+const removeAccents = require("../utils/removeAccents");
 
 const orderSchema = new Schema(
     {
+        srearchName: String,
         customer: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -80,7 +82,14 @@ const orderSchema = new Schema(
     {
         timestamps: true,
     },
+    
 );
+
+orderSchema.pre("save", function (next) {
+    this.searchName = this._id.toString();
+    console.log(this.searchName);
+    next();
+});
 
 orderSchema.pre(/^find/, function (next) {
     this.populate({
