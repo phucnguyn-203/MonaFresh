@@ -5,9 +5,22 @@ import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import Bill from "../Bill";
+import { PAYMENT_METHOD } from "../../../utils/Constant";
+import { PAYMENT_STATUS } from "../../../utils/Constant";
+import { ORDER_STATUS } from "../../../utils/Constant";
+import { useSelector } from "react-redux";
 
-export default function OrderTable({ orders }) {
+export default function OrderTable({
+  orders,
+  handleUpdateOder,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
+}) {
   const [showBill, setShowBill] = useState(false);
+  const currentUser = useSelector((state) => state.auth.currentUser);
   const handleShowBill = () => {
     setShowBill(!showBill);
   };
@@ -45,7 +58,7 @@ export default function OrderTable({ orders }) {
     },
     {
       field: "staffName",
-      headerName: "Nhân viên PT",
+      headerName: "Nhân viên xác nhận",
       renderCell: (item) => {
         return (
           <div className="flex gap-x-2 items-center">
@@ -58,7 +71,22 @@ export default function OrderTable({ orders }) {
       field: "method",
       headerName: "Thanh toán",
       renderCell: (item) => {
-        return <span className="text-sm ">{item.payMethod}</span>;
+        if (item.paymentMethod === PAYMENT_METHOD.COD) {
+          return <span className="text-sm">Thanh toán bằng tiền mặt</span>;
+        } else {
+          return <span className="text-sm">Thanh toán online</span>;
+        }
+      },
+    },
+    {
+      field: "paymentStatus",
+      headerName: "Thanh toán",
+      renderCell: (item) => {
+        if (item.paymentStatus === PAYMENT_STATUS.UNPAID) {
+          return <span className="text-sm">Chưa thanh toán</span>;
+        } else {
+          return <span className="text-sm">Đã thanh toán</span>;
+        }
       },
     },
     {
@@ -74,18 +102,72 @@ export default function OrderTable({ orders }) {
     },
     {
       field: "status",
-      headerName: "Trạng thái",
-      renderCell: () => {
-        return (
-          <select className=" text-sm ">
-            <option value="" hidden>
-              Đang chờ
-            </option>
-            <option value="">Đã xác nhận</option>
-            <option value="">Đã huỷ</option>
-            <option value="">Đã trả hàng</option>
-          </select>
-        );
+      headerName: "Trạng thái hiện tại",
+      renderCell: (item) => {
+        if (item.status === ORDER_STATUS.PENDING) {
+          return (
+            <span className="text-xs  text-yellow-800 rounded-full bg-yellow-200 px-2 leading-5 font-medium">
+              {`Chờ xác nhận`}
+            </span>
+          );
+        } else if (item.status === ORDER_STATUS.CONFIRMED) {
+          return (
+            <span className="text-xs text-green-800 rounded-full bg-green-200 px-2 leading-5 font-medium">
+              Đã xác nhận
+            </span>
+          );
+        } else if (item.status === ORDER_STATUS.DELIVERING) {
+          return (
+            <span className="text-xs text-teal-800 rounded-full bg-teal-200 px-2 leading-5 font-medium">
+              Đang giao hàng
+            </span>
+          );
+        } else if (item.status === ORDER_STATUS.DELIVERED) {
+          return (
+            <span className="text-xs text-pink-800 rounded-full bg-pink-200 px-2 leading-5 font-medium">
+              Đã giao hàng
+            </span>
+          );
+        } else if (item.status === ORDER_STATUS.CANCELED) {
+          return (
+            <span className="text-xs text-red-800 rounded-full bg-red-200 px-2 leading-5 font-medium">Đã huỷ</span>
+          );
+        } else {
+          return (
+            <span className="text-xs text-orange-800 rounded-full bg-orange-200 px-2 leading-5 font-medium">
+              Trả hàng
+            </span>
+          );
+        }
+      },
+    },
+    {
+      field: "updatedStatus",
+      headerName: "Cập nhật trạng thái",
+      renderCell: (item) => {
+        if (item.status === ORDER_STATUS.PENDING) {
+          return (
+            <button
+              className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-emerald-700 font-semibold"
+              onClick={() => handleUpdateOder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED })}
+            >
+              Xác nhận đơn hàng
+            </button>
+          );
+        } else {
+          return (
+            <select
+              className=" text-sm "
+              value={item.status}
+              onChange={(e) => handleUpdateOder(item._id, { status: e.target.value })}
+            >
+              <option value="">Cập nhật trạng thái</option>
+              <option value={ORDER_STATUS.DELIVERING}>Đang giao hàng</option>
+              <option value={ORDER_STATUS.DELIVERED}>Đã giao hàng</option>
+              <option value={ORDER_STATUS.RETURNS}>Đã trả hàng</option>
+            </select>
+          );
+        }
       },
     },
     {
@@ -110,5 +192,15 @@ export default function OrderTable({ orders }) {
       },
     },
   ];
-  return <DataTable columnData={columnData} rowData={orders} />;
+  return (
+    <DataTable
+      columnData={columnData}
+      rowData={orders}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
+    />
+  );
 }
