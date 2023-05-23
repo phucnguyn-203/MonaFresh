@@ -12,3 +12,4 @@ export { default as IconCard } from "./card";
 export { default as IconClose } from "./close";
 export { default as IconProfile } from "./profile";
 export { default as IconLogout } from "./logout";
+export { default as IconOrder } from "./order";

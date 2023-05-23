@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { IconProfile, IconLogout } from "@/components/icons";
+import { IconProfile, IconLogout, IconOrder } from "@/components/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { setLogoutUser } from "@/features/auth/authSlice";
 import { setEmptyCart } from "@/features/cart/cartSlice";
@@ -68,13 +68,19 @@ export default function Profile({ url }) {
       {isDropdown && (
         <div className="absolute w-[200px] top-[100% + 20px] bg-gray-50 shadow-xl rounded-lg flex flex-col top-12 right-0 overflow-hidden ">
           <Link
-            href="/profile"
+            href={{ pathname: '/profile', query: {optionSidebar: 0} }}
             className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base"
           >
             <IconProfile />
             Tài Khoản Của Tôi{" "}
           </Link>
-
+          <Link
+            href={{ pathname: '/profile', query: {optionSidebar: 1} }}
+            className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base"
+          >
+            <IconOrder />
+            Đơn Hàng Của Tôi{" "}
+          </Link>
           <button
             onClick={handleLogout}
             className="px-4 py-3 flex items-center gap-3 cursor-pointer hover:bg-slate-200 transition-all duration-100 ease-in-out text-[rgba(102,102,102,0.85)]  text-base"

@@ -3,8 +3,12 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import Sidebar from "@/components/shop/Sidebar";
 import Products from "@/components/shop/Products";
 import productAPI from "@/api/productAPI";
+import { useRouter } from 'next/router';
+
 
 export default function Shop() {
+  const router = useRouter();
+
   const breadcrumb = [
     {
       title: "trang chủ",
@@ -18,7 +22,7 @@ export default function Shop() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPageCount, setTotalPageCount] = useState(0);
-  const [filterByCategory, setFilterByCategory] = useState("");
+  const [filterByCategory, setFilterByCategory] = useState(router.query.id);
   const [sortValue, setSortValue] = useState("");
   const [rangePriceFilter, setRangePriceFilter] = useState([0, 0]);
 
@@ -30,7 +34,9 @@ export default function Shop() {
     let params = {
       page: currentPage,
       limit: 12,
+      isActive: true,
     };
+    params = {...params,...router.query};
     if (filterByCategory) {
       params.category = filterByCategory;
     }
