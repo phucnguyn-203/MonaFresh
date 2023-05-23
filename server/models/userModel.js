@@ -54,7 +54,7 @@ const userSchema = new Schema(
         },
         photo: {
             type: String,
-            default: "https://res.cloudinary.com/dp6iurtza/image/upload/v1679667323/qfjekmarkicryiaksnvu.png",
+            default: "http://res.cloudinary.com/dp6iurtza/image/upload/v1684832235/aox46fwjxawwnquednzw.jpg",
         },
         isActive: {
             type: Boolean,
