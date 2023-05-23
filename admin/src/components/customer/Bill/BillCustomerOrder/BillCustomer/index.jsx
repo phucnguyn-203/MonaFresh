@@ -127,7 +127,9 @@ export default function BillCustomer({ close, data }) {
             <div className="flex gap-x-[40px] p-[20px] bg-[#F9FAFB] min-h-[55px] items-center justify-evenly">
               <div className="w-1/3 text-left flex flex-col">
                 <h2 className="font-semibold uppercase">Phương thức</h2>
-                <span className="text-[#707275] font-semibold">{data.paymentMethod}</span>
+                <span className="text-[#707275] font-semibold">
+                  {data.paymentMethod === 1 ? "Thanh toán tiền mặt" : "Thanh toán online"}
+                </span>
               </div>
               <div className="w-1/3 text-left">
                 <h2 className="font-semibold uppercase">Tạm tính</h2>

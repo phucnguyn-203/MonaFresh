@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import PageLayout from "../../components/layout/pageLayout";
-import Fillter from "../../components/orders/Fillter";
+import Filter from "../../components/orders/Fillter";
 import OrderTable from "../../components/orders/OrderTable";
 import orderAPI from "../../api/orderAPI";
+import Bill from "../../components/orders/Bill";
 // import useDebounce from "../../hooks/useDebounce";
 
 export default function Order() {
   const [orders, setOrders] = useState([]);
+  const [billData, setBillData] = useState();
+  const [isShowBill, setIsShowBill] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [limitPerPage, setLimitPerPage] = useState(10);
@@ -31,6 +34,7 @@ export default function Order() {
       console.log(err);
     }
   };
+
   const handleUpdateOder = async (id, data) => {
     try {
       await orderAPI.updaterOrder(id, data);
@@ -39,13 +43,18 @@ export default function Order() {
       console.log(err);
     }
   };
+
+  const handleShowBill = (item) => {
+    setIsShowBill(!isShowBill);
+    setBillData(item);
+  };
   useEffect(() => {
     getAllOrder();
   }, [currentPage, limitPerPage, filterByStatus, sortValue]);
 
   return (
     <PageLayout title="Đơn hàng">
-      <Fillter
+      <Filter
         orders={orders}
         handleUpdateOder={handleUpdateOder}
         currentPage={currentPage}
@@ -61,6 +70,7 @@ export default function Order() {
       <OrderTable
         orders={orders}
         handleUpdateOder={handleUpdateOder}
+        handleShowBill={handleShowBill}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPageCount={totalPageCount}
@@ -71,6 +81,7 @@ export default function Order() {
         sortValue={sortValue}
         setSortValue={setSortValue}
       />
+      {isShowBill && <Bill data={billData} close={handleShowBill} />}
     </PageLayout>
   );
 }
