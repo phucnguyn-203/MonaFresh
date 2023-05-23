@@ -9,11 +9,11 @@ import { useRouter } from 'next/router';
 function Profile() {
   
   const router = useRouter();
-  const [sidebar, setSidebar] = useState(router.query.optionSidebar);
+  const [sidebar, setSidebar] = useState(router.query.tapIndex);
   const currentUser = useSelector((state) => state.auth.currentUser);
   useEffect(()=>{
-    setSidebar(router.query.optionSidebar)
-  },[router.query.optionSidebar]);
+    setSidebar(router.query.tapIndex)
+  },[router.query.tapIndex]);
   return (
 
     <div className="container my-32">
@@ -47,7 +47,10 @@ function Profile() {
                 sidebar == 0 ? `${styles.active}` : ""
               } text-center mt-[15px] font-medium text-lg cursor-pointer py-2`}
             >
-              <div onClick={() => setSidebar(0)}>Tài khoản của tôi</div>
+              <div onClick={() => {
+                  router.query.tapIndex=0;
+                  setSidebar(0);
+                }}>Tài khoản của tôi</div>
             </li>
             <li
               className={`${
@@ -56,6 +59,7 @@ function Profile() {
             >
               <div
                 onClick={() => {
+                  router.query.tapIndex=0;
                   setSidebar(1);
                 }}
               >
