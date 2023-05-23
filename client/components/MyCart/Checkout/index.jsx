@@ -16,7 +16,6 @@ import jsUcfirst from "@/utils/jsUcfirst";
 import styles from "./styles.module.css";
 
 export default function Checkout({ purchase, close }) {
-  const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
   const [provinces, setProvinces] = useState([]);
@@ -54,6 +53,8 @@ export default function Checkout({ purchase, close }) {
     const orderDetail = purchase.map((item) => {
       return {
         product: item.product._id,
+        price: item.product.price,
+        percentageDiscount: item.product.percentageDiscount,
         quantity: item.quantity,
         total: item.total,
       };

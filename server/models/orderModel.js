@@ -23,6 +23,15 @@ const orderSchema = new Schema(
                         ref: "Product",
                         required: [true, "Vui lòng cung cấp thông tin sản phẩm"],
                     },
+                    price: {
+                        type: Number,
+                        required: true,
+                    },
+
+                    percentageDiscount: {
+                        type: Number,
+                        default: 0,
+                    },
                     quantity: {
                         type: Number,
                         required: [true, "Vui lòng nhập số lượng của sản phẩm"],
@@ -82,7 +91,6 @@ const orderSchema = new Schema(
     {
         timestamps: true,
     },
-    
 );
 
 orderSchema.pre("save", function (next) {
