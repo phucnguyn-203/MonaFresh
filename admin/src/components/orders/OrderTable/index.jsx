@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { IconView } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
-import Bill from "../Bill";
 import Swal from "sweetalert2";
 import { PAYMENT_METHOD } from "../../../utils/Constant";
 import { PAYMENT_STATUS } from "../../../utils/Constant";
@@ -19,13 +17,9 @@ export default function OrderTable({
   totalPageCount,
   limitPerPage,
   setLimitPerPage,
+  handleShowBill,
 }) {
-  const [showBill, setShowBill] = useState(false);
   const currentUser = useSelector((state) => state.auth.currentUser);
-  const handleShowBill = () => {
-    setShowBill(!showBill);
-  };
-
   const columnData = [
     {
       field: "orderName",
@@ -204,12 +198,10 @@ export default function OrderTable({
               data-tooltip-id="view"
               data-tooltip-content="Xem chi tiết"
               className="text-left  cursor-pointer text-gray-400 hover:text-green-600"
-              onClick={handleShowBill}
+              onClick={() => handleShowBill(item)}
             >
               <IconView />
             </button>
-            {showBill && <Bill close={handleShowBill} />}
-            {/* data={rowData.find((row) => row.OrderID)} */}
             <Tooltip id="view" style={{ backgroundColor: "var(--color-primary" }} />
           </span>
         );
