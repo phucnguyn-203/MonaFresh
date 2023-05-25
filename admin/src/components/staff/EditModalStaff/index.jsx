@@ -12,7 +12,14 @@ import yup from "../../../utils/yupGlobal";
 import staffAPI from "../../../api/staffAPI";
 import toastMessage from "../../../utils/toastMessage";
 
-export default function EditModalStaff({ closeModal, title, titleBtnFooter, staff, handleUpdateStaff }) {
+export default function EditModalStaff({ 
+  closeModal, 
+  title, 
+  titleBtnFooter, 
+  staff, 
+  handleUpdateStaff,
+  getAllStaff 
+}) {
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn."),
     email: yup.string().required("Vui lòng nhập Email của bạn.").email("Vui lòng nhập đúng định dạng của Email."),
@@ -64,6 +71,7 @@ export default function EditModalStaff({ closeModal, title, titleBtnFooter, staf
         const uploadAvatar = await handlePhotoUpload();
         console.log(uploadAvatar);
         data.photo = uploadAvatar.url;
+        getAllStaff();
       }
       await handleUpdateStaff(staff._id, data);
       toastMessage({ type: "success", message: "Cập nhật thành công." });

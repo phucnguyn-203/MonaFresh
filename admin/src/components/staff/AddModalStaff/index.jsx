@@ -11,7 +11,13 @@ import staffAPI from "../../../api/staffAPI";
 import toastMessage from "../../../utils/toastMessage";
 import styles from "./styles.module.css";
 
-export default function AddModalStaff({ closeModal, title, titleBtnFooter, handleAddStaff }) {
+export default function AddModalStaff({ 
+  closeModal, 
+  title, 
+  titleBtnFooter, 
+  handleAddStaff,
+  getAllStaff, 
+}) {
   const [photo, setPhoto] = useState();
   const [previewPhoto, setPreviewPhoto] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -62,6 +68,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
       data.photo = uploadAvatar.url;
       handleAddStaff(data);
       toastMessage({ type: "success", message: "Cập nhật thành công." });
+      getAllStaff();
     } catch (error) {
       toastMessage({ type: "error", message: `Cập nhật thất bại. ${error}.` });
     }

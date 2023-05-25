@@ -39,7 +39,8 @@ const staffAPI = {
   },
   deleteManyStaff: async (data) => {
     const url = "/users";
-    await axios.delete(url, {data: {staffIds: data}});
+    console.log(data);
+    await axios.delete(url, {data});
   },
 };
 export default staffAPI;
