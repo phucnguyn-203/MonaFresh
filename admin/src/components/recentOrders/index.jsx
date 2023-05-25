@@ -1,15 +1,15 @@
 import { Tooltip } from "react-tooltip";
-import { IconView } from "../../icon";
-import DataTable from "../../DataTable";
-import formatCurrency from "../../../utils/formatCurrency";
-import formatTimestamp from "../../../utils/formatTimestamp";
-import Swal from "sweetalert2";
-import { PAYMENT_METHOD } from "../../../utils/Constant";
-import { PAYMENT_STATUS } from "../../../utils/Constant";
-import { ORDER_STATUS } from "../../../utils/Constant";
+import { IconView } from "../icon";
+import DataTable from "../DataTable";
+import formatCurrency from "../../utils/formatCurrency";
+import formatTimestamp from "../../utils/formatTimestamp";
+import { PAYMENT_METHOD } from "../../utils/Constant";
+import { PAYMENT_STATUS } from "../../utils/Constant";
+import { ORDER_STATUS } from "../../utils/Constant";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
-export default function OrderTable({
+export default function RecentOrdersTable({
   orders,
   handleUpdateOder,
   currentPage,
