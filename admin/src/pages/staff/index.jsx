@@ -10,6 +10,7 @@ import EditModalStaff from "../../components/staff/EditModalStaff";
 import staffAPI from "../../api/staffAPI";
 import { USER_ROLES } from "../../utils/Constant";
 import useDebounce from "../../hooks/useDebounce";
+import { useSelector } from "react-redux";
 
 export default function Staff() {
   const [showAddStaffModal, setShowAddStaffModal] = useState(false);
@@ -27,9 +28,11 @@ export default function Staff() {
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [limitPerPage, setLimitPerPage] = useState(10);
 
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
   useEffect(() => {
     getAllStaff();
-  }, [debounceValue, filterByRole, isShowStaffDeletedTable, currentPage, limitPerPage]);
+  }, [debounceValue, filterByRole, isShowStaffDeletedTable, currentPage, limitPerPage, showAddStaffModal, showEditStaffModal]);
 
   const handleShowAddModal = () => {
     setShowAddStaffModal(!showAddStaffModal);
@@ -76,6 +79,7 @@ export default function Staff() {
         role,
       });
       setShowAddStaffModal(false);
+      await getAllStaff();
     } catch (err) {
       console.log(err);
     }
@@ -118,6 +122,7 @@ export default function Staff() {
   const handleDeleteManyStaff = async () => {
     try {
       await staffAPI.deleteManyStaff({ staffIds: isSelected });
+      console.log(isSelected);
       getAllStaff();
     } catch (err) {
       console.log(err);
@@ -369,6 +374,7 @@ export default function Staff() {
             totalPageCount={totalPageCount}
             limitPerPage={limitPerPage}
             setLimitPerPage={setLimitPerPage}
+            currentUser={currentUser}
           />
         </React.Fragment>
       ) : (
@@ -387,6 +393,7 @@ export default function Staff() {
             totalPageCount={totalPageCount}
             limitPerPage={limitPerPage}
             setLimitPerPage={setLimitPerPage}
+            currentUser={currentUser}
           />
         </React.Fragment>
       )}
@@ -396,6 +403,7 @@ export default function Staff() {
           title="THÊM NHÂN VIÊN"
           titleBtnFooter="THÊM"
           handleAddStaff={handleAddStaff}
+          getAllStaff={getAllStaff}
         />
       )}
       {showEditStaffModal && (
@@ -405,6 +413,7 @@ export default function Staff() {
           titleBtnFooter="CẬP NHẬT"
           staff={editStaffData}
           handleUpdateStaff={handleUpdateStaff}
+          getAllStaff={getAllStaff}
         />
       )}
     </PageLayout>

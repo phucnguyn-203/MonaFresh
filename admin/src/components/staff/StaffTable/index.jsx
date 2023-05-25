@@ -17,6 +17,7 @@ export default function StaffTable({
   totalPageCount,
   limitPerPage,
   setLimitPerPage,
+  currentUser,
 }) {
   const columnData = [
     {
@@ -28,7 +29,13 @@ export default function StaffTable({
             <div className="w-[50px] h-[50px] ring-1 ring-gray-300">
               <img src={item.photo} className="w-full h-full object-cover" />
             </div>
-            <p className="text-sm">{jsUcfirst(item.name)}</p>
+            {item._id === currentUser._id ? (
+              <p className="flex text-sm">
+                {jsUcfirst(item.name)} &nbsp; <div className="text-red-500"> (Tôi)</div>
+              </p>
+            ) : (
+              <p className="text-sm">{jsUcfirst(item.name)}</p>
+            )}
           </div>
         );
       },
@@ -86,7 +93,9 @@ export default function StaffTable({
       field: "actions",
       headerName: "Thao tác",
       renderCell: (item) => {
-        return (
+        return item._id === currentUser._id ? (
+          ""
+        ) : (
           <div className="flex justify-center items-center text-gray-400 gap-x-4">
             <button
               data-tooltip-id="edit"
