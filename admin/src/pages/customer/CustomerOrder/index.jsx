@@ -27,7 +27,6 @@ export default function CustomerOrder() {
     if (sortValue) {
       params = { ...params, ...sortValue };
     }
-
     try {
       const response = await orderAPI.getOrdersByUserId(userId, params);
       setOrders(response.data);
