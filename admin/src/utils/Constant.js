@@ -22,3 +22,8 @@ export const PAYMENT_METHOD = {
   COD: 1, //Thanh toán khi nhận hàng
   ONL: 2, //Thanh toán online
 };
+
+export const INVOICE_TYPE = {
+  IMPORT: 1,
+  EXPORT: 2,
+};
