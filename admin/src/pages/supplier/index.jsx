@@ -102,13 +102,9 @@ export default function Product() {
   };
 
   const handleUpdateSupplier = async (id, data) => {
-    try {
-      await supplierAPI.updateSupplier(id, data);
-      setIsShowEditSupplier(false);
-      getAllSupplier();
-    } catch (err) {
-      console.log(err);
-    }
+    await supplierAPI.updateSupplier(id, data);
+    await getAllSupplier();
+    setIsShowEditSupplier(false);
   };
 
   const getAllSupplier = async () => {
@@ -135,13 +131,9 @@ export default function Product() {
 
   const handleAddSupplier = async (data) => {
     const { name, email, address, phone } = data;
-    try {
-      await supplierAPI.addSupplier({ name, email, address, phone });
-      setIsShowAddSupplier(false);
-      getAllSupplier();
-    } catch (err) {
-      console.log(err);
-    }
+    await supplierAPI.createSupplier({ name, email, address, phone });
+    await getAllSupplier();
+    setIsShowAddSupplier(false);
   };
 
   const handleDeleteManySupplier = async () => {

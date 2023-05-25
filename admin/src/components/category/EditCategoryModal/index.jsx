@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Drawer from "../../modal/drawer";
 import ModalHeader from "../../modal/header";
 import ModalFooter from "../../modal/footer";
 import yup from "../../../utils/yupGlobal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import toastMessage from "../../../utils/toastMessage";
 
 export default function EditCategoryModal({ closeModal, title, titleBtnFooter, category, handleUpdateCategory }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên sản phẩm"),
   });
@@ -18,12 +21,22 @@ export default function EditCategoryModal({ closeModal, title, titleBtnFooter, c
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => handleUpdateCategory(category._id, data);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(false);
+      await handleUpdateCategory(category._id, data);
+      toastMessage({ type: "success", message: "Thêm sản phẩm thành công" });
+    } catch (err) {
+      toastMessage({ type: "error", message: "Thêm sản thất bại. Tên sản phẩm đã tồn tại" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
       <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>
-      <Drawer closeModal={closeModal} title={title} titleBtnFooter={titleBtnFooter}>
+      <Drawer closeModal={closeModal} title={title} titleBtnFooter={titleBtnFooter} isFullWidth={false}>
         <ModalHeader closeModal={closeModal} title={title} />
         <div className="h-full overflow-y-scroll grow mt-[20px]">
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,10 +60,10 @@ export default function EditCategoryModal({ closeModal, title, titleBtnFooter, c
               </div>
             </div>
 
-            <input type="submit" hidden id="send" />
+            <input type="submit" hidden id="send" disabled={isLoading} />
           </form>
         </div>
-        <ModalFooter title={titleBtnFooter} />
+        <ModalFooter title={titleBtnFooter} isLoading={isLoading} />
       </Drawer>
     </div>
   );

@@ -7,7 +7,7 @@ const supplierAPI = {
     return response;
   },
 
-  addSupplier: async (data) => {
+  createSupplier: async (data) => {
     const url = "/suppliers";
     await axios.post(url, data);
   },
