@@ -1,12 +1,9 @@
 import { Tooltip } from "react-tooltip";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import { IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import jsUcfirst from "../../../utils/jsUcfirst";
 import formatCurrency from "../../../utils/formatCurrency";
-import yup from "../../../utils/yupGlobal";
 
 export default function ImportModalTable({
   currentPage,
@@ -17,10 +14,7 @@ export default function ImportModalTable({
   products,
   setNewQuantity,
   handleDelete,
-  handleSubmit,
-  onSubmit,
 }) {
-  // const { handleSubmit } = useForm();
   const columnData = [
     {
       field: "name",
@@ -90,23 +84,6 @@ export default function ImportModalTable({
   ];
 
   return (
-    // <form onSubmit={handleSubmit(onSubmit)}>
-    //   <DataTable
-    //     columnData={columnData}
-    //     rowData={products}
-    //     currentPage={currentPage}
-    //     setCurrentPage={setCurrentPage}
-    //     totalPageCount={totalPageCount}
-    //     limitPerPage={limitPerPage}
-    //     setLimitPerPage={setLimitPerPage}
-    //   />
-    //   <button
-    //     className="bg-primary text-white h-[48px] w-[250px] text-lg font-semibold rounded-md text-center flex justify-center items-center"
-    //     type="submit"
-    //   >
-    //     GỬI
-    //   </button>
-    // </form>
     <DataTable
       columnData={columnData}
       rowData={products}

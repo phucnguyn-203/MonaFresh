@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, ModalHeader, ModalFooter } from "../../modal";
+import { Drawer, ModalHeader } from "../../modal";
 import { useSelector } from "react-redux";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-import { IconClose, IconSearch, IconTotalOrder } from "../../icon";
-import yup from "../../../utils/yupGlobal";
+import { IconSearch } from "../../icon";
 import formatCurrency from "../../../utils/formatCurrency";
 import ImportModalTable from "../ImportModalTable";
 import SearchResult from "../../search/SearchResults";
 import useDebounce from "../../../hooks/useDebounce";
 import productAPI from "../../../api/productAPI";
-import invoiceAPI from "../../../api/invoiceAPI";
-import Loading from "../../loading";
-// import { INVOICE_TYPE } from "../../utils/Constant";
 
 export default function AddModalImport({ closeModal, title, titleBtnFooter, handleAddImportInvoice }) {
   const [products, setProducts] = useState([]);
@@ -49,7 +45,6 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
             search: debounceValue.trim(),
           });
           setSearchProductsResult(response.data);
-          // setTotalPageCount(response.totalPages);
           setIsShowResult(true);
         } catch (err) {
           console.log(err);
@@ -83,7 +78,7 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
     setProducts(newProducts);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     try {
       const newData = products.map((item) => {
         const newItem = {
@@ -189,7 +184,6 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
           </div>
           <input type="submit" hidden id="send" disabled={isLoading} />
         </div>
-        {/* <ModalFooter title={titleBtnFooter} isLoading={isLoading} /> */}
       </Drawer>
     </>
   );

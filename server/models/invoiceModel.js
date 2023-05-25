@@ -40,5 +40,12 @@ const invoiceSchema = new Schema(
     },
 );
 
+invoiceSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "createdBy",
+        select: "name",
+    });
+    next();
+});
 const Invoice = mongoose.model("Invoice", invoiceSchema);
 module.exports = Invoice;

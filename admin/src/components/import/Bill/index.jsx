@@ -1,15 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 import { IconClose } from "../../icon";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import BillTable from "../BillTable";
 import styles from "./styles.module.css";
+import jsUcfirst from "../../../utils/jsUcfirst";
 
 export default function Bill({ close, invoice }) {
-  const currentUser = useSelector((state) => state.auth.currentUser);
-
   const columnData = [
     {
       field: "product",
@@ -17,7 +15,7 @@ export default function Bill({ close, invoice }) {
       renderCell: (item) => {
         return (
           <div className="flex gap-x-2 items-center">
-            <p className="text-sm ">{item.name}</p>
+            <p className="text-sm ">{jsUcfirst(item.name)}</p>
           </div>
         );
       },
@@ -40,6 +38,17 @@ export default function Bill({ close, invoice }) {
         return (
           <div className="text-sm ">
             <span>{formatCurrency(item.price)}</span>
+          </div>
+        );
+      },
+    },
+    {
+      field: "totalPrice",
+      headerName: "Thành tiền",
+      renderCell: (item) => {
+        return (
+          <div className="text-sm ">
+            <span>{formatCurrency(item.price * item.quantity)}</span>
           </div>
         );
       },
@@ -79,7 +88,7 @@ export default function Bill({ close, invoice }) {
                 Mã hoá đơn <span className="ml-[53px]">{invoice._id}</span>
               </h1>
               <h3 className="my-[3px]">
-                Nhân viên phụ trách <span className="ml-[20px]">{currentUser.name}</span>
+                Nhân viên nhập hàng <span className="ml-[20px]">{invoice.createdBy.name}</span>
               </h3>
               <h3 className="my-[3px]">
                 Thời gian nhập <span className="ml-[56px]">{formatTimestamp(invoice.createdAt)}</span>

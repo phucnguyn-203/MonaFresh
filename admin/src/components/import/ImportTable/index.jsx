@@ -1,9 +1,7 @@
 import { Tooltip } from "react-tooltip";
-import { IconEdit } from "../../icon";
 import { IconView } from "../../icon";
 import DataTable from "../../DataTable";
 import formatTimestamp from "../../../utils/formatTimestamp";
-import jsUcfirst from "../../../utils/jsUcfirst";
 
 export default function ImportTable({
   invoices,
@@ -12,7 +10,6 @@ export default function ImportTable({
   totalPageCount,
   limitPerPage,
   setLimitPerPage,
-  handleShowStaffName,
   handleShowBill,
 }) {
   const columnData = [
@@ -29,11 +26,11 @@ export default function ImportTable({
     },
     {
       field: "staffName",
-      headerName: "Nhân viên phụ trách",
+      headerName: "Nhân viên nhập hàng",
       renderCell: (item) => {
         return (
           <div className="flex gap-x-2 items-center">
-            <p className="text-sm">{handleShowStaffName(item.createdBy)}</p>
+            <p className="text-sm">{item.createdBy.name}</p>
           </div>
         );
       },
@@ -51,15 +48,6 @@ export default function ImportTable({
       renderCell: (item) => {
         return (
           <div className="flex justify-start items-center text-gray-400 gap-x-4">
-            {/* <button
-              data-tooltip-id="edit"
-              data-tooltip-content="Chỉnh sửa"
-              className="hover:text-green-600"
-              //   onClick={() => handleShowEditStaffModal(item)}
-            >
-              <IconEdit />
-            </button>
-            <Tooltip id="edit" style={{ backgroundColor: "var(--color-primary" }} /> */}
             <button
               data-tooltip-id="view"
               data-tooltip-content="Xem chi tiết"
@@ -83,7 +71,6 @@ export default function ImportTable({
       totalPageCount={totalPageCount}
       limitPerPage={limitPerPage}
       setLimitPerPage={setLimitPerPage}
-      handleShowStaffName={handleShowStaffName}
     />
   );
 }
