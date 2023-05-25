@@ -84,7 +84,7 @@ export default function ProductItem({
           )}
         </div>
         <div>
-          {cart.items.find((item) => item.product._id === id) ? (
+          {cart.items.find((item) => item?.product?._id === id) ? (
             <button className="bg-[#CCCCCC] text-white px-5 py-3 text-xs cursor-not-allowed rounded-md">
               ĐÃ THÊM VÀO GIỎ
             </button>

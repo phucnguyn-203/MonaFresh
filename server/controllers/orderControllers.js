@@ -3,7 +3,6 @@ const AppError = require("../utils/AppError");
 const ApiFeature = require("../utils/ApiFeatures");
 const catchAsync = require("../utils/catchAsync");
 
-
 exports.getAllOrder = catchAsync(async (req, res) => {
     const features = new ApiFeature(Order, req.query).filter().sort();
     const { query, totalPages, currentPage } = await features.paginate();
@@ -40,7 +39,7 @@ exports.getOneOrder = catchAsync(async (req, res) => {
 
 exports.getMyOrders = catchAsync(async (req, res) => {
     const customerId = req.user._id;
-    const features = new ApiFeature(Order.find({ customer: customerId}), req.query).filter().sort();
+    const features = new ApiFeature(Order.find({ customer: customerId }), req.query).filter().sort();
     const orders = await features.query;
     res.status(200).json({
         status: "success",
@@ -75,11 +74,11 @@ exports.deleteOrder = catchAsync(async (req, res) => {
     });
 });
 
-exports.updateIsFeedbackOfOneItem = catchAsync(async(req, res, next) => {
-    const _id  = req.body._id;
+exports.updateIsFeedbackOfOneItem = catchAsync(async (req, res, next) => {
+    const _id = req.body._id;
     const itemId = req.body.itemId;
-    
-    const order = await Order.findOne({_id: _id});
+
+    const order = await Order.findOne({ _id: _id });
     if (!order) {
         return next(new AppError("Không tìm thấy đơn hàng", 404));
     }
@@ -89,10 +88,9 @@ exports.updateIsFeedbackOfOneItem = catchAsync(async(req, res, next) => {
     }
     item.isFeedback = true;
     await order.save();
-   
+
     res.status(200).json({
         status: "success",
         data: order.orderDetail,
-        
     });
 });

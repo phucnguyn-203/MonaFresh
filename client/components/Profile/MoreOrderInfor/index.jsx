@@ -1,11 +1,10 @@
-import styles from ".//styles.module.css";
+import React from "react";
+import jsUcfirst from "@/utils/jsUcfirst";
 import formatCurrency from "@/utils/formatCurrency";
 import formatTimestamp from "@/utils/formatTimestamp";
-import React, { useState } from "react";
 import { IconClose } from "@/components/icons";
-{
-  /* <p>{formatCurrency(price - price * percentageDiscount)}</p> */
-}
+import styles from ".//styles.module.css";
+
 export default function MoreOderInfor({ order, close }) {
   const paymentStatus = ["", "Chưa thanh toán", "Đã thanh toán"];
   const paymentMethod = ["", "Thanh toán tiền mặt", "Thanh toán qua ngân hàng"];
@@ -108,7 +107,7 @@ export default function MoreOderInfor({ order, close }) {
                   className="min-h-[40px] px-[20px] py-[20px] flex w-full text-center justify-center items-center border-b-[1px] border-[#ececec] last:border-0"
                 >
                   <div className="w-[40%] bassis-[40%] text-left text-[15px]">
-                    {item.product.name}
+                    {jsUcfirst(item.name)}
                   </div>
                   <div className="w-[20%] bassis-[20%]">
                     {item.percentageDiscount === 0 ? (
@@ -121,9 +120,7 @@ export default function MoreOderInfor({ order, close }) {
                       <React.Fragment>
                         <p className="text-primary">
                           {formatCurrency(
-                            item.price -
-                              item.price *
-                                item.percentageDiscount,
+                            item.price - item.price * item.percentageDiscount,
                           )}
                         </p>
                         <p className="text-sm text-[#0000008a] font-normal line-through">

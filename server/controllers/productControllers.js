@@ -46,14 +46,16 @@ exports.createProduct = catchAsync(async (req, res) => {
     });
 });
 exports.updateProduct = catchAsync(async (req, res) => {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const product = await Product.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+        runValidators: true,
+    });
     res.status(200).json({
         status: "success",
         data: product,
     });
 });
 exports.updateManyProduct = catchAsync(async (req, res) => {
-    console.log(req.body);
     await Product.updateMany(
         { _id: { $in: req.body.data.productIds } },
         { $set: { isActive: req.body.data.isActive } },

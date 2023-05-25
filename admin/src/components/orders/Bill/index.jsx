@@ -1,5 +1,6 @@
 import React from "react";
 import { IconClose } from "../../icon";
+import jsUcfirst from "../../../utils/jsUcfirst";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import formatOrderStatus from "../../../utils/formatOrderStatus";
 import formatCurrency from "../../../utils/formatCurrency";
@@ -14,7 +15,7 @@ export default function Bill({ close, data }) {
       renderCell: (item) => {
         return (
           <div className="flex gap-x-2 items-center">
-            <p className="text-sm ">{item.product.name}</p>
+            <p className="text-sm ">{jsUcfirst(item.name)}</p>
           </div>
         );
       },
@@ -31,6 +32,17 @@ export default function Bill({ close, data }) {
       },
     },
     {
+      field: "price",
+      headerName: "Giá bán",
+      renderCell: (item) => {
+        return (
+          <div className="text-sm ">
+            <span>{formatCurrency(item.price)}</span>
+          </div>
+        );
+      },
+    },
+    {
       field: "percentDiscount",
       headerName: "Khuyến mãi",
       renderCell: (item) => {
@@ -42,12 +54,23 @@ export default function Bill({ close, data }) {
       },
     },
     {
-      field: "price",
-      headerName: "Giá",
+      field: "salePrice",
+      headerName: "Giảm còn",
       renderCell: (item) => {
         return (
           <div className="text-sm ">
             <span>{formatCurrency(item.price - item.price * item.percentageDiscount)}</span>
+          </div>
+        );
+      },
+    },
+    {
+      field: "total",
+      headerName: "Tổng",
+      renderCell: (item) => {
+        return (
+          <div className="text-sm ">
+            <span>{formatCurrency(item.total)}</span>
           </div>
         );
       },

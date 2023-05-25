@@ -3,6 +3,7 @@ import { IconClose } from "../../../../icon";
 import formatCurrency from "../../../../../utils/formatCurrency";
 import BillTable from "../BillTable";
 import styles from "./styles.module.css";
+import jsUcfirst from "../../../../../utils/jsUcfirst";
 import formatTimestamp from "../../../../../utils/formatTimestamp";
 import formatOrderStatus from "../../../../../utils/formatOrderStatus";
 
@@ -14,7 +15,7 @@ export default function BillCustomer({ close, data }) {
       renderCell: (item) => {
         return (
           <div className="flex gap-x-2 items-center">
-            <p className="text-sm ">{item.product.name}</p>
+            <p className="text-sm ">{jsUcfirst(item.name)}</p>
           </div>
         );
       },

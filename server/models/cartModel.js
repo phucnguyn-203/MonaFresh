@@ -20,10 +20,6 @@ const cartSchema = new Schema(
                     type: Number,
                     required: [true, "Vui lòng nhập số lượng sản phẩm"],
                 },
-                total: {
-                    type: Number,
-                    required: true,
-                },
             },
         ],
     },
@@ -35,7 +31,7 @@ const cartSchema = new Schema(
 cartSchema.pre(/^find/, function (next) {
     this.populate({
         path: "items.product",
-        select: "name thumbnail price percentageDiscount -category",
+        select: "name thumbnail price percentageDiscount -category isActive",
     });
     next();
 });

@@ -5,6 +5,7 @@ import {
   deleteManyItemInCart,
 } from "@/features/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import calculateItemTotal from "@/utils/calculateItemTotal";
 import Link from "next/link";
 import formatCurrency from "@/utils/formatCurrency";
 import CartItem from "@/components/cart/CardItem";
@@ -73,7 +74,11 @@ function Cart() {
   };
 
   const total = useCallback(() => {
-    return purchase.reduce((total, item) => total + item?.total, 0);
+    return purchase.reduce(
+      (total, item) =>
+        total + calculateItemTotal(item?.product, item?.quantity),
+      0,
+    );
   }, [cart, isCheckAll, isChecked, purchase]);
 
   return (

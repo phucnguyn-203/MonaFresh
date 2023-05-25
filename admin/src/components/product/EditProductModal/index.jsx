@@ -371,7 +371,7 @@ export default function EditProductModal({ closeModal, product, title, titleBtnF
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
                 <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
-                  Giá sản phẩm
+                  Giá bán
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
@@ -388,7 +388,7 @@ export default function EditProductModal({ closeModal, product, title, titleBtnF
               </div>
               <div className="grid grid-cols-6 gap-3 mb-6">
                 <label className="block  text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
-                  Giá nhập sản phẩm
+                  Giá nhập
                 </label>
                 <div className="col-span-8 sm:col-span-4 ">
                   <input

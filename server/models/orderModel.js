@@ -23,6 +23,14 @@ const orderSchema = new Schema(
                         ref: "Product",
                         required: [true, "Vui lòng cung cấp thông tin sản phẩm"],
                     },
+                    name: {
+                        type: String,
+                        required: true,
+                    },
+                    thumbnail: {
+                        type: String,
+                        required: true,
+                    },
                     price: {
                         type: Number,
                         required: true,

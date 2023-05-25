@@ -221,6 +221,7 @@ export default function Shop({ product, similarProducts }) {
                   type="number"
                   className="w-[65px] h-[40px] border-[1px] border-solid text-center outline-none"
                   value={quantity}
+                  readOnly
                   onChange={(e) => {
                     setQuantity(Number(e.target.value));
                   }}
@@ -233,7 +234,7 @@ export default function Shop({ product, similarProducts }) {
                 </button>
               </div>
             </div>
-            {cart.items.find((item) => item.product._id === product._id) ? (
+            {cart.items.find((item) => item?.product?._id === product._id) ? (
               <button className="bg-[#CCCCCC] text-white px-5 py-3 text-base font-semibold rounded-md border-solid cursor-not-allowed">
                 Sản phẩm đã thêm vào giỏ
               </button>

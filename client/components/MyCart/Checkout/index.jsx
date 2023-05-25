@@ -6,15 +6,18 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { deleteManyItemInCart } from "@/features/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import calculateItemTotal from "@/utils/calculateItemTotal";
 import Swal from "sweetalert2";
 import formatCurrency from "@/utils/formatCurrency";
 import yup from "@/utils/yupGlobal";
 import addressAPI from "@/api/addressAPI";
 import orderAPI from "@/api/orderAPI";
 import jsUcfirst from "@/utils/jsUcfirst";
+import Loading from "@/components/loading";
 import styles from "./styles.module.css";
 
 export default function Checkout({ purchase, close }) {
+  console.log(purchase);
   const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -24,7 +27,12 @@ export default function Checkout({ purchase, close }) {
   const [districtCode, setDistrictCode] = useState(null);
   const [provinceCode, setProvinceCode] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(1);
-  const total = purchase.reduce((total, item) => total + item?.total, 0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const total = purchase.reduce(
+    (total, item) => total + calculateItemTotal(item?.product, item?.quantity),
+    0,
+  );
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
@@ -53,10 +61,12 @@ export default function Checkout({ purchase, close }) {
     const orderDetail = purchase.map((item) => {
       return {
         product: item.product._id,
+        name: item.product.name,
+        thumbnail: item.product.thumbnail,
         price: item.product.price,
         percentageDiscount: item.product.percentageDiscount,
         quantity: item.quantity,
-        total: item.total,
+        total: calculateItemTotal(item.product, item.quantity),
       };
     });
     const deliveryAddress = {
@@ -77,6 +87,7 @@ export default function Checkout({ purchase, close }) {
     const itemCartIdsToDelte = purchase.map((item) => item._id);
 
     try {
+      setIsLoading(true);
       await orderAPI.createOrder(orderData);
       unwrapResult(await dispatch(deleteManyItemInCart(itemCartIdsToDelte)));
       close();
@@ -89,6 +100,8 @@ export default function Checkout({ purchase, close }) {
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -388,7 +401,12 @@ export default function Checkout({ purchase, close }) {
                             {item?.quantity}
                           </td>
                           <td className="border-y-[1.5px] py-[8px] text-right w-[20%] tracking-normal whitespace-nowrap text-[#6abd45] font-bold text-[16px]">
-                            {formatCurrency(item?.total)}
+                            {formatCurrency(
+                              item?.quantity *
+                                (item?.product?.price -
+                                  item?.product?.price *
+                                    item?.product?.percentageDiscount),
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -450,10 +468,19 @@ export default function Checkout({ purchase, close }) {
                   </div>
                   <div className="mt-[20px] border-t-[3px] border-[#ececec] pt-[20px]">
                     <button
+                      disabled={isLoading}
                       onClick={handleSubmit(onSubmit)}
-                      className="bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c]"
+                      className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
+                        isLoading ? "cursor-not-allowed" : ""
+                      }`}
                     >
-                      Đặt hàng
+                      {isLoading ? (
+                        <div className="flex justify-center items-center fill-current">
+                          <Loading />
+                        </div>
+                      ) : (
+                        "Đặt Hàng"
+                      )}
                     </button>
                   </div>
                 </div>

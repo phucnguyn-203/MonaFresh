@@ -2,16 +2,13 @@ const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
-const calculateItemTotal = require("../utils/calculateItemTotal");
 
 exports.getItemsInCart = catchAsync(async (req, res, next) => {
     const { _id } = req.user;
     const cart = await Cart.findOne({ customer: _id });
-
     if (!cart) {
         return next(new AppError("Không tìm thấy giỏ hàng", 404));
     }
-
     res.status(200).json({
         status: "success",
         data: cart.items,
@@ -33,7 +30,6 @@ exports.addAnItemToCart = catchAsync(async (req, res, next) => {
     const item = {
         product: product._id,
         quantity,
-        total: calculateItemTotal(product, quantity),
     };
     cart.items.push(item);
     await cart.save();
@@ -60,7 +56,6 @@ exports.updateQuantityOfAnItem = catchAsync(async (req, res, next) => {
         return next(new AppError("Sản phẩm không tồn tại trong giỏ hàng", 404));
     }
     item.quantity = quantity;
-    item.total = calculateItemTotal(item.product, quantity);
     await cart.save();
     res.status(200).json({
         status: "success",

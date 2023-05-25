@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { IconSearch } from "@/components/icons";
 import MoreOderInfor from "../MoreOrderInfor";
 import formatCurrency from "@/utils/formatCurrency";
+import jsUcfirst from "@/utils/jsUcfirst";
 import ModalFeedback from "../../Product/ModalFeedback";
 import orderAPI from "@/api/orderAPI";
 import { ORDER_STATUS } from "@/utils/Constant";
@@ -38,14 +39,13 @@ export default function MyOders() {
     getMyOrder();
   }, [filterByStatus, debounceValue, sortValue]);
 
-  const handleCancel = async(id) => {
-    await orderAPI.updateOrder(id,{"status": 5});
+  const handleCancel = async (id) => {
+    await orderAPI.updateOrder(id, { status: 5 });
     getMyOrder();
-  }
-  const createFeedback = async(id, data) => {
+  };
+  const createFeedback = async (id, data) => {
     await productAPI.createFeedback(id, data);
-    
-  }
+  };
   const handleClose = () => {
     setShowMoreOrder(!showMoreOder);
   };
@@ -204,55 +204,47 @@ export default function MyOders() {
               </div>
             </div>
             <div className={" px-[20px] bg-white "}>
-              { order.orderDetail.map((item) => (
-                    <div
-                      key={item.product._id}
-                      className="flex items-center w-full h-[120px] bg-white border-b-[1px] border-[#ececec] last:border-0"
-                    >
-                      <div className=" max-w-[15%] basis-[15%] flex items-center justify-center">
-                        <img
-                          src={item.product.thumbnail}
-                          className="w-[80%] h-auto"
-                        />
-                      </div>
-                      <div className=" max-w-[60%] basis-[60%] items-center">
-                        <div className="">{item.product.name}</div>
-                        <div className="font-[500]">x{item.quantity}</div>
-                        {/* <div className="text-[#6abd45] font-[450]">
+              {order.orderDetail.map((item) => (
+                <div
+                  key={index._id}
+                  className="flex items-center w-full h-[120px] bg-white border-b-[1px] border-[#ececec] last:border-0"
+                >
+                  <div className=" max-w-[15%] basis-[15%] flex items-center justify-center">
+                    <img src={item.thumbnail} className="w-[80%] h-auto" />
+                  </div>
+                  <div className=" max-w-[60%] basis-[60%] items-center">
+                    <div className="">{jsUcfirst(item.name)}</div>
+                    <div className="font-[500]">x{item.quantity}</div>
+                    {item.percentageDiscount === 0 ? (
+                      <React.Fragment>
+                        <p className="text-primary">
                           {formatCurrency(item.price)}
-                        </div> */}
+                        </p>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
+                        <p className="text-primary">
+                          {formatCurrency(
+                            item.price - item.price * item.percentageDiscount,
+                          )}
+                        </p>
+                        <p className="text-sm text-[#0000008a] font-normal line-through">
+                          {formatCurrency(item.price)}
+                        </p>
+                      </React.Fragment>
+                    )}
+                  </div>
 
-                        {item.percentageDiscount === 0 ? (
-                          <React.Fragment>
-                            <p className="text-primary">
-                              {formatCurrency(item.price)}
-                            </p>
-                          </React.Fragment>
-                        ) : (
-                          <React.Fragment>
-                            <p className="text-primary">
-                              {formatCurrency(
-                                item.price -
-                                  item.price *
-                                    item.percentageDiscount,
-                              )}
-                            </p>
-                            <p className="text-sm text-[#0000008a] font-normal line-through">
-                              {formatCurrency(item.price)}
-                            </p>
-                          </React.Fragment>
-                        )}
-                      </div>
-                    
-                      {order.status === 4 ? (
-                        <React.Fragment>
-                          {item.isFeedback 
-                          ?<div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
-                            <div className="text-[#6abd45] text-[15px] flex justify-center items-center bg-white border-[1px] border-[#6abd45] min-h-[30px] w-[70%] rounded-[5px]">
-                              Đã đánh giá
-                            </div>
+                  {order.status === 4 ? (
+                    <React.Fragment>
+                      {item.isFeedback ? (
+                        <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
+                          <div className="text-[#6abd45] text-[15px] flex justify-center items-center bg-white border-[1px] border-[#6abd45] min-h-[30px] w-[70%] rounded-[5px]">
+                            Đã đánh giá
                           </div>
-                          :<div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
+                        </div>
+                      ) : (
+                        <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
                           <div className="bg-[#6abd45] hover:bg-[#61b13f] text-[15px] flex justify-center items-center text-white  min-h-[30px] w-[70%] rounded-[5px]">
                             <button
                               onClick={() =>
@@ -263,54 +255,48 @@ export default function MyOders() {
                             </button>
                           </div>
                           {showModalFeedback && (
-                            <ModalFeedback 
+                            <ModalFeedback
                               createFeedback={createFeedback}
                               _id={order._id}
-                              productId={item.product._id} 
-                              itemId={item._id} 
+                              productId={item.product._id}
+                              itemId={item._id}
                               getMyOrder={getMyOrder}
-                              close={handleCloseModalFeedback} />
-                          )}
-                        </div>
-                        }
-                        </React.Fragment>
-                        
-                      ) : (
-                        <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
-                          <div className="bg-[#8eb17f]  text-[15px] flex justify-center items-center text-white  min-h-[30px] w-[70%] rounded-[5px]">
-                            <button
-                              className="cursor-not-allowed"
-                             
-                            >
-                              Đánh giá sản phẩm
-                            </button>
-                          </div>
-                          {showModalFeedback && (
-                            <ModalFeedback close={handleCloseModalFeedback} />
+                              close={handleCloseModalFeedback}
+                            />
                           )}
                         </div>
                       )}
+                    </React.Fragment>
+                  ) : (
+                    <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
+                      <div className="bg-[#8eb17f]  text-[15px] flex justify-center items-center text-white  min-h-[30px] w-[70%] rounded-[5px]">
+                        <button className="cursor-not-allowed">
+                          Đánh giá sản phẩm
+                        </button>
+                      </div>
+                      {showModalFeedback && (
+                        <ModalFeedback close={handleCloseModalFeedback} />
+                      )}
                     </div>
-                  ))
-                }
+                  )}
+                </div>
+              ))}
             </div>
 
             <div className=" px-[20px] flex items-center text-white justify-between rounded-b-[8px] bg-[#9ac986] h-[40px] w-full">
               <div className="">
-              
-                  <div
-                    onClick={handleClose}
-                    className="underline hover:scale-[110%] flex justify-center items-center text-[white]"
-                  >
-                    Chi tiết đơn hàng
-                  </div>
-                
+                <div
+                  onClick={handleClose}
+                  className="underline hover:scale-[110%] flex justify-center items-center text-[white]"
+                >
+                  Chi tiết đơn hàng
+                </div>
               </div>
-                  
+
               <div className=" flex justify-end items-center ">
                 {order.status === ORDER_STATUS.PENDING ? (
-                  <button 
-                    onClick={ () => {
+                  <button
+                    onClick={() => {
                       Swal.fire({
                         title: "Bạn chắc chắn muốn huỷ?",
                         text: "Đơn hàng sẽ được huỷ và không thể khôi phục.",
