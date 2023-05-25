@@ -28,6 +28,18 @@ const productAPI = {
     const url = "/products";
     await axios.delete(url, { data: { productIds } });
   },
+  checkInventory: async (orderDetail) => {
+    const url = "/products/check-inventory";
+    await axios.post(url, { orderDetail });
+  },
+  updateInventory: async (orderDetail) => {
+    const url = "/products/update-inventory";
+    await axios.patch(url, { orderDetail });
+  },
+  returnInventory: async (orderId) => {
+    const url = `/products/return-inventory/${orderId}`;
+    await axios.patch(url);
+  },
 };
 
 export default productAPI;

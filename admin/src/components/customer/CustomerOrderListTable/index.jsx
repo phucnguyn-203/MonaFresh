@@ -11,7 +11,7 @@ import { PAYMENT_STATUS } from "../../../utils/Constant";
 
 export default function CustomerOrderListTable({
   orders,
-  handleUpdateOder,
+  handleUpdateOrder,
   handleShowBill,
   currentPage,
   setCurrentPage,
@@ -151,7 +151,7 @@ export default function CustomerOrderListTable({
                   confirmButtonText: "Đồng ý!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    handleUpdateOder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED });
+                    handleUpdateOrder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED });
                     Swal.fire({
                       title: "Đơn hàng đã được xác nhận",
                       confirmButtonColor: "#0E9F6E",
@@ -173,7 +173,7 @@ export default function CustomerOrderListTable({
               }
               className=" text-sm "
               value={item.status}
-              onChange={(e) => handleUpdateOder(item._id, { status: e.target.value })}
+              onChange={(e) => handleUpdateOrder(item._id, { status: e.target.value })}
             >
               <option value="">Cập nhật trạng thái</option>
               <option value={ORDER_STATUS.DELIVERING}>Đang giao hàng</option>

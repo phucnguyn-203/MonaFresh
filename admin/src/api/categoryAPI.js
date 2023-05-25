@@ -25,7 +25,7 @@ const categoryAPI = {
   },
   deleteManyCategory: async (categoryIds) => {
     const url = "/categories";
-    await axios.delete(url, { data : {categoryIds}});
+    await axios.delete(url, { data: { categoryIds } });
   },
 };
 
