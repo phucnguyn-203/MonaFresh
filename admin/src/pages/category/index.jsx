@@ -84,13 +84,9 @@ export default function Category() {
 
   const handleAddCategory = async (data) => {
     const { name } = data;
-    try {
-      await categoryAPI.createCategory({ name });
-      setIsShowAddCategoryModal(false);
-      getAllCategory();
-    } catch (err) {
-      console.log(err);
-    }
+    await categoryAPI.createCategory({ name });
+    await getAllCategory();
+    setIsShowAddCategoryModal(false);
   };
 
   const handleUpdateCategory = async (id, data) => {
