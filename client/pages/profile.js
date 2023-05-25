@@ -11,9 +11,7 @@ function Profile() {
   const router = useRouter();
   const [sidebar, setSidebar] = useState(router.query.tapIndex);
   const currentUser = useSelector((state) => state.auth.currentUser);
-  useEffect(()=>{
-    setSidebar(router.query.tapIndex)
-  },[router.query.tapIndex]);
+
   return (
 
     <div className="container my-32">

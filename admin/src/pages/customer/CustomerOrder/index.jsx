@@ -36,7 +36,7 @@ export default function CustomerOrder() {
     }
   };
 
-  const handleUpdateOder = async (id, data) => {
+  const handleUpdateOrder = async (id, data) => {
     try {
       await orderAPI.updaterOrder(id, data);
       await getOrdersByUserId(userId);
@@ -57,13 +57,6 @@ export default function CustomerOrder() {
   return (
     <PageLayout title="Đơn hàng của khách hàng">
       <Filter
-        orders={orders}
-        handleUpdateOder={handleUpdateOder}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPageCount={totalPageCount}
-        limitPerPage={limitPerPage}
-        setLimitPerPage={setLimitPerPage}
         filterByStatus={filterByStatus}
         setFilterByStatus={setFilterByStatus}
         sortValue={sortValue}
@@ -71,7 +64,7 @@ export default function CustomerOrder() {
       />
       <CustomerOrderListTable
         orders={orders}
-        handleUpdateOder={handleUpdateOder}
+        handleUpdateOrder={handleUpdateOrder}
         handleShowBill={handleShowBill}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

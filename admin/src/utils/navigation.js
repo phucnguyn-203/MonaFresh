@@ -7,6 +7,8 @@ import {
   IconSetting,
   IconStaff,
   IconSupplier,
+  IconImport,
+  IconExport,
 } from "../components/icon";
 
 const adminNavigation = [
@@ -30,6 +32,16 @@ const adminNavigation = [
     path: "/supplier",
     icon: IconSupplier,
   },
+  {
+    title: "Nhập hàng",
+    path: "/import",
+    icon: IconImport,
+  },
+  // {
+  //   title: "Xuất hàng",
+  //   path: "/export",
+  //   icon: IconExport,
+  // },
   {
     title: "Khách hàng",
     path: "/customers",
@@ -63,6 +75,16 @@ const staffNavigation = [
     path: "/products",
     icon: IconProduct,
   },
+  {
+    title: "Nhập hàng",
+    path: "/import",
+    icon: IconImport,
+  },
+  // {
+  //   title: "Xuất hàng",
+  //   path: "/export",
+  //   icon: IconExport,
+  // },
   {
     title: "Danh mục",
     path: "/category",
