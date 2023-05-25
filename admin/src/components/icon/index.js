@@ -21,3 +21,7 @@ export { default as IconSupplier } from "./supplier";
 export { default as IconBack } from "./back";
 export { default as IconRestore } from "./restore";
 export { default as IconBin } from "./bin";
+export { default as IconImport } from "./import";
+export { default as IconExport } from "./export";
+export { default as IconSearch } from "./search";
+export { default as IconTotalOrder } from "./totalOrder";

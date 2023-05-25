@@ -7,6 +7,9 @@ import Staff from "../pages/staff";
 import Setting from "../pages/setting";
 import CustomerOrder from "../pages/customer/CustomerOrder/index";
 import Supplier from "../pages/supplier";
+import Import from "../pages/import";
+import Export from "../pages/export";
+
 const adminRouter = [
   {
     path: "",
@@ -45,6 +48,14 @@ const adminRouter = [
     path: "/supplier",
     element: Supplier,
   },
+  {
+    path: "/import",
+    element: Import,
+  },
+  {
+    path: "/export",
+    element: Export,
+  },
 ];
 
 const staffRouter = [
@@ -77,6 +88,14 @@ const staffRouter = [
     element: CustomerOrder,
     path: "/supplier",
     element: Supplier,
+  },
+  {
+    path: "/import",
+    element: Import,
+  },
+  {
+    path: "/export",
+    element: Export,
   },
 ];
 
