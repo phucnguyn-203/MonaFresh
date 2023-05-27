@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import PageLayout from "../../../components/layout/pageLayout";
 import CustomerOrderListTable from "../../../components/customer/CustomerOrderListTable";
 import BillCustomer from "../../../components/customer/Bill/BillCustomerOrder/BillCustomer";
 import orderAPI from "../../../api/orderAPI";
+import productAPI from "../../../api/productAPI";
 import Filter from "../../../components/customer/Filter";
+import Swal from "sweetalert2";
+import { ORDER_STATUS } from "../../../utils/Constant";
 
 export default function CustomerOrder() {
   const params = useParams();
   const userId = params.id;
+  const currentUser = useSelector((state) => state.auth.currentUser);
   const [orders, setOrders] = useState([]);
   const [billData, setBillData] = useState();
   const [isShowBill, setIsShowBill] = useState(false);
@@ -36,13 +41,89 @@ export default function CustomerOrder() {
     }
   };
 
-  const handleUpdateOder = async (id, data) => {
-    try {
-      await orderAPI.updaterOrder(id, data);
-      await getOrdersByUserId(userId);
-    } catch (err) {
-      console.log(err);
-    }
+  const handleUpdateOrder = async (id, data) => {
+    await orderAPI.updaterOrder(id, data);
+    await getOrdersByUserId(userId);
+  };
+
+  const checkInventory = async (orderDetail) => {
+    const data = orderDetail.map((item) => {
+      return {
+        product: item.product._id,
+        quantity: item.quantity,
+      };
+    });
+    await productAPI.checkInventory(data);
+  };
+
+  const updateInventory = async (orderDetail) => {
+    const data = orderDetail.map((item) => {
+      return {
+        product: item.product._id,
+        quantity: item.quantity,
+      };
+    });
+    await productAPI.updateInventory(data);
+  };
+
+  const handleReturnInventory = async (orderId) => {
+    Swal.fire({
+      title: "Xác hoàn trả sản phẩm về kho?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#0E9F6E",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Huỷ bỏ",
+      confirmButtonText: "Đồng ý!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await productAPI.returnInventory(orderId);
+          await getOrdersByUserId(userId);
+          Swal.fire({
+            icon: "success",
+            title: "Hoàn trả thành công",
+            text: "Sản phẩm trong các đơn hàng đã được hoàn trả về kho",
+            confirmButtonColor: "#0E9F6E",
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    });
+  };
+
+  const handleConfirmOrder = async (item) => {
+    Swal.fire({
+      title: "Xác nhận đơn đặt hàng?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#0E9F6E",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "Huỷ bỏ",
+      confirmButtonText: "Đồng ý!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await checkInventory(item.orderDetail);
+          await handleUpdateOrder(item._id, { staff: currentUser._id, status: ORDER_STATUS.CONFIRMED });
+          await updateInventory(item.orderDetail);
+          Swal.fire({
+            title: "Đơn hàng đã được xác nhận.",
+            text: "Số lượng các sản phẩm trong kho hàng của bạn đã được cập nhật",
+            confirmButtonColor: "#0E9F6E",
+          });
+        } catch (err) {
+          console.log(err);
+          Swal.fire({
+            icon: "error",
+            title: "Không thể xác nhận",
+            text: "Một trong các sản phẩm trong đơn hàng có số lượng lớn hơn số lượng hiện có trong kho. Vui lòng kiểm tra lại kho hàng của bạn trước khi xác nhận",
+            confirmButtonColor: "#0E9F6E",
+          });
+        }
+      }
+    });
   };
 
   const handleShowBill = (item) => {
@@ -57,13 +138,6 @@ export default function CustomerOrder() {
   return (
     <PageLayout title="Đơn hàng của khách hàng">
       <Filter
-        orders={orders}
-        handleUpdateOder={handleUpdateOder}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPageCount={totalPageCount}
-        limitPerPage={limitPerPage}
-        setLimitPerPage={setLimitPerPage}
         filterByStatus={filterByStatus}
         setFilterByStatus={setFilterByStatus}
         sortValue={sortValue}
@@ -71,8 +145,10 @@ export default function CustomerOrder() {
       />
       <CustomerOrderListTable
         orders={orders}
-        handleUpdateOder={handleUpdateOder}
+        handleUpdateOrder={handleUpdateOrder}
         handleShowBill={handleShowBill}
+        handleReturnInventory={handleReturnInventory}
+        handleConfirmOrder={handleConfirmOrder}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPageCount={totalPageCount}

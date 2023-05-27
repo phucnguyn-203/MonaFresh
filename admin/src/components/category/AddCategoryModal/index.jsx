@@ -27,7 +27,7 @@ export default function AddCategoryModal({ closeModal, title, titleBtnFooter, ha
       await handleAddCategory(data);
       toastMessage({ type: "success", message: "Thêm sản phẩm thành công" });
     } catch (err) {
-      toastMessage({ type: "error", message: "Thêm sản thất bại. Tên sản phẩm đã tồn tại" });
+      toastMessage({ type: "error", message: "Thêm danh mục thất bại. Danh mục đã tồn tại" });
     } finally {
       setIsLoading(false);
     }

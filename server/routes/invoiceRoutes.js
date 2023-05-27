@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const { 
-    getAllInvoice, 
-    getOneInvoice, 
-    createImportInvoice, 
+const {
+    getAllInvoice,
+    getOneInvoice,
+    createImportInvoice,
     createExportInvoice,
-    updateInvoice, 
+    updateInvoice,
 } = require("../controllers/invoiceControllers");
 
-// router.get("/", getAllInvoice);
+router.get("/", getAllInvoice);
 // router.get("/:id", getOneInvoice);
 router.patch("/:id", updateInvoice);
 router.post("/in", createImportInvoice);

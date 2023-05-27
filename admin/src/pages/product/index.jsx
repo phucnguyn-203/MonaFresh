@@ -21,12 +21,11 @@ export default function Product() {
   const [categories, setCategories] = useState([]);
   const [sortValue, setSortValue] = useState("");
   const [searchKeyWord, setSearchKeyWord] = useState("");
-  const debounceValue = useDebounce(searchKeyWord, 500);
   const [isShowProductDeletedTable, setIsShowProductDeletedTable] = useState(false);
-  //
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [limitPerPage, setLimitPerPage] = useState(10);
+  const debounceValue = useDebounce(searchKeyWord, 500);
 
   useEffect(() => {
     getAllProduct();
@@ -407,7 +406,6 @@ export default function Product() {
           </div>
         </div>
       </div>
-      {/* <div className="flex justify-end mb-5 px-[20px]"></div> */}
       {isShowProductDeletedTable ? (
         <React.Fragment>
           <h1 className="text-black font-bold mb-5">Thùng rác</h1>

@@ -95,6 +95,10 @@ const orderSchema = new Schema(
             },
             required: true,
         },
+        isReturn: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         timestamps: true,

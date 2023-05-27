@@ -11,13 +11,7 @@ import staffAPI from "../../../api/staffAPI";
 import toastMessage from "../../../utils/toastMessage";
 import styles from "./styles.module.css";
 
-export default function AddModalStaff({ 
-  closeModal, 
-  title, 
-  titleBtnFooter, 
-  handleAddStaff,
-  getAllStaff, 
-}) {
+export default function AddModalStaff({ closeModal, title, titleBtnFooter, handleAddStaff, getAllStaff }) {
   const [photo, setPhoto] = useState();
   const [previewPhoto, setPreviewPhoto] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -154,7 +148,7 @@ export default function AddModalStaff({
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Nhập mật khẩu"
-                    spellcheck="false"
+                    spellCheck="false"
                     className={`${
                       errors.password ? "border-red-500" : ""
                     }  block w-full px-3 py-1 text-sm h-12 border-r-0 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
@@ -184,7 +178,7 @@ export default function AddModalStaff({
                   <input
                     type={showPasswordConfirm ? "text" : "password"}
                     placeholder="Nhập lại mật khẩu"
-                    spellcheck="false"
+                    spellCheck="false"
                     className={`${
                       errors.passwordConfirm ? "border-red-500" : ""
                     }  block w-full px-3 py-1 text-sm h-12  rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}

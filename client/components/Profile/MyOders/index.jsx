@@ -23,7 +23,9 @@ export default function MyOders() {
   const [filterByStatus, setFilterByStatus] = useState("");
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
-
+  const [orderIdShow, setOrderIdShow] = useState();
+  const [itemIdShow, setItemIdShow] = useState();
+  const [productIdShow, setProductIdShow] = useState();
   const paymentStatus = ["", "Chưa thanh toán", "Đã thanh toán"];
   const paymentMethod = ["", "Thanh toán tiền mặt", "Thanh toán qua ngân hàng"];
   const status = [
@@ -39,6 +41,12 @@ export default function MyOders() {
     getMyOrder();
   }, [filterByStatus, debounceValue, sortValue]);
 
+  const handleFeedback = async (orderId,itemId,productId) => {
+    setItemIdShow(itemId);
+    setProductIdShow(productId);
+    setOrderIdShow(orderId);
+    console.log(orderId," ",itemId," ",productId);
+  };
   const handleCancel = async (id) => {
     await orderAPI.updateOrder(id, { status: 5 });
     getMyOrder();
@@ -247,9 +255,15 @@ export default function MyOders() {
                         <div className=" max-w-[25%] basis-[25%] flex justify-center items-center text-center">
                           <div className="bg-[#6abd45] hover:bg-[#61b13f] text-[15px] flex justify-center items-center text-white  min-h-[30px] w-[70%] rounded-[5px]">
                             <button
-                              onClick={() =>
-                                setShowModalFeedback(!showModalFeedback)
-                              }
+                              onClick={() => {
+                                setShowModalFeedback(!showModalFeedback);
+
+                                handleFeedback(
+                                  order._id,
+                                  item._id,
+                                  item.product._id,
+                                );
+                              }}
                             >
                               Đánh giá sản phẩm
                             </button>
@@ -257,9 +271,9 @@ export default function MyOders() {
                           {showModalFeedback && (
                             <ModalFeedback
                               createFeedback={createFeedback}
-                              _id={order._id}
-                              productId={item.product._id}
-                              itemId={item._id}
+                              _id={orderIdShow}
+                              productId={productIdShow}
+                              itemId={itemIdShow}
                               getMyOrder={getMyOrder}
                               close={handleCloseModalFeedback}
                             />

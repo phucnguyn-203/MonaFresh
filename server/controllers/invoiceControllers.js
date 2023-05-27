@@ -2,11 +2,17 @@ const Invoice = require("../models/invoiceModel");
 const Product = require("../models/productModel");
 const catchAsync = require("../utils/catchAsync");
 const { INVOICE_TYPE } = require("../utils/Constant");
+const ApiFeatures = require("../utils/ApiFeatures");
 
 exports.getAllInvoice = catchAsync(async (req, res) => {
-    const invoices = await Invoice.find();
+    const features = new ApiFeatures(Invoice, req.query).filter().sort();
+    const { query, totalPages, currentPage } = await features.paginate();
+    const invoices = await query;
     res.status(200).json({
         status: "success",
+        currentPage: currentPage,
+        totalPages: totalPages,
+        totalResults: invoices.length,
         data: invoices,
     });
 });
@@ -24,6 +30,8 @@ exports.createImportInvoice = catchAsync(async (req, res) => {
     const newInvoice = new Invoice({
         products: products.map((product) => ({
             product: product.productId,
+            name: product.name,
+            price: product.importPrice,
             quantity: product.quantity,
         })),
         type: INVOICE_TYPE.IMPORT,
@@ -31,7 +39,7 @@ exports.createImportInvoice = catchAsync(async (req, res) => {
     });
 
     const invoice = await newInvoice.save();
-
+    console.log(invoice);
     const updatePromises = products.map(async (product) => {
         const updatedProduct = await Product.findByIdAndUpdate(
             product.productId,
@@ -88,39 +96,33 @@ exports.updateInvoice = catchAsync(async (req, res) => {
         const currentProduct = await Product.findById(productId);
         const currentInvoice = await Invoice.findById(invoiceId);
         let currentQuantiyProductOfInvoice;
-        
-        await currentInvoice.products.map( (currentProductOfInvoice) => {
-            if(currentProductOfInvoice.product.toString()===productId){
+
+        await currentInvoice.products.map((currentProductOfInvoice) => {
+            if (currentProductOfInvoice.product.toString() === productId) {
                 currentQuantiyProductOfInvoice = currentProductOfInvoice.quantity;
                 //currentProductOfInvoice.quantity=quantity;
             }
-                
         });
         let updatedQuantity;
-        if(type==1){
+        if (type == 1) {
             updatedQuantity = currentProduct.quantity - currentQuantiyProductOfInvoice + quantity;
-            
-        }else{
+        } else {
             updatedQuantity = currentProduct.quantity + currentQuantiyProductOfInvoice - quantity;
-            
         }
-        await currentInvoice.products.map( (currentProductOfInvoice) => {
-            if(currentProductOfInvoice.product.toString()===productId){
-                currentProductOfInvoice.quantity=quantity;
+        await currentInvoice.products.map((currentProductOfInvoice) => {
+            if (currentProductOfInvoice.product.toString() === productId) {
+                currentProductOfInvoice.quantity = quantity;
                 currentInvoice.save();
             }
-                
         });
 
-        
-        
         currentProduct.quantity = updatedQuantity;
         await currentProduct.save();
-        return(currentInvoice);
-     });
+        return currentInvoice;
+    });
 
     updatedInvoice.createdBy = updatedCreatedBy;
-    
+
     await Promise.all(updatePromises);
     const newInvoice = await updatedInvoice.save();
     res.status(200).json({
@@ -128,5 +130,3 @@ exports.updateInvoice = catchAsync(async (req, res) => {
         data: updatedInvoice,
     });
 });
-
-
