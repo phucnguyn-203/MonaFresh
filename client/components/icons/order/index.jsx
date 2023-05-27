@@ -9,14 +9,14 @@ export default function IconOrder() {
       class="icon"
       version="1.1"
       stroke="currentColor"
-      stroke-width="30.72"
+      strokeWidth="30.72"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
 
       <g id="SVGRepo_iconCarrier">

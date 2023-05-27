@@ -95,7 +95,7 @@ export default function UpdatePassword() {
                 <input
                   type={showCurrentPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu hiện tại"
-                  spellcheck="false"
+                  spellCheck="false"
                   className={`${
                     errors.password ? "border-red-500" : ""
                   }  block w-full px-3 py-1 text-sm h-12 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
@@ -133,7 +133,7 @@ export default function UpdatePassword() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Nhập mật khẩu mới"
-                  spellcheck="false"
+                  spellCheck="false"
                   className={`${
                     errors.newPassword ? "border-red-500" : ""
                   }  block w-full px-3 py-1 text-sm h-12 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
@@ -171,7 +171,7 @@ export default function UpdatePassword() {
                 <input
                   type={showPasswordConfirm ? "text" : "password"}
                   placeholder="Nhập lại mật khẩu mới"
-                  spellcheck="false"
+                  spellCheck="false"
                   className={`${
                     errors.passwordConfirm ? "border-red-500" : ""
                   }  block w-full px-3 py-1 text-sm h-12 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}

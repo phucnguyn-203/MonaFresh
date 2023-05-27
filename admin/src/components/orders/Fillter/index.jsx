@@ -15,6 +15,8 @@ const orderStatusOptions = [
   { value: "", label: "Trạng thái" },
   { value: ORDER_STATUS.PENDING, label: "Chờ xác nhận" },
   { value: ORDER_STATUS.CONFIRMED, label: "Đã xác nhận" },
+  { value: ORDER_STATUS.DELIVERING, label: "Đang giao" },
+  { value: ORDER_STATUS.DELIVERED, label: "Đã giao" },
   { value: ORDER_STATUS.CANCELED, label: "Đã huỷ" },
   { value: ORDER_STATUS.RETURNS, label: "Đã trả hàng" },
 ];

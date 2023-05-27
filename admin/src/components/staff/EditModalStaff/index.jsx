@@ -12,14 +12,7 @@ import yup from "../../../utils/yupGlobal";
 import staffAPI from "../../../api/staffAPI";
 import toastMessage from "../../../utils/toastMessage";
 
-export default function EditModalStaff({ 
-  closeModal, 
-  title, 
-  titleBtnFooter, 
-  staff, 
-  handleUpdateStaff,
-  getAllStaff 
-}) {
+export default function EditModalStaff({ closeModal, title, titleBtnFooter, staff, handleUpdateStaff, getAllStaff }) {
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn."),
     email: yup.string().required("Vui lòng nhập Email của bạn.").email("Vui lòng nhập đúng định dạng của Email."),
@@ -167,7 +160,7 @@ export default function EditModalStaff({
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Nhập mật khẩu"
-                    spellcheck="false"
+                    spellCheck="false"
                     className={`${
                       errors.password ? "border-red-500" : ""
                     }  block w-full px-3 py-1 text-sm h-12 border-r-0 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
@@ -198,7 +191,7 @@ export default function EditModalStaff({
                   <input
                     type={showPasswordConfirm ? "text" : "password"}
                     placeholder="Nhập lại mật khẩu"
-                    spellcheck="false"
+                    spellCheck="false"
                     className={`${
                       errors.password ? "border-red-500" : ""
                     } block w-full px-3 py-1 text-sm h-12 border-r-0 rounded-l bg-gray-100 focus:bg-gray-50 border-[1px] focus:bg-transparent focus:outline-none pr-[10px]`}
