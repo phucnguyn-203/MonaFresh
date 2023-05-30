@@ -92,7 +92,7 @@ export default function TopCategories() {
         </div>
         <div className="">
         <Link 
-          href={{ pathname: '/shop', query: {id: ""} }}
+          href={{ pathname: '/shop', query: {id: "6475adb1b60030d9cf943cc9"} }}
         >
           <div className={styles.parent}>
             <Image src={Cate_2} alt="" className="" />
@@ -149,7 +149,7 @@ export default function TopCategories() {
         </div>
         <div className="">
         <Link 
-          href={{ pathname: '/shop', query: {id: ""} }}
+          href={{ pathname: '/shop', query: {id: "646ed10c77f3d9278b97f2f9"} }}
         >
           <div className={styles.parent}>
             <Image src={Cate_5} alt="" className="" />
