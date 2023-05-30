@@ -9,4 +9,5 @@
     top: 0;
     left: var(--sidebar-wide);
     right: 0;
+    z-index: 10;
 }

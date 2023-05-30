@@ -17,7 +17,7 @@ export default function BillTable({ columnData, rowData }) {
           </thead>
           <tbody className="bg-white divide-y divide-gray-10 text-gray-700">
             {rowData.map((rowItem, index) => (
-              <tr key={rowItem.id}>
+              <tr key={rowItem._id}>
                 <td className="px-4 py-3 text-sm ">{index + 1}</td>
                 {columnData.map((columnItem) => (
                   <td key={columnItem.field} className="px-4 py-3">

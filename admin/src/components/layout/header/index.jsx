@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 export default function Header() {
   const currentUser = useSelector((state) => state.auth.currentUser);
   return (
-    <header className={`${styles.header}  bg-bgSecondary`}>
+    <header className={`${styles.header} bg-bgSecondary`}>
       <ul className="flex items-center cursor-pointer">
         <li className="ml-6 text-primary">
           <IconNotification />

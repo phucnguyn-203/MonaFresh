@@ -31,7 +31,7 @@ const cartSchema = new Schema(
 cartSchema.pre(/^find/, function (next) {
     this.populate({
         path: "items.product",
-        select: "name thumbnail price percentageDiscount -category isActive",
+        select: "name thumbnail importPrice price percentageDiscount -category isActive",
     });
     next();
 });

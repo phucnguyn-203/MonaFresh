@@ -31,11 +31,14 @@ const orderSchema = new Schema(
                         type: String,
                         required: true,
                     },
+                    importPrice: {
+                        type: Number,
+                        required: true,
+                    },
                     price: {
                         type: Number,
                         required: true,
                     },
-
                     percentageDiscount: {
                         type: Number,
                         default: 0,
@@ -114,7 +117,7 @@ orderSchema.pre("save", function (next) {
 orderSchema.pre(/^find/, function (next) {
     this.populate({
         path: "orderDetail.product",
-        select: "name thumbnail price percentageDiscount -category",
+        select: "name thumbnail importPrice price percentageDiscount -category",
     }).populate({
         path: "staff",
         select: "name",

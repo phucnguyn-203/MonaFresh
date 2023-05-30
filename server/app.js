@@ -15,6 +15,7 @@ const userRouter = require("./routes/userRoutes");
 const addressRouter = require("./routes/addressRoutes");
 const uploadFileRouter = require("./routes/uploadFileRoutes");
 const invoiceRouter = require("./routes/invoiceRoutes");
+const statisticRouter = require("./routes/statisticRoutes");
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
@@ -51,6 +52,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/address", addressRouter);
 app.use("/api/v1/upload", uploadFileRouter);
 app.use("/api/v1/invoices", invoiceRouter);
+app.use("/api/v1/statistic", statisticRouter);
 
 app.use(globalErrorHandler);
 module.exports = app;

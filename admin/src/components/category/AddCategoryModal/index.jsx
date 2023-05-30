@@ -35,7 +35,7 @@ export default function AddCategoryModal({ closeModal, title, titleBtnFooter, ha
 
   return (
     <div>
-      <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>
+      <div onClick={closeModal} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20`}></div>
       <Drawer closeModal={closeModal} title={title} titleBtnFooter={titleBtnFooter} isFullWidth={false}>
         <ModalHeader closeModal={closeModal} title={title} />
         <div className="h-full overflow-y-scroll grow mt-[20px]">

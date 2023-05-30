@@ -10,7 +10,7 @@ export default function SearchResult({
   closeSearchResult,
 }) {
   return (
-    <div className="absolute z-10000 top-[27%] left-[45px] right-[50%] h-[300px] border rounded-lg shadow-md divide-y overflow-y-auto bg-white mt-1">
+    <div className="absolute z-10000 top-[100%] left-0 right-0 max-h-[300px] border rounded-lg shadow-md divide-y overflow-y-auto bg-white mt-1">
       {isSearching ? (
         <p className="italic p-3 text-black text-center">Đang tìm kiếm...</p>
       ) : (

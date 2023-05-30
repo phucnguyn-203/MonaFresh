@@ -1,66 +1,133 @@
-import PageLayout from "../../components/layout/pageLayout";
+import { useState, useEffect } from "react";
 import { StatsItem } from "../../components/dashboard/StatsItem";
 import { ManageItem } from "../../components/dashboard/ManageItem";
-import RecentOrders from "../recentOrders";
-
-import IconTodayOrder from "../../components/icon/todayOrder/index";
-import IconTotalOrder from "../../components/icon/totalOrder/index";
-import IconCart from "../../components/icon/cart/index";
-import IconPending from "../../components/icon/pending";
-import IconTruck from "../../components/icon/truck";
-import IconCheck from "../../components/icon/check";
+import PageLayout from "../../components/layout/pageLayout";
+import RecentOrders from "../../components/dashboard/RecentOrders";
+import TopSellingProductsChart from "../../components/dashboard/TopSellingProductsChart";
+import ProfitChart from "../../components/dashboard/ProfitChart";
+import {
+  IconCustomer,
+  IconProduct,
+  IconOutOfStock,
+  IconCart,
+  IconPending,
+  IconTruck,
+  IconCheck,
+  IconCash,
+} from "../../components/icon";
+import formatCurrency from "../../utils/formatCurrency";
+import statisticAPI from "../../api/statisticAPI";
 
 export default function Dashboard() {
+  const [statistics, setStatistics] = useState({
+    todayProfit: 0,
+    totalCustomer: 0,
+    totalProduct: 0,
+    totalProductOutOfStock: 0,
+    ordersStatistic: null,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          {
+            data: { todayProfit },
+          },
+          {
+            data: { totalCustomer },
+          },
+          {
+            data: { totalProduct },
+          },
+          {
+            data: { totalProductsOutofStock },
+          },
+          { data: orderStatistic },
+        ] = await Promise.all([
+          statisticAPI.getTodayProfit(),
+          statisticAPI.getTotalCustomer(),
+          statisticAPI.getTotalProduct(),
+          statisticAPI.getTotalProductsOutofStock(),
+          statisticAPI.getOrdersStatistic(),
+        ]);
+
+        setStatistics({
+          todayProfit,
+          totalCustomer,
+          totalProduct,
+          totalProductOutOfStock: totalProductsOutofStock,
+          ordersStatistic: orderStatistic,
+        });
+      } catch (err) {
+        console.error(err.response ? err.response.data.message : err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const { todayProfit, totalCustomer, totalProduct, totalProductOutOfStock, ordersStatistic } = statistics;
+
   return (
     <PageLayout title="Tổng quan">
-      <div>
-        <div className=" flex mb-8 gap-x-4">
-          <StatsItem
-            icon={<IconTodayOrder />}
-            title="Đơn hàng hôm nay"
-            value="100000"
-            backgroundColor={"bg-teal-600"}
-          />
-          <StatsItem icon={<IconCart />} title="Tháng này" value="900000" backgroundColor={"bg-blue-500"} />
-          <StatsItem
-            icon={<IconTotalOrder />}
-            title="Tổng đơn hàng"
-            value="20000000000"
-            backgroundColor={"bg-green-600"}
-          />
-        </div>
-        <div className="flex gap-x-4">
-          <ManageItem
-            icon={<IconCart />}
-            title="Tổng số đơn"
-            value="295"
-            backgroundColor={"bg-orange-100"}
-            iconColor={"text-orange-500"}
-          />
-          <ManageItem
-            icon={<IconPending />}
-            title="Tổng số đơn"
-            value="295"
-            backgroundColor={"bg-blue-100"}
-            iconColor={"text-blue-500"}
-          />
-          <ManageItem
-            icon={<IconTruck />}
-            title="Xử lý đơn hàng"
-            value="1000"
-            backgroundColor={"bg-teal-100"}
-            iconColor={"text-teal-500"}
-          />
-          <ManageItem
-            icon={<IconCheck />}
-            title="Đã giao"
-            value="295"
-            backgroundColor={"bg-green-100"}
-            iconColor={"text-green-500"}
-          />
-        </div>
+      <div className="flex mb-8 gap-x-4">
+        <StatsItem
+          icon={<IconCash />}
+          title="Doanh thu hôm nay"
+          value={formatCurrency(todayProfit)}
+          backgroundColor="bg-green-600"
+        />
+        <StatsItem icon={<IconCustomer />} title="Số Khách Hàng" value={totalCustomer} backgroundColor="bg-teal-600" />
+        <StatsItem icon={<IconProduct />} title="Số sản phẩm" value={totalProduct} backgroundColor="bg-blue-500" />
+        <StatsItem
+          icon={<IconOutOfStock />}
+          title="Sản phẩm hết hàng"
+          value={totalProductOutOfStock}
+          backgroundColor="bg-red-500"
+        />
       </div>
-      <RecentOrders />
+      <div className="flex gap-x-4">
+        <ManageItem
+          icon={<IconCart />}
+          title="Tổng đơn hàng"
+          value={ordersStatistic?.totalOrder || 0}
+          backgroundColor="bg-orange-100"
+          iconColor="text-orange-500"
+        />
+        <ManageItem
+          icon={<IconPending />}
+          title="Đơn hàng đang chờ "
+          value={ordersStatistic?.totalOrderIsPending || 0}
+          backgroundColor="bg-blue-100"
+          iconColor="text-blue-500"
+        />
+        <ManageItem
+          icon={<IconTruck />}
+          title="Đơn hàng đang giao"
+          value={ordersStatistic?.totalOrderOrderIsDelivering || 0}
+          backgroundColor="bg-teal-100"
+          iconColor="text-teal-500"
+        />
+        <ManageItem
+          icon={<IconCheck />}
+          title="Đơn hàng đã giao"
+          value={ordersStatistic?.totalOrderHaveDelivered || 0}
+          backgroundColor="bg-green-100"
+          iconColor="text-green-500"
+        />
+      </div>
+      <div className="mt-10">
+        <div className="flex gap-x-5">
+          <div className="w-1/2">
+            <ProfitChart />
+          </div>
+          <div className="w-1/2">
+            <TopSellingProductsChart />
+          </div>
+        </div>
+        <RecentOrders />
+      </div>
     </PageLayout>
   );
 }
