@@ -131,6 +131,7 @@ exports.getOrdersStatistic = catchAsync(async (req, res) => {
 
 exports.getTopSellingProducts = catchAsync(async (req, res) => {
     const result = await Order.aggregate([
+        { $match: { status: ORDER_STATUS.DELIVERED } },
         { $unwind: "$orderDetail" },
         {
             $group: {
