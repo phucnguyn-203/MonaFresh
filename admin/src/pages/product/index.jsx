@@ -363,6 +363,8 @@ export default function Product() {
                 <option value="" hidden="">
                   Sắp xếp
                 </option>
+                <option value={JSON.stringify({ "quantity[gt]": 0 })}>Còn hàng</option>
+                <option value={JSON.stringify({ quantity: 0 })}>Hết hàng</option>
                 <option value={JSON.stringify({ sort: "price" })}>Giá Thấp-Cao</option>
                 <option value={JSON.stringify({ sort: "-price" })}>Giá Cao-Thấp</option>
                 <option value={JSON.stringify({ sort: "quantity" })}>Số lượng Thấp-Cao</option>
