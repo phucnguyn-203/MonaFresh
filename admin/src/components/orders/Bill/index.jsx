@@ -4,7 +4,6 @@ import jsUcfirst from "../../../utils/jsUcfirst";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import formatOrderStatus from "../../../utils/formatOrderStatus";
 import formatCurrency from "../../../utils/formatCurrency";
-import BillTable from "../BillTable";
 import styles from "./styles.module.css";
 
 export default function Bill({ close, data }) {
@@ -14,7 +13,7 @@ export default function Bill({ close, data }) {
       headerName: "Sản phẩm",
       renderCell: (item) => {
         return (
-          <div className="flex gap-x-2 items-center">
+          <div className="flex gap-x-2 pl-3">
             <p className="text-sm ">{jsUcfirst(item.name)}</p>
           </div>
         );
@@ -25,7 +24,7 @@ export default function Bill({ close, data }) {
       headerName: "Số lượng",
       renderCell: (item) => {
         return (
-          <div className="text-sm ">
+          <div className="text-sm text-center">
             <span>{item.quantity}</span>
           </div>
         );
@@ -33,43 +32,27 @@ export default function Bill({ close, data }) {
     },
     {
       field: "price",
-      headerName: "Giá bán",
-      renderCell: (item) => {
-        return (
-          <div className="text-sm ">
-            <span>{formatCurrency(item.price)}</span>
-          </div>
-        );
-      },
+      headerName: "Đơn giá",
+      renderCell: (item) => (
+        <div className="text-xs font-medium">
+          <span style={item.percentageDiscount !== 0 ? { textDecoration: "line-through" } : {}}>
+            {formatCurrency(item.price)}
+          </span>
+          {item.percentageDiscount !== 0 && (
+            <span className="text-sm font-medium flex flex-row">
+              {formatCurrency(item.price - item.price * item.percentageDiscount)}
+            </span>
+          )}
+        </div>
+      ),
     },
-    {
-      field: "percentDiscount",
-      headerName: "Khuyến mãi",
-      renderCell: (item) => {
-        return (
-          <div className="text-sm ">
-            <span>{item.percentageDiscount * 100} %</span>
-          </div>
-        );
-      },
-    },
-    {
-      field: "salePrice",
-      headerName: "Giảm còn",
-      renderCell: (item) => {
-        return (
-          <div className="text-sm ">
-            <span>{formatCurrency(item.price - item.price * item.percentageDiscount)}</span>
-          </div>
-        );
-      },
-    },
+
     {
       field: "total",
       headerName: "Tổng",
       renderCell: (item) => {
         return (
-          <div className="text-sm ">
+          <div className="text-sm font-medium text-red-500">
             <span>{formatCurrency(item.total)}</span>
           </div>
         );
@@ -79,70 +62,94 @@ export default function Bill({ close, data }) {
 
   return (
     <React.Fragment>
-      <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20"></div>
-      <div
-        className={`${styles.navbar} bg-white fixed w-2/3 flex flex-col h-[90%] right-1/2 top-1/2 z-50 bg-opacity-100 shadow-2xl opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
-      >
-        <div className="">
-          <div className="flex">
-            <div className="w-[95%] py-[5px] px-[20px] mb-[10px]">
-              <h1 className="text-[30px] font-semibold">Thông tin hoá đơn</h1>
-            </div>
+      <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20">
+        <div
+          className={`${styles.navbar} bg-white fixed w-[512px] flex flex-col h-[90%]   right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
+        >
+          <div className="flex justify-end">
             <div
               onClick={close}
-              className="flex items-center w-[5%] text-left rounded-tr-[10px] bg-[#ee4d2d] text-[#fff] h-[40px] text-[25px] cursor-pointer hover:bg-[#e8340c]"
+              className="flex items-center w-[5%] h-[35px] text-left rounded-tr-[10px] bg-[#ee4d2d] text-[#fff]  text-[25px] cursor-pointer hover:bg-[#e8340c]"
             >
               <IconClose />
             </div>
           </div>
-          <h1 className="text-[25px] px-[20px] ">Mã hoá đơn: {data._id}</h1>
+          <div className="w-full max-w-2xl mx-auto bg-white px-4 pb-4">
+            <div className="text-center mb-4">
+              <h1 className="text-xl font-bold uppercase">Đơn hàng</h1>
+              <p className="text-sm text-gray-500">Ngày: {formatTimestamp(data.createdAt)}</p>
+            </div>
+            <div className="flex justify-between mb-6">
+              <div>
+                <p className="my-1 text-sm">
+                  <span className="font-bold">Mã hoá đơn: </span>
+                  <span>{data.deliveryAddress._id}</span>
+                </p>
+                <p className="my-1 font-bold text-sm">Tên khách hàng: {data.deliveryAddress.name}</p>
+                <p className="my-1 text-sm">
+                  <span className="font-bold ">Số điện thoại:</span> {data.deliveryAddress.phone}
+                </p>
 
-          <div className="p-[20px] flex gap-x-6 text-[16px]">
-            <div className="w-[65%] min-h-[100px] border-r-[1px] border-solid">
-              <h3>
-                Tên khách hàng: <span className="ml-[5px]">{data.deliveryAddress.name}</span>
-              </h3>
-              <h3>
-                SĐT: <span className="ml-[5px]">{data.deliveryAddress.phone}</span>
-              </h3>
-              <h3>
-                Địa chỉ:
-                <span className="ml-[5px]">{`${data.deliveryAddress.addressDetail}, ${data.deliveryAddress.ward}, ${data.deliveryAddress.district}, ${data.deliveryAddress.province}`}</span>
-              </h3>
+                <p className="my-1 text-sm">
+                  <span className="font-bold">Địa chỉ: </span>
+                  <span>{`${data.deliveryAddress.addressDetail}, ${data.deliveryAddress.ward}, ${data.deliveryAddress.district}, ${data.deliveryAddress.province}`}</span>
+                </p>
+                <p className="my-1 text-sm">
+                  <span className="font-bold">Tình trạng: </span> <span>{formatOrderStatus(data.status)}</span>{" "}
+                </p>
+                <p className="my-1 text-sm">
+                  <span className="font-bold">Nhân viên xác nhận: </span>
+                  <span>{data.staff ? data.staff.name : "Đang chờ"}</span>
+                </p>
+                <p className="my-1 text-sm">
+                  <span className="font-bold">Phương thức thanh toán: </span>
+                  <span>{data.paymentMethod === 1 ? "Thanh toán tiền mặt" : "Thanh toán online"}</span>
+                </p>
+              </div>
             </div>
-            <div className="w-[35%] ">
-              <h3>Thời gian đặt: {formatTimestamp(data.createdAt)}</h3>
-              <h3>
-                Tình trạng: <span className="ml-[5px]">{formatOrderStatus(data.status)}</span>
-              </h3>
-              <h2>
-                Nhân viên phụ trách:
-                <span className="ml-[5px]">{data.staff ? data.staff.name : "Đang chờ"}</span>
-              </h2>
-            </div>
-          </div>
-          <div className="px-[20px] ">
-            <BillTable columnData={columnData} rowData={data.orderDetail} />
-          </div>
-          <div className="p-[20px] ">
-            <div className="flex gap-x-[40px] p-[20px] bg-[#F9FAFB] min-h-[55px] items-center justify-evenly">
-              <div className="w-1/3 text-left flex flex-col">
-                <h2 className="font-semibold uppercase">Phương thức</h2>
-                <span className="text-[#707275] font-semibold">
-                  {data.paymentMethod === 1 ? "Thanh toán tiền mặt" : "Thanh toán online"}
-                </span>
-              </div>
-              <div className="w-1/3 text-left">
-                <h2 className="font-semibold uppercase">Tạm tính</h2>
-                <span className="text-[#707275] ">{formatCurrency(data.orderTotal)}</span>
-              </div>
-              <div className="w-1/3 text-left">
-                <h2 className="font-semibold uppercase">Tiền vận chuyển</h2>
-                <span className="text-[#707275] ">{formatCurrency(0)}</span>
-              </div>
-              <div className="w-1/3 text-left">
-                <h2 className="font-semibold uppercase">Tổng tiền</h2>
-                <span className="text-[red] ">{formatCurrency(data.orderTotal)}</span>
+            <div className="w-full overflow-hidden border border-gray-200 rounded-lg ring-1 ring-black ring-opacity-5 mb-8 rounded-b-lg">
+              <div className="w-full">
+                <table className="w-full whitespace-nowrap">
+                  <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-100">
+                    <tr>
+                      {columnData.map((columnItem) => (
+                        <td key={columnItem.field} className="px-4 py-2">
+                          {columnItem.headerName}
+                        </td>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-10 text-gray-700">
+                    {data.orderDetail.map((rowItem) => (
+                      <tr key={rowItem._id}>
+                        {columnData.map((columnItem) => (
+                          <td key={columnItem.field} className="px-2 py-2">
+                            {columnItem.renderCell ? (
+                              columnItem.renderCell(rowItem)
+                            ) : (
+                              <span className="text-xs">{rowItem[columnItem.field]}</span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+
+                    <tr>
+                      <td colSpan={columnData.length - 1} className="text-left pl-4 py-2 text-sm font-semibold">
+                        Tiền vận chuyển
+                      </td>
+                      <td className="px-2 py-2 text-justify text-sm font-semibold text-[red]">{formatCurrency(0)}</td>
+                    </tr>
+                    <tr>
+                      <td colSpan={columnData.length - 1} className="text-left pl-4 py-2 text-sm font-semibold">
+                        Tổng tiền
+                      </td>
+                      <td className="px-2 py-2 text-justify text-sm font-semibold text-[red]">
+                        {formatCurrency(data.orderTotal)}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
