@@ -9,7 +9,7 @@ const getCreatedAtRange = (start, end = new Date()) => ({
 const inputStyles =
   "w-full border-[1px] border-solid py-[10px] px-[10px] bg-[#f4f5f7] rounded-[5px] focus:outline-none focus:bg-white";
 const buttonStyles =
-  "h-12 align-bottom inline-flex leading-5 items-center justify-center transition-colors duration-150 font-medium px-10 py-2 rounded-lg text-sm text-white";
+  "h-12 align-bottom w-full leading-5  transition-colors duration-150 font-medium py-2 rounded-lg text-sm text-white";
 
 const createRangeOption = (days) => {
   const startDate = new Date(new Date().getTime() - days * 24 * 60 * 60 * 1000).setHours(0, 0, 0, 0);
@@ -74,7 +74,7 @@ export default function Filter({ sortValue, setSortValue, handleShowModalImport 
             ))}
           </select>
         </div>
-        <div className="w-[20%] flex items-center justify-end">
+        <div className="w-[20%] flex items-center justify-center">
           <button
             className="h-12 w-[80%] align-bottom inline-flex leading-5 items-center justify-center 
               cursor-pointer transition-colors duration-150 font-medium px-4 py-2 rounded-lg text-sm 

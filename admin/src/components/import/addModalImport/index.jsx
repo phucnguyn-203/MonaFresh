@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Drawer, ModalHeader } from "../../modal";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-
 import { IconSearch } from "../../icon";
 import formatCurrency from "../../../utils/formatCurrency";
 import ImportModalTable from "../ImportModalTable";
@@ -28,13 +27,10 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
   let totalMoney = 0;
 
   const { handleSubmit } = useForm();
-
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
-
-  console.log(products);
 
   useEffect(() => {
     const getAllProduct = async () => {
@@ -102,7 +98,7 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
       <Drawer closeModal={closeModal} title={title} titleBtnFooter={titleBtnFooter} isFullWidth={true}>
         <ModalHeader closeModal={closeModal} title={title} />
         <div className="h-full overflow-y-scroll grow p-[30px] flex gap-10 ">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-[65%] p-[15px]">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-[65%]">
             <div className="relative flex bg-white w-[100%] items-center text-black px-5 py-2 border-[1px] border-solid border-gray-400 rounded-[5px] mb-[20px]">
               <IconSearch />
               <input
@@ -112,18 +108,19 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
                 placeholder="Nhập tên hàng hoá"
                 className="focus:outline-none placeholder:text-sm bg-white w-full p-[5px] ml-[10px]"
               />
+              {isShowResults && (
+                <SearchResult
+                  searchProductsResult={searchProductsResult}
+                  isSearching={isSearching}
+                  products={products}
+                  setProducts={setProducts}
+                  newQuantity={newQuantity}
+                  setNewQuantity={setNewQuantity}
+                  closeSearchResult={() => setSearchKeyword("")}
+                />
+              )}
             </div>
-            {isShowResults && (
-              <SearchResult
-                searchProductsResult={searchProductsResult}
-                isSearching={isSearching}
-                products={products}
-                setProducts={setProducts}
-                newQuantity={newQuantity}
-                setNewQuantity={setNewQuantity}
-                closeSearchResult={() => setSearchKeyword("")}
-              />
-            )}
+
             <ImportModalTable
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
@@ -151,32 +148,32 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
           </form>
 
           <div className="w-[35%] min-h-[300px] p-[15px] border-[1px] shadow-xl ">
-            <div className="w-full p-[10px]">
+            <div className="p-[10px]">
               <h2 className="mb-[15px] font-semibold text-lg">Thông tin phiếu nhập hàng</h2>
-              <div className="flex items-center p-[10px]">
-                <label className="w-[30%] " htmlFor="">
-                  Người phụ trách
-                </label>
+              <div className="flex items-center py-[10px]">
+                <p className="w-[30%] " htmlFor="">
+                  Người nhập:
+                </p>
                 <p className="font-semibold">{currentUser?.name}</p>
               </div>
-              <div className="flex items-center p-[10px]">
-                <label className="w-[30%] " htmlFor="">
-                  Thời gian
-                </label>
+              <div className="flex items-center py-[10px]">
+                <p className="w-[30%]" htmlFor="">
+                  Thời gian:
+                </p>
                 <p>{`${day}/${month}/${year}`}</p>
               </div>
             </div>
-            <div className="ml-[15px]">
+            <div className="p-[10px]">
               <h2 className="font-medium">Thông tin thanh toán</h2>
-              <div className="flex justify-between p-[10px] ">
+              <div className="flex justify-between py-[10px] ">
                 <h4>Tạm tính</h4>
                 <h4>{formatCurrency(totalMoney)}</h4>
               </div>
-              <div className="flex justify-between p-[10px]">
+              <div className="flex justify-between py-[10px]">
                 <h4>Tiền vận chuyển</h4>
                 <h4>{formatCurrency(0)}</h4>
               </div>
-              <div className="flex justify-between p-[10px]">
+              <div className="flex justify-between py-[10px]">
                 <h4>Thanh toán</h4>
                 <h4 className="text-red-500 font-medium">{formatCurrency(totalMoney)}</h4>
               </div>

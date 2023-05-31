@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { IconClose } from "../../icon";
+import React from "react";
 import { Tooltip } from "react-tooltip";
-import { IconView, IconRestore, IconDelete, IconBack } from "../../icon";
+import { IconRestore, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
-import ToggleSwitch from "../../ToggleSwitch";
+import formatTimestamp from "../../../utils/formatTimestamp";
 import Swal from "sweetalert2";
+
 export default function ProductDeletedTable({
   products,
   handleDeleteProduct,
@@ -40,6 +40,14 @@ export default function ProductDeletedTable({
       headerName: "Danh mục",
       renderCell: (item) => {
         return <span className="text-sm">{item.category?.name}</span>;
+      },
+    },
+    {
+      field: "importPrice",
+      headerName: "Giá nhập",
+      customClassName: "text-center",
+      renderCell: (item) => {
+        return <p className="text-sm font-semibold text-center">{formatCurrency(item.importPrice)}</p>;
       },
     },
     {
@@ -87,7 +95,22 @@ export default function ProductDeletedTable({
         );
       },
     },
-
+    {
+      field: "createdAt",
+      headerName: "Ngày thêm",
+      customClassName: "text-center",
+      renderCell: (item) => {
+        return <p className="text-sm">{formatTimestamp(item.createdAt)}</p>;
+      },
+    },
+    {
+      field: "updatedAt",
+      headerName: "Ngày sửa đổi",
+      customClassName: "text-center",
+      renderCell: (item) => {
+        return <p className="text-sm">{formatTimestamp(item.updatedAt)}</p>;
+      },
+    },
     {
       field: "actions",
       headerName: "Thao tác",

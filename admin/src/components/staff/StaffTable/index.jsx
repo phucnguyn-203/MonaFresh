@@ -31,7 +31,7 @@ export default function StaffTable({
             </div>
             {item._id === currentUser._id ? (
               <p className="flex text-sm">
-                {jsUcfirst(item.name)} &nbsp; <div className="text-red-500"> (Tôi)</div>
+                {jsUcfirst(item.name)} &nbsp; <span className="text-red-500"> (Tôi)</span>
               </p>
             ) : (
               <p className="text-sm">{jsUcfirst(item.name)}</p>

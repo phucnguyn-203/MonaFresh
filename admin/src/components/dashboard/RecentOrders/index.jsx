@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import PageLayout from "../../../components/layout/pageLayout";
-import CustomerOrderListTable from "../../../components/customer/CustomerOrderListTable";
-import BillCustomer from "../../../components/customer/Bill/BillCustomerOrder/BillCustomer";
+import { ORDER_STATUS } from "../../../utils/Constant";
 import orderAPI from "../../../api/orderAPI";
 import productAPI from "../../../api/productAPI";
-import Filter from "../../../components/customer/Filter";
+import Bill from "../../../components/orders/Bill";
+import RecentOrdersTable from "../RecentOrdersTable";
 import Swal from "sweetalert2";
-import { ORDER_STATUS } from "../../../utils/Constant";
 
-export default function CustomerOrder() {
-  const params = useParams();
-  const userId = params.id;
+export default function RecentOrders() {
   const currentUser = useSelector((state) => state.auth.currentUser);
   const [orders, setOrders] = useState([]);
   const [billData, setBillData] = useState();
@@ -20,20 +15,16 @@ export default function CustomerOrder() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [limitPerPage, setLimitPerPage] = useState(10);
-  const [filterByStatus, setFilterByStatus] = useState("");
-  const [sortValue, setSortValue] = useState("");
 
-  const getOrdersByUserId = async (userId) => {
-    let params = { page: currentPage, limit: limitPerPage };
-    if (filterByStatus) {
-      params.status = filterByStatus;
-      console.log(filterByStatus);
-    }
-    if (sortValue) {
-      params = { ...params, ...sortValue };
-    }
+  const getAllOrder = async () => {
+    let params = {
+      page: currentPage,
+      limit: limitPerPage,
+      sort: "-createdAt",
+    };
+
     try {
-      const response = await orderAPI.getOrdersByUserId(userId, params);
+      const response = await orderAPI.getAllOrder(params);
       setOrders(response.data);
       setTotalPageCount(response.totalPages);
     } catch (err) {
@@ -43,7 +34,7 @@ export default function CustomerOrder() {
 
   const handleUpdateOrder = async (id, data) => {
     await orderAPI.updaterOrder(id, data);
-    await getOrdersByUserId(userId);
+    await getAllOrder();
   };
 
   const checkInventory = async (orderDetail) => {
@@ -79,7 +70,7 @@ export default function CustomerOrder() {
       if (result.isConfirmed) {
         try {
           await productAPI.returnInventory(orderId);
-          await getOrdersByUserId(userId);
+          await getAllOrder();
           Swal.fire({
             icon: "success",
             title: "Hoàn trả thành công",
@@ -132,34 +123,25 @@ export default function CustomerOrder() {
   };
 
   useEffect(() => {
-    getOrdersByUserId(userId);
-  }, [userId, currentPage, limitPerPage, filterByStatus, sortValue]);
+    getAllOrder();
+  }, [currentPage, limitPerPage]);
 
   return (
-    <PageLayout title="Đơn hàng của khách hàng">
-      <Filter
-        filterByStatus={filterByStatus}
-        setFilterByStatus={setFilterByStatus}
-        sortValue={sortValue}
-        setSortValue={setSortValue}
-      />
-      <CustomerOrderListTable
+    <React.Fragment>
+      <h1 className="my-6 text-lg font-bold">Đơn hàng gần đây</h1>
+      <RecentOrdersTable
         orders={orders}
         handleUpdateOrder={handleUpdateOrder}
-        handleShowBill={handleShowBill}
         handleReturnInventory={handleReturnInventory}
+        handleShowBill={handleShowBill}
         handleConfirmOrder={handleConfirmOrder}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPageCount={totalPageCount}
         limitPerPage={limitPerPage}
         setLimitPerPage={setLimitPerPage}
-        filterByStatus={filterByStatus}
-        setFilterByStatus={setFilterByStatus}
-        sortValue={sortValue}
-        setSortValue={setSortValue}
       />
-      {isShowBill && <BillCustomer data={billData} close={handleShowBill} />}
-    </PageLayout>
+      {isShowBill && <Bill data={billData} close={handleShowBill} />}
+    </React.Fragment>
   );
 }

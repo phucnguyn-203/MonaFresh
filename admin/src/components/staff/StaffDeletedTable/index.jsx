@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Tooltip } from "react-tooltip";
-import { IconRestore, IconDelete, IconBack } from "../../icon";
+import { IconRestore, IconDelete } from "../../icon";
 import DataTable from "../../DataTable";
-import ToggleSwitch from "../../ToggleSwitch";
 import jsUcfirst from "../../../utils/jsUcfirst";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import Swal from "sweetalert2";
 
-export default function CategoryDeletedTable({
+export default function StaffDeletedTable({
   staffs,
   handleDelete,
   handleRestore,
@@ -34,7 +33,7 @@ export default function CategoryDeletedTable({
             </div>
             {item._id === currentUser._id ? (
               <p className="flex text-sm">
-                {jsUcfirst(item.name)} &nbsp; <div className="text-red-500"> (Tôi)</div>
+                {jsUcfirst(item.name)} &nbsp; <span className="text-red-500"> (Tôi)</span>
               </p>
             ) : (
               <p className="text-sm">{jsUcfirst(item.name)}</p>

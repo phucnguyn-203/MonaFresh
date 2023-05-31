@@ -1,12 +1,12 @@
+import React from "react";
 import { Tooltip } from "react-tooltip";
-import { IconView, IconRestore } from "../../icon";
+import { IconView } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import { PAYMENT_METHOD } from "../../../utils/Constant";
 import { PAYMENT_STATUS } from "../../../utils/Constant";
 import { ORDER_STATUS } from "../../../utils/Constant";
-import React from "react";
 
 export default function OrderTable({
   orders,
@@ -55,29 +55,11 @@ export default function OrderTable({
       field: "staffName",
       headerName: "Nhân viên xác nhận",
       renderCell: (item) => {
-        return <div className="flex gap-x-2 items-center">{<p className="text-sm ">{item?.staff?.name}</p>}</div>;
-      },
-    },
-    {
-      field: "method",
-      headerName: "Thanh toán",
-      renderCell: (item) => {
-        if (item.paymentMethod === PAYMENT_METHOD.COD) {
-          return <span className="text-sm">Thanh toán bằng tiền mặt</span>;
-        } else {
-          return <span className="text-sm">Thanh toán online</span>;
-        }
-      },
-    },
-    {
-      field: "paymentStatus",
-      headerName: "Thanh toán",
-      renderCell: (item) => {
-        if (item.paymentStatus === PAYMENT_STATUS.UNPAID) {
-          return <span className="text-sm">Chưa thanh toán</span>;
-        } else {
-          return <span className="text-sm">Đã thanh toán</span>;
-        }
+        return (
+          <div className="flex gap-x-2 items-center">
+            <p className="text-sm ">{item?.staff?.name}</p>
+          </div>
+        );
       },
     },
     {
@@ -92,40 +74,70 @@ export default function OrderTable({
       },
     },
     {
+      field: "method",
+      headerName: "Thanh toán",
+      renderCell: (item) => {
+        if (item.paymentMethod === PAYMENT_METHOD.COD) {
+          return <span className="text-sm">Tiền mặt</span>;
+        } else {
+          return <span className="text-sm">Online</span>;
+        }
+      },
+    },
+    {
+      field: "paymentStatus",
+      headerName: "Trạng thái thanh toán",
+      renderCell: (item) => {
+        if (item.paymentStatus === PAYMENT_STATUS.UNPAID) {
+          return (
+            <span className="py-1 px-2 bg-red-500 text-white rounded-full text-xs hover:bg-red-700 font-semibold">
+              Chưa thanh toán
+            </span>
+          );
+        } else {
+          return (
+            <span className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-red-700 font-semibold">
+              Đã thanh toán
+            </span>
+          );
+        }
+      },
+    },
+    {
       field: "status",
-      headerName: "Trạng thái hiện tại",
+      headerName: "Trạng thái đơn hàng",
       renderCell: (item) => {
         if (item.status === ORDER_STATUS.PENDING) {
           return (
-            <span className="text-xs  text-yellow-800 rounded-full bg-yellow-200 px-2 leading-5 font-medium">
-              {`Chờ xác nhận`}
+            <span className="text-xs  text-yellow-800 rounded-full bg-yellow-200 px-2 py-1 leading-5 font-medium">
+              Chờ xác nhận
             </span>
           );
         } else if (item.status === ORDER_STATUS.CONFIRMED) {
           return (
-            <span className="text-xs text-green-800 rounded-full bg-green-200 px-2 leading-5 font-medium">
+            <span className="text-xs text-green-800 rounded-full bg-green-200 px-2 py-1 leading-5 font-medium">
               Đã xác nhận
             </span>
           );
         } else if (item.status === ORDER_STATUS.DELIVERING) {
           return (
-            <span className="text-xs text-teal-800 rounded-full bg-teal-200 px-2 leading-5 font-medium">
+            <span className="text-xs text-teal-800 rounded-full bg-teal-200 px-2 py-1 leading-5 font-medium">
               Đang giao hàng
             </span>
           );
         } else if (item.status === ORDER_STATUS.DELIVERED) {
           return (
-            <span className="text-xs text-pink-800 rounded-full bg-pink-200 px-2 leading-5 font-medium">
-              Đã giao hàng
+            <span className="text-xs text-white rounded-full bg-primary px-2 py-1 leading-5 font-medium">
+              Đã giao hàng thành công
             </span>
           );
         } else if (item.status === ORDER_STATUS.CANCELED) {
           return (
-            <span className="text-xs text-red-800 rounded-full bg-red-200 px-2 leading-5 font-medium">Đã huỷ</span>
+            <span className="text-xs text-red-800 rounded-full bg-red-200 px-2 py-1 leading-5 font-medium">Đã huỷ</span>
           );
         } else {
           return (
-            <span className="text-xs text-orange-800 rounded-full bg-orange-200 px-2 leading-5 font-medium">
+            <span className="text-xs text-orange-800 rounded-full bg-orange-200 px-2 py-1 leading-5 font-medium">
               Trả hàng
             </span>
           );
@@ -147,7 +159,7 @@ export default function OrderTable({
               Xác nhận đơn hàng
             </button>
           );
-        } else if (item.status === ORDER_STATUS.CANCELED || item.status === ORDER_STATUS.RETURNS) {
+        } else if (item.status === ORDER_STATUS.RETURNS) {
           return (
             <React.Fragment>
               {!item?.isReturn ? (
@@ -167,7 +179,7 @@ export default function OrderTable({
         } else {
           return (
             <select
-              disabled={item.status === ORDER_STATUS.DELIVERED}
+              disabled={item.status === ORDER_STATUS.DELIVERED || item.status === ORDER_STATUS.CANCELED}
               className="text-sm "
               value={item.status}
               onChange={(e) => handleUpdateOrder(item._id, { status: e.target.value })}
@@ -183,7 +195,7 @@ export default function OrderTable({
     },
     {
       field: "action",
-      headerName: "Thao Tác",
+      headerName: "Xem",
       renderCell: (item) => {
         return (
           <span className="flex justify-center">

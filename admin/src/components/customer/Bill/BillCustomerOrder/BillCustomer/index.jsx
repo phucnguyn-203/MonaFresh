@@ -79,7 +79,7 @@ export default function BillCustomer({ close, data }) {
 
   return (
     <React.Fragment>
-      <div onClick={close} className={`bg-black/30 top-0 right-0 left-0 w-full h-full fixed `}></div>
+      <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20"></div>
       <div
         className={`${styles.navbar} bg-white fixed w-2/3 flex flex-col h-[90%] right-1/2 top-1/2 z-50 bg-opacity-100 shadow-2xl opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
       >

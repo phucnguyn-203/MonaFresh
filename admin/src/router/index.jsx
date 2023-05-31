@@ -76,6 +76,10 @@ const staffRouter = [
     element: Customer,
   },
   {
+    path: "/customers/:id",
+    element: CustomerOrder,
+  },
+  {
     path: "/orders",
     element: Order,
   },
@@ -84,8 +88,6 @@ const staffRouter = [
     element: Setting,
   },
   {
-    path: "/customer-order/:id",
-    element: CustomerOrder,
     path: "/supplier",
     element: Supplier,
   },

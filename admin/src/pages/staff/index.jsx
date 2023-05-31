@@ -23,7 +23,6 @@ export default function Staff() {
   const [isSelectAll, setIsSelectAll] = useState(false);
   const [isSelected, setIsSelected] = useState([]);
   const [isShowStaffDeletedTable, setIsShowStaffDeletedTable] = useState(false);
-  //
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPageCount, setTotalPageCount] = useState(0);
   const [limitPerPage, setLimitPerPage] = useState(10);
@@ -32,7 +31,15 @@ export default function Staff() {
 
   useEffect(() => {
     getAllStaff();
-  }, [debounceValue, filterByRole, isShowStaffDeletedTable, currentPage, limitPerPage, showAddStaffModal, showEditStaffModal]);
+  }, [
+    debounceValue,
+    filterByRole,
+    isShowStaffDeletedTable,
+    currentPage,
+    limitPerPage,
+    showAddStaffModal,
+    showEditStaffModal,
+  ]);
 
   const handleShowAddModal = () => {
     setShowAddStaffModal(!showAddStaffModal);

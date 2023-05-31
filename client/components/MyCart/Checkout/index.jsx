@@ -17,7 +17,6 @@ import Loading from "@/components/loading";
 import styles from "./styles.module.css";
 
 export default function Checkout({ purchase, close }) {
-  console.log(purchase);
   const router = useRouter();
   const currentUser = useSelector((state) => state.auth.currentUser);
   const dispatch = useDispatch();
@@ -64,6 +63,7 @@ export default function Checkout({ purchase, close }) {
         name: item.product.name,
         thumbnail: item.product.thumbnail,
         price: item.product.price,
+        importPrice: item.product.importPrice,
         percentageDiscount: item.product.percentageDiscount,
         quantity: item.quantity,
         total: calculateItemTotal(item.product, item.quantity),
