@@ -467,21 +467,39 @@ export default function Checkout({ purchase, close }) {
                     </ul>
                   </div>
                   <div className="mt-[20px] border-t-[3px] border-[#ececec] pt-[20px]">
-                    <button
-                      disabled={isLoading}
-                      onClick={handleSubmit(onSubmit)}
-                      className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
-                        isLoading ? "cursor-not-allowed" : ""
-                      }`}
-                    >
-                      {isLoading ? (
-                        <div className="flex justify-center items-center fill-current">
-                          <Loading />
-                        </div>
-                      ) : (
-                        "Đặt Hàng"
-                      )}
-                    </button>
+                    {paymentMethod == 1 ? (
+                      <button
+                        disabled={isLoading}
+                        onClick={handleSubmit(onSubmit)}
+                        className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
+                          isLoading ? "cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {isLoading ? (
+                          <div className="flex justify-center items-center fill-current">
+                            <Loading />
+                          </div>
+                        ) : (
+                          "Đặt Hàng"
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        disabled={isLoading}
+                        // onClick={handleSubmit(onSubmit)}
+                        className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
+                          isLoading ? "cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {isLoading ? (
+                          <div className="flex justify-center items-center fill-current">
+                            <Loading />
+                          </div>
+                        ) : (
+                          "Đặt Hàng và tiến hành thanh toán"
+                        )}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
