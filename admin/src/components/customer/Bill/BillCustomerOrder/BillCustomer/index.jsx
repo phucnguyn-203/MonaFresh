@@ -7,66 +7,13 @@ import formatTimestamp from "../../../../../utils/formatTimestamp";
 import styles from "./styles.module.css";
 
 export default function Bill({ close, data }) {
-  const columnData = [
-    {
-      field: "product",
-      headerName: "Sản phẩm",
-      renderCell: (item) => {
-        return (
-          <div className="flex gap-x-2 pl-3">
-            <p className="text-sm ">{jsUcfirst(item.name)}</p>
-          </div>
-        );
-      },
-    },
-    {
-      field: "amount",
-      headerName: "Số lượng",
-      renderCell: (item) => {
-        return (
-          <div className="text-sm text-center">
-            <span>{item.quantity}</span>
-          </div>
-        );
-      },
-    },
-    {
-      field: "price",
-      headerName: "Đơn giá",
-      renderCell: (item) => (
-        <div className="text-xs font-medium">
-          <span style={item.percentageDiscount !== 0 ? { textDecoration: "line-through" } : {}}>
-            {formatCurrency(item.price)}
-          </span>
-          {item.percentageDiscount !== 0 && (
-            <span className="text-sm font-medium flex flex-row">
-              {formatCurrency(item.price - item.price * item.percentageDiscount)}
-            </span>
-          )}
-        </div>
-      ),
-    },
-
-    {
-      field: "total",
-      headerName: "Tổng",
-      renderCell: (item) => {
-        return (
-          <div className="text-sm font-medium text-red-500">
-            <span>{formatCurrency(item.total)}</span>
-          </div>
-        );
-      },
-    },
-  ];
-
   return (
     <React.Fragment>
       <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20">
         <div
           className={`${styles.navbar} bg-white fixed w-[512px] flex flex-col h-[90%]   right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
         >
-          <div className="flex justify-end">
+          <div className="flex justify-end overflow-x-auto">
             <div
               onClick={close}
               className="flex items-center w-[5%] h-[35px] text-left rounded-tr-[10px] bg-[#ee4d2d] text-[#fff]  text-[25px] cursor-pointer hover:bg-[#e8340c]"
@@ -110,41 +57,63 @@ export default function Bill({ close, data }) {
             <div className="w-full overflow-hidden border border-gray-200 rounded-lg ring-1 ring-black ring-opacity-5 mb-8 rounded-b-lg">
               <div className="w-full">
                 <table className="w-full whitespace-nowrap">
-                  <thead className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-100">
-                    <tr>
-                      {columnData.map((columnItem) => (
-                        <td key={columnItem.field} className="px-4 py-2">
-                          {columnItem.headerName}
-                        </td>
-                      ))}
+                  <thead className="text-xs divide-y divide-gray-10 divide-y-reverse font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-100">
+                    <tr className="">
+                      <td className="text-center py-2 ">
+                        <div className="">Sản phẩm</div>
+                      </td>
+                      <td className="text-center py-2">
+                        <div className="">Số lượng</div>
+                      </td>
+                      <td className="text-center py-2 px-3">
+                        <div className="">Đơn giá</div>
+                      </td>
+                      <td className="text-right py-2 pr-3">
+                        <div className="">Thành tiền</div>
+                      </td>
                     </tr>
+                    <tr></tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-10 text-gray-700">
-                    {data.orderDetail.map((rowItem) => (
-                      <tr key={rowItem._id}>
-                        {columnData.map((columnItem) => (
-                          <td key={columnItem.field} className="px-2 py-2">
-                            {columnItem.renderCell ? (
-                              columnItem.renderCell(rowItem)
-                            ) : (
-                              <span className="text-xs">{rowItem[columnItem.field]}</span>
-                            )}
-                          </td>
-                        ))}
+                    {data.orderDetail.map((item, index) => (
+                      <tr key={index}>
+                        <td className="pl-3">
+                          <p className="text-sm">{jsUcfirst(item.name)}</p>
+                        </td>
+                        <td className="text-sm text-center">
+                          <span>{item.quantity}</span>
+                        </td>
+                        <td className="text-sm text-center font-medium ">
+                          <p style={item.percentageDiscount !== 0 ? { textDecoration: "line-through" } : null}>
+                            {formatCurrency(item.price)}
+                          </p>
+                          {item.percentageDiscount !== 0 && (
+                            <p className="text-sm text-center font-medium ">
+                              {formatCurrency(item.price - item.price * item.percentageDiscount)}
+                            </p>
+                          )}
+                        </td>
+                        <td className="bg-white text-[red] font-normal  divide-y py-2 pr-3 text-right text-sm divide-gray-10 ">
+                          {formatCurrency(
+                            item?.quantity *
+                              (item?.product?.price - item?.product?.price * item?.product?.percentageDiscount),
+                          )}
+                        </td>
                       </tr>
                     ))}
-
                     <tr>
-                      <td colSpan={columnData.length - 1} className="text-left pl-4 py-2 text-sm font-semibold">
+                      <td colSpan={3} className="text-left pl-3 py-2 text-sm font-semibold">
                         Tiền vận chuyển
                       </td>
-                      <td className="px-2 py-2 text-justify text-sm font-semibold text-[red]">{formatCurrency(0)}</td>
+                      <td className="bg-white divide-y py-2 pr-3 text-right text-sm divide-gray-10 text-[red] font-semibold">
+                        {formatCurrency(0)}
+                      </td>
                     </tr>
                     <tr>
-                      <td colSpan={columnData.length - 1} className="text-left pl-4 py-2 text-sm font-semibold">
+                      <td colSpan={3} className="text-left pl-3 py-2 text-sm font-semibold">
                         Tổng tiền
                       </td>
-                      <td className="px-2 py-2 text-justify text-sm font-semibold text-[red]">
+                      <td className="bg-white divide-y py-2 pr-3 text-right text-sm divide-gray-10 text-[red] font-semibold">
                         {formatCurrency(data.orderTotal)}
                       </td>
                     </tr>
