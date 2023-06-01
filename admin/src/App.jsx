@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RouterProvider } from "react-router-dom";
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Root from "./pages/root";
 import Login from "./pages/login";
@@ -10,8 +9,15 @@ import ProtectedRoute from "./router/ProtectedRoute";
 import Loading from "./components/loading";
 import authAPI from "./api/authAPI";
 import { setUserSuccess, setUserFail } from "./features/auth/authSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { fetchNotification } from "./features/auth/notificationSlice";
 import { adminRouter, staffRouter } from "./router";
 import { USER_ROLES } from "./utils/Constant";
+import { toast } from "react-toastify";
+import notificationSound from "./assets/sound/notification-sound.mp3";
+
+import io from "socket.io-client";
+const socket = io("http://localhost:8080");
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -23,6 +29,7 @@ function App() {
       try {
         const response = await authAPI.checkIsLogin();
         dispatch(setUserSuccess(response.data));
+        unwrapResult(await dispatch(fetchNotification()));
       } catch {
         dispatch(setUserFail);
       } finally {
@@ -30,6 +37,34 @@ function App() {
       }
     };
     checkIsLogin();
+  }, []);
+
+  useEffect(() => {
+    const handleCustomerOrder = async (data) => {
+      const audio = new Audio(notificationSound);
+      audio.play();
+      toast.success(data, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      try {
+        unwrapResult(await dispatch(fetchNotification()));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    socket.on("customerOrder", handleCustomerOrder);
+
+    return () => {
+      socket.off("customerOrder", handleCustomerOrder);
+    };
   }, []);
 
   const router = createBrowserRouter(
