@@ -40,11 +40,6 @@ export default function Bill({ close, invoice }) {
                   <span>{invoice._id}</span>
                 </p>
                 <p className="my-1 font-bold text-sm">Tên nhân viên: {invoice.createdBy.name}</p>
-
-                <p className="my-1 text-sm">
-                  <span className="font-bold">Phương thức thanh toán: </span>
-                  <span>{invoice.paymentMethod === 1 ? "Thanh toán tiền mặt" : "Thanh toán online"}</span>
-                </p>
               </div>
             </div>
             <div className="w-full overflow-hidden border border-gray-200 rounded-lg ring-1 ring-black ring-opacity-5 mb-8 rounded-b-lg">
