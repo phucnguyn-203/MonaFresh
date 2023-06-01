@@ -63,8 +63,6 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
     getAllSupplier();
   }, []);
 
-  console.log(suppliers);
-
   const getAllCategory = async () => {
     try {
       const response = await categoryAPI.getAllCategory();
@@ -341,6 +339,7 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
                     type="number"
+                    min={0}
                     placeholder="Nhập giá sản phẩm"
                     className={`${
                       errors.price ? "border-red-500" : ""
@@ -357,6 +356,7 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
                     type="number"
+                    min={0}
                     placeholder="Nhập giá nhập sản phẩm"
                     className={`${
                       errors.importPrice ? "border-red-500" : ""
@@ -373,6 +373,7 @@ export default function AddProductModal({ closeModal, title, titleBtnFooter, han
                 <div className="col-span-8 sm:col-span-4 ">
                   <input
                     type="number"
+                    min={0}
                     placeholder="Khuyến mãi(20)%"
                     defaultValue={0}
                     className={`${

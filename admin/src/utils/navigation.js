@@ -9,6 +9,7 @@ import {
   IconSupplier,
   IconImport,
   IconExport,
+  IconReport,
 } from "../components/icon";
 
 const adminNavigation = [
@@ -16,6 +17,11 @@ const adminNavigation = [
     title: "Tổng quan",
     path: "",
     icon: IconDashboard,
+  },
+  {
+    title: "Báo cáo",
+    path: "/report",
+    icon: IconReport,
   },
   {
     title: "Danh mục",

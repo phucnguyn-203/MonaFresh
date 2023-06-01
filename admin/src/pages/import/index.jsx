@@ -24,8 +24,6 @@ export default function Import() {
     getAllInvoice();
   }, [currentPage, limitPerPage, sortValue]);
 
-  console.log(invoices);
-
   const getAllInvoice = async () => {
     let params = { page: currentPage, limit: limitPerPage };
     if (sortValue) {
