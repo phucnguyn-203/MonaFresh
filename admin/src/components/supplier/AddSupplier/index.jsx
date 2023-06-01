@@ -25,12 +25,15 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
     }
   };
 
-  console.log(supplier);
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên nhà cung cấp"),
     email: yup.string().required("Vui lòng nhập Email nhà cung cấp ").email("Vui lòng nhập đúng định dạng của Email"),
     address: yup.string().required("Vui lòng nhập địa chỉ của nhà cung cấp"),
-    phone: yup.string().required("Vui lòng nhập số điện thoại nhà cung cấp").typeError("Vui lòng nhập số"),
+    phone: yup
+      .string()
+      .required("Vui lòng nhập số điện thoại nhà cung cấp")
+      .typeError("Vui lòng nhập số")
+      .phone("Vui lòng nhập đúng định dạng số điện thoại."),
   });
   const {
     register,
@@ -114,7 +117,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
               </div>
               <div className="flex flex-col w-2/3 ">
                 <input
-                  type="number"
+                  type="text"
                   placeholder="Nhập số điện thoại"
                   className={`${
                     errors.phone ? "border-red-500" : ""

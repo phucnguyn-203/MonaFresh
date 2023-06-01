@@ -1,0 +1,93 @@
+import { Link } from "react-router-dom";
+
+import { Tooltip } from "react-tooltip";
+import { IconView } from "../../icon";
+import DataTable from "../../DataTable";
+import formatTimestamp from "../../../utils/formatTimestamp";
+
+export default function FriendlyCustomerTable({
+  customers,
+  currentPage,
+  setCurrentPage,
+  totalPageCount,
+  limitPerPage,
+  setLimitPerPage,
+}) {
+  const columnData = [
+    {
+      field: "name",
+      headerName: "Họ tên khách hàng",
+      renderCell: (item) => {
+        return (
+          <div className="flex gap-x-2 items-center">
+            {/* <div className="w-[50px] h-[50px] ring-1 ring-gray-300">
+              <img src={item.photo} className="w-full h-full object-cover" />
+            </div> */}
+            <p className="text-sm">{item.name}</p>
+          </div>
+        );
+      },
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      renderCell: (item) => {
+        return <span className="text-sm">{item.email}</span>;
+      },
+    },
+    {
+      field: "phone",
+      headerName: "Số điện thoại",
+      renderCell: (item) => {
+        return <span className="text-sm">{item.phone}</span>;
+      },
+    },
+    {
+      field: "numberOfOrder",
+      headerName: "Số đơn hàng đã mua",
+      renderCell: (item) => {
+        return <span className="text-sm">{item.numberOfOrder}</span>;
+      },
+    },
+    // {
+    //   field: "actions",
+    //   headerName: "Xem",
+    //   renderCell: (item) => {
+    //     return (
+    //       <div className=" text-gray-400 gap-x-4">
+    //         <Link to={`/customers/${item._id}`}>
+    //           <button
+    //             data-tooltip-id="view"
+    //             data-tooltip-content="Xem đơn hàng"
+    //             className="text-gray-400 hover:text-green-600"
+    //           >
+    //             <IconView />
+    //           </button>
+    //           <Tooltip id="view" style={{ backgroundColor: "var(--color-primary" }} />
+    //         </Link>
+    //       </div>
+    //     );
+    //   },
+    // },
+  ];
+  const rowData = [
+    {
+      name: "Võ Hồng Nguyên",
+      email: "hongnguyen@gmail.com",
+      phone: "0564678496",
+      numberOfOrder: 30,
+      createdAt: "01/01/2023",
+    },
+  ];
+  return (
+    <DataTable
+      columnData={columnData}
+      rowData={rowData}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      totalPageCount={totalPageCount}
+      limitPerPage={limitPerPage}
+      setLimitPerPage={setLimitPerPage}
+    />
+  );
+}

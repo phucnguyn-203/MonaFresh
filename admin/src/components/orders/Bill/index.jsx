@@ -7,6 +7,10 @@ import formatCurrency from "../../../utils/formatCurrency";
 import styles from "./styles.module.css";
 
 export default function Bill({ close, data }) {
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <React.Fragment>
       <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20">
@@ -122,6 +126,9 @@ export default function Bill({ close, data }) {
               </div>
             </div>
           </div>
+          <button onClick={handlePrint} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded">
+            In hóa đơn
+          </button>
         </div>
       </div>
     </React.Fragment>
