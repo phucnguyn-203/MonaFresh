@@ -31,3 +31,4 @@ export { default as IconPending } from "./pending";
 export { default as IconTruck } from "./truck";
 export { default as IconCheck } from "./check";
 export { default as IconCash } from "./cash";
+export { default as IconPrint } from "./print";
