@@ -38,3 +38,5 @@ export { default as IconStaffReport } from "./staffReport";
 export { default as IconIncome } from "./income";
 export { default as IconOutOfStockReport } from "./outOfStockReport";
 export { default as IconOrderCancel } from "./orderCancel";
+export { default as IconPrint } from "./print";
+
