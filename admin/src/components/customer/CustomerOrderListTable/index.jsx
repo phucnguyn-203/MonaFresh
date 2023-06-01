@@ -132,10 +132,10 @@ export default function CustomerOrderListTable({
           return (
             <span className="text-xs text-red-800 rounded-full bg-red-200 px-2 py-1 leading-5 font-medium">Đã huỷ</span>
           );
-        } else {
+        } else if (item.paymentStatus === PAYMENT_STATUS.PAID) {
           return (
-            <span className="text-xs text-orange-800 rounded-full bg-orange-200 px-2 py-1 leading-5 font-medium">
-              Trả hàng
+            <span className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-red-700 font-semibold">
+              Đã thanh toán
             </span>
           );
         }
@@ -179,7 +179,17 @@ export default function CustomerOrderListTable({
               disabled={item.status === ORDER_STATUS.DELIVERED || item.status === ORDER_STATUS.CANCELED}
               className="text-sm "
               value={item.status}
-              onChange={(e) => handleUpdateOrder(item._id, { status: e.target.value })}
+              onChange={(e) => {
+                const newStatus = Number(e.target.value);
+                const newData = { status: newStatus };
+                console.log(newData);
+
+                if (newStatus === 4) {
+                  newData.paymentStatus = 2;
+                }
+
+                handleUpdateOrder(item._id, newData);
+              }}
             >
               <option value="">Cập nhật trạng thái</option>
               <option value={ORDER_STATUS.DELIVERING}>Đang giao hàng</option>

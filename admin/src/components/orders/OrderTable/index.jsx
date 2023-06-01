@@ -94,7 +94,7 @@ export default function OrderTable({
               Chưa thanh toán
             </span>
           );
-        } else {
+        } else if (item.paymentStatus === PAYMENT_STATUS.PAID) {
           return (
             <span className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-red-700 font-semibold">
               Đã thanh toán
@@ -182,7 +182,17 @@ export default function OrderTable({
               disabled={item.status === ORDER_STATUS.DELIVERED || item.status === ORDER_STATUS.CANCELED}
               className="text-sm "
               value={item.status}
-              onChange={(e) => handleUpdateOrder(item._id, { status: e.target.value })}
+              onChange={(e) => {
+                const newStatus = Number(e.target.value);
+                const newData = { status: newStatus };
+                console.log(newData);
+
+                if (newStatus === 4) {
+                  newData.paymentStatus = 2;
+                }
+
+                handleUpdateOrder(item._id, newData);
+              }}
             >
               <option value="">Cập nhật trạng thái</option>
               <option value={ORDER_STATUS.DELIVERING}>Đang giao hàng</option>
@@ -213,6 +223,7 @@ export default function OrderTable({
       },
     },
   ];
+
   return (
     <DataTable
       columnData={columnData}
