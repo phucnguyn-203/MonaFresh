@@ -15,7 +15,9 @@ import orderAPI from "@/api/orderAPI";
 import jsUcfirst from "@/utils/jsUcfirst";
 import Loading from "@/components/loading";
 import styles from "./styles.module.css";
-import removeAccents from"@/utils/removeAccents"; 
+import removeAccents from "@/utils/removeAccents";
+import io from "socket.io-client";
+const socket = io("http://localhost:8080");
 
 export default function Checkout({ purchase, close }) {
   const router = useRouter();
@@ -59,11 +61,12 @@ export default function Checkout({ purchase, close }) {
   });
 
   const onSubmit = async (data) => {
-    
     const orderDetail = await purchase.map((item) => {
-      stringNameProducts = stringNameProducts + " " + removeAccents(item.product.name).toLowerCase();
+      stringNameProducts =
+        stringNameProducts +
+        " " +
+        removeAccents(item.product.name).toLowerCase();
       return {
-
         product: item.product._id,
         name: item.product.name,
         thumbnail: item.product.thumbnail,
@@ -74,7 +77,7 @@ export default function Checkout({ purchase, close }) {
         total: calculateItemTotal(item.product, item.quantity),
       };
     });
-    
+
     const deliveryAddress = {
       name: data.name,
       phone: data.phone,
@@ -84,7 +87,7 @@ export default function Checkout({ purchase, close }) {
       addressDetail: data.addressDetail,
       note: data.note,
     };
-   
+
     const orderData = {
       searchName: stringNameProducts,
       orderDetail,
@@ -98,6 +101,10 @@ export default function Checkout({ purchase, close }) {
       setIsLoading(true);
       await orderAPI.createOrder(orderData);
       unwrapResult(await dispatch(deleteManyItemInCart(itemCartIdsToDelte)));
+      socket.emit("newOrder", {
+        customer: currentUser,
+        content: `${currentUser.name} đã đặt một đơn hàng`,
+      });
       close();
       router.push("/shop");
       Swal.fire({
@@ -449,7 +456,10 @@ export default function Checkout({ purchase, close }) {
                   <div className="bg-[white] border-t-[2px] border-[#ececec] pt-[10px]">
                     <ul>
                       {paymentMethods.map((item) => (
-                        <li key={item.id} className={`${styles.li} mt-[10px] !border-0`}>
+                        <li
+                          key={item.id}
+                          className={`${styles.li} mt-[10px] !border-0`}
+                        >
                           <div className="items-center font-[550] text-[16px] flex">
                             <label className={styles.containerRadio}>
                               <input
@@ -475,23 +485,21 @@ export default function Checkout({ purchase, close }) {
                     </ul>
                   </div>
                   <div className="mt-[20px] border-t-[3px] border-[#ececec] pt-[20px]">
-                   
-                      <button
-                        disabled={isLoading}
-                        onClick={handleSubmit(onSubmit)}
-                        className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
-                          isLoading ? "cursor-not-allowed" : ""
-                        }`}
-                      >
-                        {isLoading ? (
-                          <div className="flex justify-center items-center fill-current">
-                            <Loading />
-                          </div>
-                        ) : (
-                          "Đặt Hàng"
-                        )}
-                      </button>
-                    
+                    <button
+                      disabled={isLoading}
+                      onClick={handleSubmit(onSubmit)}
+                      className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
+                        isLoading ? "cursor-not-allowed" : ""
+                      }`}
+                    >
+                      {isLoading ? (
+                        <div className="flex justify-center items-center fill-current">
+                          <Loading />
+                        </div>
+                      ) : (
+                        "Đặt Hàng"
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
