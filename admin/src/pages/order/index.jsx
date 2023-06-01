@@ -8,6 +8,7 @@ import Bill from "../../components/orders/Bill";
 import productAPI from "../../api/productAPI";
 import Swal from "sweetalert2";
 import { ORDER_STATUS } from "../../utils/Constant";
+import useDebounce from "../../hooks/useDebounce";
 
 export default function Order() {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -19,10 +20,13 @@ export default function Order() {
   const [limitPerPage, setLimitPerPage] = useState(10);
   const [filterByStatus, setFilterByStatus] = useState("");
   const [sortValue, setSortValue] = useState("");
-
+  const [searchKeyWord, setSearchKeyWord] = useState("");
+  const debounceValue = useDebounce(searchKeyWord, 500);
   const getAllOrder = async () => {
     let params = { page: currentPage, limit: limitPerPage };
-
+    if (debounceValue) {
+      params.search = debounceValue.trim();
+    }
     if (filterByStatus) {
       params.status = filterByStatus;
       console.log(filterByStatus);
@@ -130,7 +134,7 @@ export default function Order() {
   };
   useEffect(() => {
     getAllOrder();
-  }, [currentPage, limitPerPage, filterByStatus, sortValue]);
+  }, [currentPage, limitPerPage, filterByStatus, sortValue, debounceValue]);
 
   return (
     <PageLayout title="Đơn hàng">
@@ -139,6 +143,7 @@ export default function Order() {
         setFilterByStatus={setFilterByStatus}
         sortValue={sortValue}
         setSortValue={setSortValue}
+        setSearchKeyWord={setSearchKeyWord}
       />
       <OrderTable
         orders={orders}

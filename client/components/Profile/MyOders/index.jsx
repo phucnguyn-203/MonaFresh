@@ -162,7 +162,7 @@ export default function MyOders() {
           <input
             onChange={(e) => setSearchKeyWord(e.target.value)}
             type="text"
-            placeholder="Nhập mã đơn hàng cần tìm"
+            placeholder="Nhập mã đơn hàng hoặc tên sản phẩm cần tìm"
             className=" w-full focus:outline-none placeholder:text-sm bg-transparent"
           />
         </div>
@@ -196,7 +196,7 @@ export default function MyOders() {
             <div className="rounded-t-lg flex items-center justify-between bg-primary py-4">
               <div className="mx-5 text-white">
                 <div className="text-[21px] font-[500]">
-                  Mã đơn hàng: #{order._id.slice(-10)}
+                  Mã đơn hàng: #{order._id.slice(0)}
                 </div>
                 <div className="text-base">
                   {formatTimestamp(order.createdAt)}

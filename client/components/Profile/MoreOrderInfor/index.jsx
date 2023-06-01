@@ -47,7 +47,7 @@ export default function MoreOderInfor({ order, close }) {
                 Thông tin đơn hàng
               </div>
               <div className="text-[20px] font-[450]">
-                Mã đơn hàng: #{order._id.slice(-10)}
+                Mã đơn hàng: #{order._id.slice(0)}
               </div>
             </div>
             <div className="text-[14px] flex justify-end items-center">
