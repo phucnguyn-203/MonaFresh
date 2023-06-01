@@ -15,6 +15,7 @@ import orderAPI from "@/api/orderAPI";
 import jsUcfirst from "@/utils/jsUcfirst";
 import Loading from "@/components/loading";
 import styles from "./styles.module.css";
+import removeAccents from"@/utils/removeAccents"; 
 
 export default function Checkout({ purchase, close }) {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function Checkout({ purchase, close }) {
   const [paymentMethod, setPaymentMethod] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
+  let stringNameProducts = "";
   const total = purchase.reduce(
     (total, item) => total + calculateItemTotal(item?.product, item?.quantity),
     0,
@@ -57,8 +59,11 @@ export default function Checkout({ purchase, close }) {
   });
 
   const onSubmit = async (data) => {
-    const orderDetail = purchase.map((item) => {
+    
+    const orderDetail = await purchase.map((item) => {
+      stringNameProducts = stringNameProducts + " " + removeAccents(item.product.name).toLowerCase();
       return {
+
         product: item.product._id,
         name: item.product.name,
         thumbnail: item.product.thumbnail,
@@ -69,6 +74,7 @@ export default function Checkout({ purchase, close }) {
         total: calculateItemTotal(item.product, item.quantity),
       };
     });
+    
     const deliveryAddress = {
       name: data.name,
       phone: data.phone,
@@ -78,7 +84,9 @@ export default function Checkout({ purchase, close }) {
       addressDetail: data.addressDetail,
       note: data.note,
     };
+   
     const orderData = {
+      searchName: stringNameProducts,
       orderDetail,
       orderTotal: total,
       deliveryAddress,
@@ -149,12 +157,12 @@ export default function Checkout({ purchase, close }) {
       title: "Trả tiền mặt khi nhận hàng",
       description: "Trả tiền mặt khi giao hàng.",
     },
-    {
-      id: 2,
-      title: "Chuyển khoản ngân hàng",
-      description:
-        "Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ đươc giao sau khi tiền đã chuyển.",
-    },
+    // {
+    //   id: 2,
+    //   title: "Chuyển khoản ngân hàng",
+    //   description:
+    //     "Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ đươc giao sau khi tiền đã chuyển.",
+    // },
   ];
 
   return (
@@ -441,12 +449,12 @@ export default function Checkout({ purchase, close }) {
                   <div className="bg-[white] border-t-[2px] border-[#ececec] pt-[10px]">
                     <ul>
                       {paymentMethods.map((item) => (
-                        <li key={item.id} className={`${styles.li} mt-[10px]`}>
+                        <li key={item.id} className={`${styles.li} mt-[10px] !border-0`}>
                           <div className="items-center font-[550] text-[16px] flex">
                             <label className={styles.containerRadio}>
                               <input
                                 checked={item.id === paymentMethod}
-                                onChange={() => setPaymentMethod(item.id)}
+                                // onChange={() => setPaymentMethod(item.id)}
                                 className={styles.radio}
                                 type="radio"
                               />
@@ -467,7 +475,7 @@ export default function Checkout({ purchase, close }) {
                     </ul>
                   </div>
                   <div className="mt-[20px] border-t-[3px] border-[#ececec] pt-[20px]">
-                    {paymentMethod == 1 ? (
+                   
                       <button
                         disabled={isLoading}
                         onClick={handleSubmit(onSubmit)}
@@ -483,23 +491,7 @@ export default function Checkout({ purchase, close }) {
                           "Đặt Hàng"
                         )}
                       </button>
-                    ) : (
-                      <button
-                        disabled={isLoading}
-                        // onClick={handleSubmit(onSubmit)}
-                        className={`bg-[#ee4d2d] text-[white] min-h-[40px] w-full flex items-center text-center justify-center uppercase hover:bg-[#a8583c] ${
-                          isLoading ? "cursor-not-allowed" : ""
-                        }`}
-                      >
-                        {isLoading ? (
-                          <div className="flex justify-center items-center fill-current">
-                            <Loading />
-                          </div>
-                        ) : (
-                          "Đặt Hàng và tiến hành thanh toán"
-                        )}
-                      </button>
-                    )}
+                    
                   </div>
                 </div>
               </div>

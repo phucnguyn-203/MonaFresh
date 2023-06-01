@@ -5,7 +5,7 @@ const removeAccents = require("../utils/removeAccents");
 
 const orderSchema = new Schema(
     {
-        srearchName: String,
+        searchName: String,
         customer: {
             type: Schema.Types.ObjectId,
             ref: "User",
@@ -109,7 +109,7 @@ const orderSchema = new Schema(
 );
 
 orderSchema.pre("save", function (next) {
-    this.searchName = this._id.toString();
+    this.searchName = this.searchName + " " + this._id.toString();
     console.log(this.searchName);
     next();
 });
