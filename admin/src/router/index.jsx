@@ -9,13 +9,17 @@ import CustomerOrder from "../pages/customer/CustomerOrder/index";
 import Supplier from "../pages/supplier";
 import Import from "../pages/import";
 import Export from "../pages/export";
+import Report from "../pages/report";
 
 const adminRouter = [
   {
     path: "",
     element: Dashboard,
   },
-
+  {
+    path: "/report",
+    element: Report,
+  },
   {
     path: "/products",
     element: Product,

@@ -31,4 +31,12 @@ export { default as IconPending } from "./pending";
 export { default as IconTruck } from "./truck";
 export { default as IconCheck } from "./check";
 export { default as IconCash } from "./cash";
+export { default as IconReport } from "./report";
+export { default as IconTotalProduct } from "./totalProduct";
+export { default as IconTotalOrderReport } from "./totalOrderReport";
+export { default as IconStaffReport } from "./staffReport";
+export { default as IconIncome } from "./income";
+export { default as IconOutOfStockReport } from "./outOfStockReport";
+export { default as IconOrderCancel } from "./orderCancel";
 export { default as IconPrint } from "./print";
+
