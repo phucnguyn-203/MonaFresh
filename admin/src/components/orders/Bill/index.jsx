@@ -1,23 +1,21 @@
-import React from "react";
-import { IconClose } from "../../icon";
+import React, { useRef } from "react";
 import jsUcfirst from "../../../utils/jsUcfirst";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import formatOrderStatus from "../../../utils/formatOrderStatus";
 import formatCurrency from "../../../utils/formatCurrency";
 import styles from "./styles.module.css";
+import ReactToPrint from "react-to-print";
+import { IconClose, IconPrint } from "../../icon";
 
 export default function Bill({ close, data }) {
-  const handlePrint = () => {
-    window.print();
-  };
-
+  const componentRef = useRef();
   return (
     <React.Fragment>
       <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20">
         <div
-          className={`${styles.navbar} bg-white fixed w-[512px] flex flex-col h-[90%]   right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
+          className={`${styles.navbar} bg-white fixed w-[550px] flex flex-col h-[90%] right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
         >
-          <div className="flex justify-end overflow-x-auto">
+          <div className="flex justify-end">
             <div
               onClick={close}
               className="flex items-center w-[5%] h-[35px] text-left rounded-tr-[10px] bg-[#ee4d2d] text-[#fff]  text-[25px] cursor-pointer hover:bg-[#e8340c]"
@@ -25,7 +23,7 @@ export default function Bill({ close, data }) {
               <IconClose />
             </div>
           </div>
-          <div className="w-full max-w-2xl mx-auto bg-white px-4 pb-4">
+          <div ref={componentRef} className="w-full max-w-2xl mx-auto bg-white px-4 py-5">
             <div className="text-center mb-4">
               <h1 className="text-xl font-bold uppercase">Đơn hàng</h1>
               <p className="text-sm text-gray-500">Ngày: {formatTimestamp(data.createdAt)}</p>
@@ -33,8 +31,8 @@ export default function Bill({ close, data }) {
             <div className="flex justify-between mb-6">
               <div>
                 <p className="my-1 text-sm">
-                  <span className="font-bold">Mã hoá đơn: </span>
-                  <span>{data.deliveryAddress._id}</span>
+                  <span className="font-bold">Mã đơn hàng: </span>
+                  <span>{data._id}</span>
                 </p>
                 <p className="my-1 font-bold text-sm">Tên khách hàng: {data.deliveryAddress.name}</p>
                 <p className="my-1 text-sm">
@@ -63,7 +61,7 @@ export default function Bill({ close, data }) {
                 <table className="w-full whitespace-nowrap">
                   <thead className="text-xs divide-y divide-gray-10 divide-y-reverse font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-100">
                     <tr className="">
-                      <td className="text-center py-2 ">
+                      <td className="px-4 py-2">
                         <div className="">Sản phẩm</div>
                       </td>
                       <td className="text-center py-2">
@@ -81,7 +79,7 @@ export default function Bill({ close, data }) {
                   <tbody className="bg-white divide-y divide-gray-10 text-gray-700">
                     {data.orderDetail.map((item, index) => (
                       <tr key={index}>
-                        <td className="pl-3">
+                        <td className="px-4 py-2">
                           <p className="text-sm">{jsUcfirst(item.name)}</p>
                         </td>
                         <td className="text-sm text-center">
@@ -126,9 +124,19 @@ export default function Bill({ close, data }) {
               </div>
             </div>
           </div>
-          <button onClick={handlePrint} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded">
-            In hóa đơn
-          </button>
+          <ReactToPrint
+            content={() => componentRef.current}
+            trigger={() => {
+              return (
+                <div className="flex justify-center mb-5">
+                  <button className="flex items-center gap-x-2 text-white bg-primary px-8 py-2 rounded-md">
+                    <IconPrint />
+                    <span>In</span>
+                  </button>
+                </div>
+              );
+            }}
+          />
         </div>
       </div>
     </React.Fragment>

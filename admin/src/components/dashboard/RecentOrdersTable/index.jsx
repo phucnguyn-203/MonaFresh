@@ -90,15 +90,11 @@ export default function RecentOrdersTable({
       renderCell: (item) => {
         if (item.paymentStatus === PAYMENT_STATUS.UNPAID) {
           return (
-            <span className="py-1 px-2 bg-red-500 text-white rounded-full text-xs hover:bg-red-700 font-semibold">
-              Chưa thanh toán
-            </span>
+            <span className="py-1 px-2 bg-red-500 text-white rounded-full text-xs font-semibold">Chưa thanh toán</span>
           );
         } else {
           return (
-            <span className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-red-700 font-semibold">
-              Đã thanh toán
-            </span>
+            <span className="py-1 px-2 bg-primary text-white rounded-full text-xs font-semibold">Đã thanh toán</span>
           );
         }
       },
@@ -182,7 +178,16 @@ export default function RecentOrdersTable({
               disabled={item.status === ORDER_STATUS.DELIVERED || item.status === ORDER_STATUS.CANCELED}
               className="text-sm "
               value={item.status}
-              onChange={(e) => handleUpdateOrder(item._id, { status: e.target.value })}
+              onChange={(e) => {
+                const newStatus = Number(e.target.value);
+                const newData = { status: newStatus };
+
+                if (newStatus === ORDER_STATUS.DELIVERED) {
+                  newData.paymentStatus = PAYMENT_STATUS.PAID;
+                }
+
+                handleUpdateOrder(item._id, newData);
+              }}
             >
               <option value="">Cập nhật trạng thái</option>
               <option value={ORDER_STATUS.DELIVERING}>Đang giao hàng</option>

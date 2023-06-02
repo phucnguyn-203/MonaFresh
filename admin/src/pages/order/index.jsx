@@ -7,8 +7,9 @@ import orderAPI from "../../api/orderAPI";
 import Bill from "../../components/orders/Bill";
 import productAPI from "../../api/productAPI";
 import Swal from "sweetalert2";
-import { ORDER_STATUS } from "../../utils/Constant";
 import useDebounce from "../../hooks/useDebounce";
+import { ORDER_STATUS } from "../../utils/Constant";
+import { IconPrint } from "../../components/icon";
 
 export default function Order() {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -22,6 +23,7 @@ export default function Order() {
   const [sortValue, setSortValue] = useState("");
   const [searchKeyWord, setSearchKeyWord] = useState("");
   const debounceValue = useDebounce(searchKeyWord, 500);
+
   const getAllOrder = async () => {
     let params = { page: currentPage, limit: limitPerPage };
     if (debounceValue) {

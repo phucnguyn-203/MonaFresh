@@ -12,10 +12,10 @@ export default function IconIncome() {
       viewBox="-98.15 -98.15 588.90 588.90"
       stroke="#0E9F6E"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0">
-        <rect x="-98.15" y="-98.15" width="588.90" height="588.90" rx="0" fill="#A8FF8F" strokewidth="0"></rect>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0">
+        <rect x="-98.15" y="-98.15" width="588.90" height="588.90" rx="0" fill="#A8FF8F" strokeWidth="0"></rect>
       </g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         {" "}
         <g>

@@ -3,7 +3,7 @@ import NotificationItem from "../NotificationItem";
 export default function NotificationList({ notifications = [] }) {
   return (
     <div className="relative ml-[-300px]">
-      <div className="absolute w-[320px] max-h-[400px] top-[100%] bg-white shadow-xl rounded-lg flex flex-col left-0 overflow-hidden">
+      <div className="absolute w-[320px] max-h-[400px] top-[100%] bg-white shadow-xl rounded-lg flex flex-col left-0 overflow-y-scroll">
         <div className="relative">
           <div className="mr-0 ml-0">
             <div className="box-border border">

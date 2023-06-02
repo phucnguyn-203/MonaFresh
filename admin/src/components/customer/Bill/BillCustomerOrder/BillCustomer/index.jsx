@@ -1,5 +1,6 @@
-import React from "react";
-import { IconClose } from "../../../../icon";
+import React, { useRef } from "react";
+import { IconClose, IconPrint } from "../../../../icon";
+import ReactToPrint from "react-to-print";
 import jsUcfirst from "../../../../../utils/jsUcfirst";
 import formatCurrency from "../../../../../utils/formatCurrency";
 import formatOrderStatus from "../../../../../utils/formatOrderStatus";
@@ -7,13 +8,14 @@ import formatTimestamp from "../../../../../utils/formatTimestamp";
 import styles from "./styles.module.css";
 
 export default function Bill({ close, data }) {
+  const componentRef = useRef();
   return (
     <React.Fragment>
       <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20">
         <div
-          className={`${styles.navbar} bg-white fixed w-[512px] flex flex-col h-[90%]   right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
+          className={`${styles.navbar} bg-white fixed w-[550px] flex flex-col h-[90%]   right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
         >
-          <div className="flex justify-end overflow-x-auto">
+          <div className="flex justify-end">
             <div
               onClick={close}
               className="flex items-center w-[5%] h-[35px] text-left rounded-tr-[10px] bg-[#ee4d2d] text-[#fff]  text-[25px] cursor-pointer hover:bg-[#e8340c]"
@@ -21,7 +23,7 @@ export default function Bill({ close, data }) {
               <IconClose />
             </div>
           </div>
-          <div className="w-full max-w-2xl mx-auto bg-white px-4 pb-4">
+          <div ref={componentRef} className="w-full max-w-2xl mx-auto bg-white px-4 py-5">
             <div className="text-center mb-4">
               <h1 className="text-xl font-bold uppercase">Đơn hàng</h1>
               <p className="text-sm text-gray-500">Ngày: {formatTimestamp(data.createdAt)}</p>
@@ -29,8 +31,8 @@ export default function Bill({ close, data }) {
             <div className="flex justify-between mb-6">
               <div>
                 <p className="my-1 text-sm">
-                  <span className="font-bold">Mã hoá đơn: </span>
-                  <span>{data.deliveryAddress._id}</span>
+                  <span className="font-bold">Mã đơn hàng: </span>
+                  <span>{data._id}</span>
                 </p>
                 <p className="my-1 font-bold text-sm">Tên khách hàng: {data.deliveryAddress.name}</p>
                 <p className="my-1 text-sm">
@@ -122,6 +124,19 @@ export default function Bill({ close, data }) {
               </div>
             </div>
           </div>
+          <ReactToPrint
+            content={() => componentRef.current}
+            trigger={() => {
+              return (
+                <div className="flex justify-center mb-5">
+                  <button className="flex items-center gap-x-2 text-white bg-primary px-8 py-2 rounded-md">
+                    <IconPrint />
+                    <span>In</span>
+                  </button>
+                </div>
+              );
+            }}
+          />
         </div>
       </div>
     </React.Fragment>

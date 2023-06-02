@@ -7,15 +7,15 @@ export default function IconTotalOrderReport() {
       width="100%"
       viewBox="-256 -256 1536.00 1536.00"
       fill="#F96B00"
-      class="icon"
+      className="icon"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       stroke="#F96B00"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0">
-        <rect x="-256" y="-256" width="1536.00" height="1536.00" rx="0" fill="#FFB380" strokewidth="0"></rect>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0">
+        <rect x="-256" y="-256" width="1536.00" height="1536.00" rx="0" fill="#FFB380" strokeWidth="0"></rect>
       </g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         <path
           d="M824.8 1003.2H203.2c-12.8 0-25.6-2.4-37.6-7.2-11.2-4.8-21.6-12-30.4-20.8-8.8-8.8-16-19.2-20.8-30.4-4.8-12-7.2-24-7.2-37.6V260c0-12.8 2.4-25.6 7.2-37.6 4.8-11.2 12-21.6 20.8-30.4 8.8-8.8 19.2-16 30.4-20.8 12-4.8 24-7.2 37.6-7.2h94.4v48H203.2c-26.4 0-48 21.6-48 48v647.2c0 26.4 21.6 48 48 48h621.6c26.4 0 48-21.6 48-48V260c0-26.4-21.6-48-48-48H730.4v-48H824c12.8 0 25.6 2.4 37.6 7.2 11.2 4.8 21.6 12 30.4 20.8 8.8 8.8 16 19.2 20.8 30.4 4.8 12 7.2 24 7.2 37.6v647.2c0 12.8-2.4 25.6-7.2 37.6-4.8 11.2-12 21.6-20.8 30.4-8.8 8.8-19.2 16-30.4 20.8-11.2 4.8-24 7.2-36.8 7.2z"

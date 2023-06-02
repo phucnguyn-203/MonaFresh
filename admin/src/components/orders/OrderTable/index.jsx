@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Tooltip } from "react-tooltip";
-import { IconView } from "../../icon";
+import { IconView, IconPrint } from "../../icon";
 import DataTable from "../../DataTable";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
@@ -90,15 +90,11 @@ export default function OrderTable({
       renderCell: (item) => {
         if (item.paymentStatus === PAYMENT_STATUS.UNPAID) {
           return (
-            <span className="py-1 px-2 bg-red-500 text-white rounded-full text-xs hover:bg-red-700 font-semibold">
-              Chưa thanh toán
-            </span>
+            <span className="py-1 px-2 bg-red-500 text-white rounded-full text-xs font-semibold">Chưa thanh toán</span>
           );
         } else if (item.paymentStatus === PAYMENT_STATUS.PAID) {
           return (
-            <span className="py-1 px-2 bg-primary text-white rounded-full text-xs hover:bg-red-700 font-semibold">
-              Đã thanh toán
-            </span>
+            <span className="py-1 px-2 bg-primary text-white rounded-full text-xs font-semibold">Đã thanh toán</span>
           );
         }
       },
@@ -185,10 +181,9 @@ export default function OrderTable({
               onChange={(e) => {
                 const newStatus = Number(e.target.value);
                 const newData = { status: newStatus };
-                console.log(newData);
 
-                if (newStatus === 4) {
-                  newData.paymentStatus = 2;
+                if (newStatus === ORDER_STATUS.DELIVERED) {
+                  newData.paymentStatus = PAYMENT_STATUS.PAID;
                 }
 
                 handleUpdateOrder(item._id, newData);
@@ -205,10 +200,10 @@ export default function OrderTable({
     },
     {
       field: "action",
-      headerName: "Xem",
+      headerName: "Thao Tác",
       renderCell: (item) => {
         return (
-          <span className="flex justify-center">
+          <span className="flex gap-x-4 justify-center items-center">
             <button
               data-tooltip-id="view"
               data-tooltip-content="Xem chi tiết"

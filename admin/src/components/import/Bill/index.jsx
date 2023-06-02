@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 
-import { IconClose } from "../../icon";
+import ReactToPrint from "react-to-print";
+import { IconClose, IconPrint } from "../../icon";
 import formatCurrency from "../../../utils/formatCurrency";
 import formatTimestamp from "../../../utils/formatTimestamp";
 import styles from "./styles.module.css";
 import jsUcfirst from "../../../utils/jsUcfirst";
 
 export default function Bill({ close, invoice }) {
+  const componentRef = useRef();
   const totalPayment = () => {
     let result = 0;
     invoice.products.map((item) => {
@@ -18,9 +20,9 @@ export default function Bill({ close, invoice }) {
     <React.Fragment>
       <div onClick={close} className="bg-black/30 top-0 right-0 left-0 w-full h-full fixed z-20">
         <div
-          className={`${styles.navbar} bg-white fixed w-[512px] flex flex-col h-[90%]   right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
+          className={`${styles.navbar} bg-white fixed w-[550px] flex flex-col h-[90%] right-1/2 top-1/2 z-50 bg-opacity-100 opacity-100 translate-x-[50%] translate-y-[-50%] rounded-[10px]`}
         >
-          <div className="flex justify-end overflow-x-auto">
+          <div className="flex justify-end">
             <div
               onClick={close}
               className="flex items-center w-[5%] h-[35px] text-left rounded-tr-[10px] bg-[#ee4d2d] text-[#fff]  text-[25px] cursor-pointer hover:bg-[#e8340c]"
@@ -28,7 +30,7 @@ export default function Bill({ close, invoice }) {
               <IconClose />
             </div>
           </div>
-          <div className="w-full max-w-2xl mx-auto bg-white px-4 pb-4">
+          <div ref={componentRef} className="w-full max-w-2xl mx-auto bg-white px-4 py-5">
             <div className="text-center mb-4">
               <h1 className="text-xl font-bold uppercase">Đơn nhập hàng</h1>
               <p className="text-sm text-gray-500">Ngày: {formatTimestamp(invoice.createdAt)}</p>
@@ -39,7 +41,7 @@ export default function Bill({ close, invoice }) {
                   <span className="font-bold">Mã hoá đơn: </span>
                   <span>{invoice._id}</span>
                 </p>
-                <p className="my-1 font-bold text-sm">Tên nhân viên: {invoice.createdBy.name}</p>
+                <p className="my-1 font-bold text-sm">Người nhập: {invoice.createdBy.name}</p>
               </div>
             </div>
             <div className="w-full overflow-hidden border border-gray-200 rounded-lg ring-1 ring-black ring-opacity-5 mb-8 rounded-b-lg">
@@ -72,7 +74,7 @@ export default function Bill({ close, invoice }) {
                           <span>{item.quantity}</span>
                         </td>
                         <td className="text-sm text-center">
-                          <span>{item.price}</span>
+                          <span>{formatCurrency(item.price)}</span>
                         </td>
                         <td className="bg-white text-[red] font-normal  divide-y py-2 px-3 text-center text-sm divide-gray-10 ">
                           <span>{formatCurrency(item.price * item.quantity)}</span>
@@ -108,6 +110,19 @@ export default function Bill({ close, invoice }) {
               </div>
             </div>
           </div>
+          <ReactToPrint
+            content={() => componentRef.current}
+            trigger={() => {
+              return (
+                <div className="flex justify-center mb-5">
+                  <button className="flex items-center gap-x-2 text-white bg-primary px-8 py-2 rounded-md">
+                    <IconPrint />
+                    <span>In</span>
+                  </button>
+                </div>
+              );
+            }}
+          />
         </div>
       </div>
     </React.Fragment>

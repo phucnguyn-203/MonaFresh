@@ -9,12 +9,12 @@ export default function IconStaffReport() {
       xmlns="http://www.w3.org/2000/svg"
       fill="#000000"
       stroke="#000000"
-      stroke-width="0.01024"
+      strokeWidth="0.01024"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0">
-        <rect x="-204.8" y="-204.8" width="1433.60" height="1433.60" rx="0" fill="#A8FF8F" strokewidth="0"></rect>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0">
+        <rect x="-204.8" y="-204.8" width="1433.60" height="1433.60" rx="0" fill="#A8FF8F" strokeWidth="0"></rect>
       </g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         <path
           fill="#0E9F6E"

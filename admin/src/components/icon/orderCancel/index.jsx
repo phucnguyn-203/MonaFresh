@@ -10,12 +10,12 @@ export default function IconOrderCancel() {
       id="calendar-cancel-16px"
       xmlns="http://www.w3.org/2000/svg"
       stroke="#FF6600"
-      stroke-width="0.144"
+      strokeWidth="0.144"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0">
-        <rect x="-2.4" y="-2.4" width="20.80" height="20.80" rx="0" fill="#FF944D" strokewidth="0"></rect>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0">
+        <rect x="-2.4" y="-2.4" width="20.80" height="20.80" rx="0" fill="#FF944D" strokeWidth="0"></rect>
       </g>
-      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
       <g id="SVGRepo_iconCarrier">
         {" "}
         <path
