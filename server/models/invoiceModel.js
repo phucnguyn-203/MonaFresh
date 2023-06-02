@@ -4,6 +4,7 @@ const { INVOICE_TYPE } = require("../utils/Constant");
 
 const invoiceSchema = new Schema(
     {
+        searchName: String,
         products: [
             {
                 product: {
@@ -40,6 +41,11 @@ const invoiceSchema = new Schema(
     },
 );
 
+invoiceSchema.pre("save", function (next) {
+    this.searchName = this.searchName + " " + this._id.toString();
+    
+    next();
+});
 invoiceSchema.pre(/^find/, function (next) {
     this.populate({
         path: "createdBy",

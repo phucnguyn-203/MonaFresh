@@ -22,10 +22,13 @@ export default function Import() {
 
   useEffect(() => {
     getAllInvoice();
-  }, [currentPage, limitPerPage, sortValue]);
+  }, [currentPage, limitPerPage, sortValue, debounceValue]);
 
   const getAllInvoice = async () => {
     let params = { page: currentPage, limit: limitPerPage };
+    if (debounceValue) {
+      params.search = debounceValue.trim();
+    }
     if (sortValue) {
       params = { ...params, ...sortValue };
     }
@@ -51,10 +54,10 @@ export default function Import() {
   };
 
   const handleAddImportInvoice = async (data) => {
-    const { products, createdBy } = data;
+    const { products, createdBy, searchName } = data;
     try {
       if (products.length >= 1) {
-        await invoiceAPI.createImportInvoice({ products, createdBy });
+        await invoiceAPI.createImportInvoice({ products, createdBy, searchName });
       }
       await getAllInvoice();
     } catch (error) {
@@ -74,6 +77,7 @@ export default function Import() {
         sortValue={sortValue}
         setSortValue={setSortValue}
         handleShowModalImport={handleShowModalImport}
+        setSearchKeyWord={setSearchKeyWord}
       />
       {showModalImport && (
         <AddModalImport

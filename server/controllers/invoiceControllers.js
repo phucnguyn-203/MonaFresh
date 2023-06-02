@@ -26,7 +26,7 @@ exports.getOneOrder = catchAsync(async (req, res) => {
 });
 
 exports.createImportInvoice = catchAsync(async (req, res) => {
-    const { products, createdBy } = req.body;
+    const { products, createdBy, searchName } = req.body;
     const newInvoice = new Invoice({
         products: products.map((product) => ({
             product: product.productId,
@@ -34,12 +34,13 @@ exports.createImportInvoice = catchAsync(async (req, res) => {
             price: product.importPrice,
             quantity: product.quantity,
         })),
+        searchName,
         type: INVOICE_TYPE.IMPORT,
         createdBy,
     });
 
     const invoice = await newInvoice.save();
-    console.log(invoice);
+  
     const updatePromises = products.map(async (product) => {
         const updatedProduct = await Product.findByIdAndUpdate(
             product.productId,
@@ -58,12 +59,13 @@ exports.createImportInvoice = catchAsync(async (req, res) => {
 });
 
 exports.createExportInvoice = catchAsync(async (req, res) => {
-    const { products, createdBy } = req.body;
+    const { products, createdBy, searchName } = req.body;
     const newInvoice = new Invoice({
         products: products.map((product) => ({
             product: product.productId,
             quantity: product.quantity,
         })),
+        searchName,
         type: INVOICE_TYPE.EXPORT,
         createdBy,
     });

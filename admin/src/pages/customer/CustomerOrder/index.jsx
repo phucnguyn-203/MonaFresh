@@ -8,6 +8,7 @@ import orderAPI from "../../../api/orderAPI";
 import productAPI from "../../../api/productAPI";
 import Filter from "../../../components/customer/Filter";
 import Swal from "sweetalert2";
+import useDebounce from "../../../hooks/useDebounce";
 import { ORDER_STATUS } from "../../../utils/Constant";
 
 export default function CustomerOrder() {
@@ -22,9 +23,14 @@ export default function CustomerOrder() {
   const [limitPerPage, setLimitPerPage] = useState(10);
   const [filterByStatus, setFilterByStatus] = useState("");
   const [sortValue, setSortValue] = useState("");
+  const [searchKeyWord, setSearchKeyWord] = useState("");
+  const debounceValue = useDebounce(searchKeyWord, 500);
 
   const getOrdersByUserId = async (userId) => {
     let params = { page: currentPage, limit: limitPerPage };
+    if (debounceValue) {
+      params.search = debounceValue.trim();
+    }
     if (filterByStatus) {
       params.status = filterByStatus;
       console.log(filterByStatus);
@@ -133,7 +139,7 @@ export default function CustomerOrder() {
 
   useEffect(() => {
     getOrdersByUserId(userId);
-  }, [userId, currentPage, limitPerPage, filterByStatus, sortValue]);
+  }, [userId, currentPage, limitPerPage, filterByStatus, sortValue, debounceValue]);
 
   return (
     <PageLayout title="Đơn hàng của khách hàng">
@@ -142,6 +148,7 @@ export default function CustomerOrder() {
         setFilterByStatus={setFilterByStatus}
         sortValue={sortValue}
         setSortValue={setSortValue}
+        setSearchKeyWord={setSearchKeyWord}
       />
       <CustomerOrderListTable
         orders={orders}
