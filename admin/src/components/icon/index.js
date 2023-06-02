@@ -39,4 +39,5 @@ export { default as IconIncome } from "./income";
 export { default as IconOutOfStockReport } from "./outOfStockReport";
 export { default as IconOrderCancel } from "./orderCancel";
 export { default as IconPrint } from "./print";
-
+export { default as IconExcel } from "./excel";
+export { default as IconDownload } from "./download";

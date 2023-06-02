@@ -14,6 +14,8 @@ import {
   IconTruck,
   IconCheck,
   IconCash,
+  IconExcel,
+  IconDownload,
 } from "../../components/icon";
 import formatCurrency from "../../utils/formatCurrency";
 import statisticAPI from "../../api/statisticAPI";
@@ -71,6 +73,24 @@ export default function Dashboard() {
 
   return (
     <PageLayout title="Tổng quan">
+      <div className="mb-8 justify-end flex">
+        <button>
+          <div className="flex w-1/8 h-16 p-4 items-center border border-gray-200 rounded-lg bg-primary  ">
+            <div className="bg-white flex justify-center p-2 mr-4 text-lg  rounded-full">
+              <div className=" w-[30px] h-[30px]">
+                <IconExcel />
+              </div>
+            </div>
+            <div className="flex justify-between-center items-center">
+              <p className="mb-1 text-sm font-medium text-white">Xuất Excel </p>
+              <span className="ml-1 w-4 h-4 text-sm">
+                <IconDownload />
+              </span>
+            </div>
+          </div>
+        </button>
+      </div>
+
       <div className="flex mb-8 gap-x-4">
         <StatsItem
           icon={<IconCash />}
