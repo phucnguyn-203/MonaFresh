@@ -36,6 +36,11 @@ const statisticAPI = {
     const response = await axios.get(url);
     return response;
   },
+  getExportExcel: async () => {
+    const url = "/statistic/export-excel";
+    const response = await axios.get(url, { responseType: "blob" });
+    return response;
+  },
 };
 
 export default statisticAPI;

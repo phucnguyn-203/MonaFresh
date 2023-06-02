@@ -74,7 +74,23 @@ export default function Dashboard() {
   return (
     <PageLayout title="Tổng quan">
       <div className="mb-8 justify-end flex">
-        <button>
+        <button
+          onClick={() => {
+            statisticAPI
+              .getExportExcel()
+              .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response]));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", "bao-cao.xlsx");
+                document.body.appendChild(link);
+                link.click();
+              })
+              .catch((error) => {
+                console.error("Error downloading Excel file:", error);
+              });
+          }}
+        >
           <div className="flex w-1/8 h-16 p-4 items-center border border-gray-200 rounded-lg bg-primary  ">
             <div className="bg-white flex justify-center p-2 mr-4 text-lg  rounded-full">
               <div className=" w-[30px] h-[30px]">

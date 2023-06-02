@@ -76,17 +76,15 @@ export default function StaffDeletedTable({
       renderCell: (item) => {
         return (
           <div>
-            {
-              (item.isActive = true ? (
-                <span className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-500 bg-green-100">
-                  Còn làm
-                </span>
-              ) : (
-                <span className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-500 bg-slate-100">
-                  Thôi làm
-                </span>
-              ))
-            }
+            {item.isActive === true ? (
+              <span className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-green-500 bg-green-100">
+                Còn làm
+              </span>
+            ) : (
+              <span className="inline-flex px-2 text-xs font-medium leading-5 rounded-full text-red-500 bg-slate-100">
+                Thôi làm
+              </span>
+            )}
           </div>
         );
       },

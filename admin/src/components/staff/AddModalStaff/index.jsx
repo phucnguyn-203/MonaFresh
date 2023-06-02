@@ -16,6 +16,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
   const [previewPhoto, setPreviewPhoto] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const schema = yup.object().shape({
     name: yup.string().required("Vui lòng nhập tên của bạn"),
@@ -58,13 +59,16 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
 
   const onSubmit = async (data) => {
     try {
+      setIsLoading(true);
       const uploadAvatar = await handleAvatarUpload();
       data.photo = uploadAvatar.url;
-      handleAddStaff(data);
-      toastMessage({ type: "success", message: "Cập nhật thành công." });
+      await handleAddStaff(data);
+      toastMessage({ type: "success", message: "Thêm nhân viên thành công." });
       getAllStaff();
     } catch (error) {
-      toastMessage({ type: "error", message: `Cập nhật thất bại. ${error}.` });
+      toastMessage({ type: "error", message: `Thêm nhân viên thất bại. Số điện thoại hoặc Email bị trùng.` });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -234,7 +238,7 @@ export default function AddModalStaff({ closeModal, title, titleBtnFooter, handl
             <input type="submit" hidden id="send" />
           </form>
         </div>
-        <ModalFooter title={titleBtnFooter} />
+        <ModalFooter title={titleBtnFooter} isLoading={isLoading} />
       </Drawer>
     </div>
   );

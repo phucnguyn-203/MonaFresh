@@ -75,21 +75,17 @@ export default function Staff() {
   };
   const handleAddStaff = async (data) => {
     const { photo, name, email, phone, password, passwordConfirm, role } = data;
-    try {
-      await staffAPI.addStaff({
-        photo,
-        name,
-        email,
-        phone,
-        password,
-        passwordConfirm,
-        role,
-      });
-      setShowAddStaffModal(false);
-      await getAllStaff();
-    } catch (err) {
-      console.log(err);
-    }
+    await staffAPI.addStaff({
+      photo,
+      name,
+      email,
+      phone,
+      password,
+      passwordConfirm,
+      role,
+    });
+    setShowAddStaffModal(false);
+    await getAllStaff();
   };
   const handleUpdateStaff = async (id, data) => {
     try {

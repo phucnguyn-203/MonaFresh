@@ -18,11 +18,7 @@ const adminNavigation = [
     path: "",
     icon: IconDashboard,
   },
-  {
-    title: "Báo cáo",
-    path: "/report",
-    icon: IconReport,
-  },
+
   {
     title: "Danh mục",
     path: "/category",
@@ -63,6 +59,11 @@ const adminNavigation = [
     path: "/staffs",
     icon: IconStaff,
   },
+  // {
+  //   title: "Báo cáo chi tiết",
+  //   path: "/report",
+  //   icon: IconReport,
+  // },
   {
     title: "Cài đặt",
     path: "/setting",
@@ -81,11 +82,11 @@ const staffNavigation = [
     path: "/products",
     icon: IconProduct,
   },
-  {
-    title: "Nhập hàng",
-    path: "/import",
-    icon: IconImport,
-  },
+  // {
+  //   title: "Nhập hàng",
+  //   path: "/import",
+  //   icon: IconImport,
+  // },
   // {
   //   title: "Xuất hàng",
   //   path: "/export",
