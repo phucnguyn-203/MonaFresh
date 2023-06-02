@@ -9,9 +9,11 @@ import { useRouter } from 'next/router';
 function Profile() {
   
   const router = useRouter();
-  const [sidebar, setSidebar] = useState(router.query.tapIndex);
+  const [sidebar, setSidebar] = useState();
   const currentUser = useSelector((state) => state.auth.currentUser);
-
+  useEffect(() => {
+    setSidebar(router.query.tabIndex);
+  },[router.query.tabIndex]);
   return (
 
     <div className="container my-32">
