@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IconAdd } from "../../../components/icon";
-
+import { IconSearch } from "../../icon";
 const getCreatedAtRange = (start, end = new Date()) => ({
   "createdAt[gte]": new Date(start).setHours(0, 0, 0, 0),
   "createdAt[lt]": new Date(end).setHours(23, 59, 59, 999),
@@ -32,7 +32,7 @@ const timeOptions = [
   { value: JSON.stringify(createRangeOption(30)), label: "30 ngày gần đây" },
 ];
 
-export default function Filter({ sortValue, setSortValue, handleShowModalImport }) {
+export default function Filter({ sortValue, setSortValue, handleShowModalImport, setSearchKeyWord }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -51,7 +51,15 @@ export default function Filter({ sortValue, setSortValue, handleShowModalImport 
     <div className="w-full h-[180px] border-[1px] border-solid bg-[white] rounded-[15px] p-[20px] mb-[40px]">
       <div className="flex gap-4">
         <div className="w-[40%]">
-          <input className={inputStyles} placeholder="Tìm theo mã hoá đơn" />
+        <div className={ `${inputStyles} relative flex  items-center text-black px-[20px] py-[10px]`}>
+          <IconSearch />
+          <input
+            onChange={(e) => setSearchKeyWord(e.target.value)}
+            type="text"
+            placeholder=" Nhập mã đơn hàng hoặc tên sản phẩm"
+            className=" w-full focus:outline-none placeholder:text-sm bg-transparent"
+          />
+        </div>
         </div>
         <div className="w-[40%]">
           <select

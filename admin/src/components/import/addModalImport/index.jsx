@@ -8,6 +8,7 @@ import ImportModalTable from "../ImportModalTable";
 import SearchResult from "../../search/SearchResults";
 import useDebounce from "../../../hooks/useDebounce";
 import productAPI from "../../../api/productAPI";
+import removeAccents from "../../../utils/removeAccents";
 
 export default function AddModalImport({ closeModal, title, titleBtnFooter, handleAddImportInvoice }) {
   const [products, setProducts] = useState([]);
@@ -31,6 +32,8 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const day = currentDate.getDate();
+
+  let stringNameProducts = "";
 
   useEffect(() => {
     const getAllProduct = async () => {
@@ -77,6 +80,10 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
   const onSubmit = () => {
     try {
       const newData = products.map((item) => {
+        stringNameProducts =
+        stringNameProducts +
+        " " +
+        removeAccents(item.product.name).toLowerCase();
         const newItem = {
           productId: item._id,
           quantity: item.quantity,
@@ -86,7 +93,7 @@ export default function AddModalImport({ closeModal, title, titleBtnFooter, hand
         return newItem;
       });
       const createdBy = currentUser._id;
-      handleAddImportInvoice({ products: newData, createdBy: createdBy });
+      handleAddImportInvoice({ products: newData, createdBy: createdBy, searchName: stringNameProducts });
     } catch (error) {
       console.log(error);
     }
