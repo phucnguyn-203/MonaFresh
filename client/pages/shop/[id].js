@@ -34,15 +34,38 @@ export default function Shop({ product, similarProducts }) {
       return;
     }
     try {
-      setIsLoading(true);
-      unwrapResult(
-        await dispatch(addAnItemToCart({ productId: product._id, quantity })),
-      );
-      Swal.fire({
-        icon: "success",
-        title: "Sản phẩm đã được thêm vào giỏ hàng",
-        confirmButtonColor: "#6abd45",
-      });
+      if (product.quantity === 0) {
+        const result = await Swal.fire({
+          title: "Không đủ số lượng?",
+          text: "Bạn có thể thêm vào giỏ hàng và chờ 1-2 ngày!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#6abd45",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Tôi đồng ý",
+          cancelButtonText: "Hẹn khi khác",
+        });
+
+        if (result.isConfirmed) {
+          setIsLoading(true);
+          await dispatch(addAnItemToCart({ productId: product._id, quantity }));
+          Swal.fire({
+            icon: "success",
+            title: "Sản phẩm đã được thêm vào giỏ hàng",
+            confirmButtonColor: "#6abd45",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          router.push("/shop");
+        }
+      } else {
+        setIsLoading(true);
+        await dispatch(addAnItemToCart({ productId: product._id, quantity }));
+        Swal.fire({
+          icon: "success",
+          title: "Sản phẩm đã được thêm vào giỏ hàng",
+          confirmButtonColor: "#6abd45",
+        });
+      }
     } catch (err) {
       setIsLoading(false);
       console.log(err);
@@ -114,6 +137,7 @@ export default function Shop({ product, similarProducts }) {
             </p>
 
             <Rating
+              readonly
               allowFraction
               transition
               initialValue={product?.ratingsAverage}
@@ -126,14 +150,14 @@ export default function Shop({ product, similarProducts }) {
           </div>
           <div className="mt-2">
             <span className="font-semibold">
-              Tình trạng:
+              Số lượng trong kho:
               {product?.quantity && product.quantity > 0 ? (
                 <span className="text-[#6abd45] ml-[5px] font-normal">
-                  Còn hàng
+                  {product?.quantity}
                 </span>
               ) : (
-                <span className="text-[#6abd45] ml-[5px] font-normal">
-                  Hết hàng
+                <span className="text-[red] ml-[5px] font-normal">
+                  {product?.quantity}
                 </span>
               )}
             </span>
