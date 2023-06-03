@@ -120,6 +120,7 @@ export default function EditProductModal({ closeModal, product, title, titleBtnF
       if (description) {
         data.description = description;
       }
+      data.quantity = product.quantity;
       await handleUpdateProduct(product._id, data);
       toastMessage({ type: "success", message: "Cập nhật thành công" });
     } catch (err) {

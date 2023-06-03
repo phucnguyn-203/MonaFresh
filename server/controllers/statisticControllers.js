@@ -330,6 +330,25 @@ exports.getExportExcel = catchAsync(async (req, res) => {
         { header: "Nhập bởi", key: "createdBy.name", width: 30 },
     ];
 
+    invoiceSheet.getRow(1).eachCell((cell) => {
+        cell.font = { bold: true };
+        cell.alignment = { vertical: "middle", horizontal: "center" };
+    });
+
+    const highlightedColumns = ["price", "total"];
+    highlightedColumns.forEach((column) => {
+        const columnObj = invoiceSheet.getColumn(column);
+        columnObj.eachCell((cell) => {
+            cell.fill = {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "FFFF00" },
+            };
+        });
+    });
+
+    let totalImportAmount = 0;
+
     invoices.forEach((invoice) => {
         invoice.products.forEach((product) => {
             const row = {
@@ -340,9 +359,13 @@ exports.getExportExcel = catchAsync(async (req, res) => {
                 total: product.price * product.quantity,
                 "createdBy.name": invoice.createdBy.name,
             };
+            totalImportAmount += row.total;
             invoiceSheet.addRow(row);
         });
     });
+
+    // Add the total import amount row at the end
+    invoiceSheet.addRow(["", "", "", "", "Tổng Số Tiền:", totalImportAmount]);
 
     const productSellingQuantity = await Order.aggregate([
         { $match: { status: ORDER_STATUS.DELIVERED } },
@@ -403,7 +426,7 @@ exports.getExportExcel = catchAsync(async (req, res) => {
     const customersWithMostOrdersSheet = workbook.addWorksheet("Danh sách khách hàng thân thiết");
     customersWithMostOrdersSheet.columns = [
         { header: "Tên khách hàng", key: "Customer", width: 20 },
-        { header: "Số đơn hàng", key: "Total Orders", width: 15 },
+        { header: "Số đơn hàng thành công", key: "Total Orders", width: 15 },
     ];
     customersWithMostOrders.forEach((customer) => {
         customersWithMostOrdersSheet.addRow(customer);

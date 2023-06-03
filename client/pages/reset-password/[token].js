@@ -76,7 +76,7 @@ function Reset() {
       confirmButtonColor: "#0E9F6E",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.push("/forget");
+        router.push("/forget-password");
       }
     });
   };

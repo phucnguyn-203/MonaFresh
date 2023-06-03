@@ -23,9 +23,8 @@ exports.createStaff = catchAsync(async (req, res) => {
     });
 });
 exports.getAllStaff = catchAsync(async (req, res) => {
-   
-    // const features = new ApiFeatures(User.find({ _id: { $ne: req.user._id } }), req.query).filter();
-    const features = new ApiFeatures(User, req.query).filter();
+    const features = new ApiFeatures(User.find({ _id: { $ne: req.user._id } }), req.query).filter();
+    // const features = new ApiFeatures(User, req.query).filter();
     const { query, totalPages, currentPage } = await features.paginate();
     const staffs = await features.query;
     res.status(200).json({
@@ -66,7 +65,6 @@ exports.updateStaff = catchAsync(async (req, res) => {
     });
 });
 exports.updateStaffStatus = catchAsync(async (req, res) => {
-    
     const staff = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json({
         status: "success",
@@ -74,7 +72,6 @@ exports.updateStaffStatus = catchAsync(async (req, res) => {
     });
 });
 exports.updateManyStaffStatus = catchAsync(async (req, res) => {
-  
     await User.updateMany(
         { _id: { $in: req.body.data.staffIds } },
         { $set: { isActive: req.body.data.isActive } },
@@ -93,7 +90,7 @@ exports.deleteStaff = catchAsync(async (req, res) => {
 exports.deleteManyStaff = catchAsync(async (req, res) => {
     console.log(req.body);
     await User.deleteMany({ _id: { $in: req.body.staffIds } });
-    
+
     res.status(204).json({
         status: "success",
     });
