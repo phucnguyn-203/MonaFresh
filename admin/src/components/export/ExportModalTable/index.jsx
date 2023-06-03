@@ -32,7 +32,7 @@ export default function ExportModalTable({
       headerName: "Giá",
       customClassName: "text-center",
       renderCell: (item) => {
-        return <p className="text-sm font-semibold text-center">{formatCurrency(item.product.price)}</p>;
+        return <p className="text-sm font-semibold text-center">{formatCurrency(item.product.importPrice)}</p>;
       },
     },
     {
@@ -58,7 +58,9 @@ export default function ExportModalTable({
       customClassName: "text-center",
       renderCell: (item) => {
         return (
-          <p className="text-sm font-semibold text-center">{formatCurrency(item.product.price * item.quantity)}</p>
+          <p className="text-sm font-semibold text-center">
+            {formatCurrency(item.product.importPrice * item.quantity)}
+          </p>
         );
       },
     },

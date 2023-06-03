@@ -57,12 +57,13 @@ exports.createImportInvoice = catchAsync(async (req, res) => {
         data: invoice,
     });
 });
-
 exports.createExportInvoice = catchAsync(async (req, res) => {
     const { products, createdBy, searchName } = req.body;
     const newInvoice = new Invoice({
         products: products.map((product) => ({
             product: product.productId,
+            name: product.name,
+            price: product.importPrice,
             quantity: product.quantity,
         })),
         searchName,
@@ -71,7 +72,7 @@ exports.createExportInvoice = catchAsync(async (req, res) => {
     });
 
     const invoice = await newInvoice.save();
-
+  
     const updatePromises = products.map(async (product) => {
         const updatedProduct = await Product.findByIdAndUpdate(
             product.productId,
@@ -88,6 +89,37 @@ exports.createExportInvoice = catchAsync(async (req, res) => {
         data: invoice,
     });
 });
+
+// exports.createExportInvoice = catchAsync(async (req, res) => {
+//     const { products, createdBy, searchName } = req.body;
+//     const newInvoice = new Invoice({
+//         products: products.map((product) => ({
+//             product: product.productId,
+//             quantity: product.quantity,
+//         })),
+//         searchName,
+//         type: INVOICE_TYPE.EXPORT,
+//         createdBy,
+//     });
+
+//     const invoice = await newInvoice.save();
+
+//     const updatePromises = products.map(async (product) => {
+//         const updatedProduct = await Product.findByIdAndUpdate(
+//             product.productId,
+//             { $inc: { quantity: -product.quantity } },
+//             { new: true },
+//         );
+//         return updatedProduct;
+//     });
+
+//     await Promise.all(updatePromises);
+
+//     res.status(201).json({
+//         status: "success",
+//         data: invoice,
+//     });
+// });
 
 exports.updateInvoice = catchAsync(async (req, res) => {
     const invoiceId = req.params.id;

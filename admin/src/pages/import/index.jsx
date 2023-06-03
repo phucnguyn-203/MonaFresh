@@ -25,7 +25,7 @@ export default function Import() {
   }, [currentPage, limitPerPage, sortValue, debounceValue]);
 
   const getAllInvoice = async () => {
-    let params = { page: currentPage, limit: limitPerPage };
+    let params = { page: currentPage, limit: limitPerPage, type: 1 };
     if (debounceValue) {
       params.search = debounceValue.trim();
     }
@@ -66,7 +66,7 @@ export default function Import() {
     setShowModalImport(false);
   };
   return (
-    <PageLayout title="Nhập hàng">
+    <PageLayout title="Hàng Lỗi">
       <Filter
         invoices={invoices}
         currentPage={currentPage}
