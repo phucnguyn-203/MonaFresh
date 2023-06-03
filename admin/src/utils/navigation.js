@@ -40,7 +40,7 @@ const adminNavigation = [
     icon: IconImport,
   },
   // {
-  //   title: "Xuất hàng",
+  //   title: "Hàng lỗi/hết hạn",
   //   path: "/export",
   //   icon: IconExport,
   // },
