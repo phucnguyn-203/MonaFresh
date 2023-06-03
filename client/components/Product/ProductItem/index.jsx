@@ -16,6 +16,7 @@ export default function ProductItem({
   name,
   price,
   percentageDiscount,
+  quantity,
 }) {
   const router = useRouter();
   const auth = useSelector((state) => state.auth);
@@ -30,20 +31,44 @@ export default function ProductItem({
       return;
     }
     try {
-      setIsLoading(true);
-      unwrapResult(
-        await dispatch(addAnItemToCart({ productId: id, quantity: 1 })),
-      );
-      Swal.fire({
-        icon: "success",
-        title: "Sản phẩm đã được thêm vào giỏ hàng",
-        confirmButtonColor: "#6abd45",
-      });
+      if (quantity === 0) {
+        const result = await Swal.fire({
+          title: "Hàng đã hết!",
+          text: "Bạn có thể đặt trước và chờ chậm hơn 1-2 ngày!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#6abd45",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Tôi đồng ý",
+          cancelButtonText: "Hẹn khi khác",
+        });
+
+        if (result.isConfirmed) {
+          setIsLoading(true);
+          await dispatch(addAnItemToCart({ productId: id, quantity: 1 }));
+          Swal.fire({
+            icon: "success",
+            title: "Sản phẩm đã được thêm vào giỏ hàng",
+            confirmButtonColor: "#6abd45",
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          router.push("/shop");
+        }
+      } else {
+        setIsLoading(true);
+        await dispatch(addAnItemToCart({ productId: id, quantity: 1 }));
+        Swal.fire({
+          icon: "success",
+          title: "Sản phẩm đã được thêm vào giỏ hàng",
+          confirmButtonColor: "#6abd45",
+        });
+      }
     } catch (err) {
       setIsLoading(false);
       console.log(err);
     }
   };
+
   return (
     <Link
       href={`/shop/${id}`}

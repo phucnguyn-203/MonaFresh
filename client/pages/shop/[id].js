@@ -36,8 +36,8 @@ export default function Shop({ product, similarProducts }) {
     try {
       if (product.quantity === 0) {
         const result = await Swal.fire({
-          title: "Không đủ số lượng?",
-          text: "Bạn có thể thêm vào giỏ hàng và chờ 1-2 ngày!",
+          title: "Hàng đã hết!",
+          text: "Bạn có thể đặt trước và chờ chậm hơn 1-2 ngày!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#6abd45",

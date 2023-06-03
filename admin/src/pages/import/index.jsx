@@ -66,7 +66,7 @@ export default function Import() {
     setShowModalImport(false);
   };
   return (
-    <PageLayout title="Hàng Lỗi">
+    <PageLayout title="Danh sách đơn nhập hàng">
       <Filter
         invoices={invoices}
         currentPage={currentPage}
