@@ -51,8 +51,6 @@ export default function ProductItem({
             title: "Sản phẩm đã được thêm vào giỏ hàng",
             confirmButtonColor: "#6abd45",
           });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          router.push("/shop");
         }
       } else {
         setIsLoading(true);

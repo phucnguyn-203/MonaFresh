@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { addAnItemToCart } from "@/features/cart/cartSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
 import Loading from "@/components/loading";
 
 export default function Shop({ product, similarProducts }) {

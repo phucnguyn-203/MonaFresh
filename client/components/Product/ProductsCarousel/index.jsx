@@ -48,16 +48,19 @@ export default function ProductsCarousel({ products = [] }) {
   return (
     <React.Fragment>
       <Slider {...settings}>
-        {products.map(({ _id, name, price, thumbnail, percentageDiscount }) => (
-          <ProductItem
-            key={_id}
-            id={_id}
-            name={name}
-            price={price}
-            thumbnail={thumbnail}
-            percentageDiscount={percentageDiscount}
-          />
-        ))}
+        {products.map(
+          ({ _id, name, price, thumbnail, percentageDiscount, quantity }) => (
+            <ProductItem
+              key={_id}
+              id={_id}
+              name={name}
+              price={price}
+              thumbnail={thumbnail}
+              percentageDiscount={percentageDiscount}
+              quantity={quantity}
+            />
+          ),
+        )}
       </Slider>
     </React.Fragment>
   );

@@ -3,17 +3,16 @@ import ProductsCarousel from "@/components/product/ProductsCarousel";
 import React, { useState, useEffect } from "react";
 import productAPI from "@/api/productAPI";
 
-
 export default function DiscountProducts() {
   const [products, setProducts] = useState();
 
   useEffect(() => {
     getAllProduct();
-  },[]);
+  }, []);
 
-  const getAllProduct = async() => {
+  const getAllProduct = async () => {
     let params = {
-      sort: "-percentageDiscount",
+      "percentageDiscount[gt]": 0,
       isActive: true,
     };
     try {
@@ -33,7 +32,7 @@ export default function DiscountProducts() {
       </div>
       <div className="text-center text-white text-sm">
         <Link
-          href={{ pathname: '/shop', query: {sort: "-percentageDiscount"} }}
+          href={{ pathname: "/shop", query: { sort: "-percentageDiscount" } }}
           className="bg-primary px-8 py-3 rounded-lg hover:bg-lime-600 transition-all inline-block"
         >
           Xem thêm
