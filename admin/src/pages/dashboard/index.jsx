@@ -91,7 +91,7 @@ export default function Dashboard() {
               });
           }}
         >
-          <div className="flex w-1/8 h-16 p-4 items-center border border-gray-200 rounded-lg bg-primary  ">
+          {/* <div className="flex w-1/8 h-16 p-4 items-center border border-gray-200 rounded-lg bg-primary  ">
             <div className="bg-white flex justify-center p-2 mr-4 text-lg  rounded-full">
               <div className=" w-[30px] h-[30px]">
                 <IconExcel />
@@ -103,7 +103,7 @@ export default function Dashboard() {
                 <IconDownload />
               </span>
             </div>
-          </div>
+          </div> */}
         </button>
       </div>
 
