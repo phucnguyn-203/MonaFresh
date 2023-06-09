@@ -1,12 +1,11 @@
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { IconCart } from "@/components/icons";
+import Profile from "@/components/profile/ProfileAvatar";
 import logo from "@/public/assets/img/logo.png";
 import navigation from "@/utils/nav";
 import SearchBar from "@/components/search/SearchBar";
-import Profile from "@/components/profile/ProfileAvatar";
 import styles from "./styles.module.css";
 import { useSelector } from "react-redux";
 

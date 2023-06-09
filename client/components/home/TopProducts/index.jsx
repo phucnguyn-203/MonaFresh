@@ -1,6 +1,6 @@
-import Link from "next/link";
-import ProductsCarousel from "@/components/product/ProductsCarousel";
 import React, { useState, useEffect } from "react";
+import ProductsCarousel from "@/components/product/ProductsCarousel";
+import Link from "next/link";
 import productAPI from "@/api/productAPI";
 
 export default function TopProducts() {
@@ -8,9 +8,9 @@ export default function TopProducts() {
 
   useEffect(() => {
     getAllProduct();
-  },[]);
+  }, []);
 
-  const getAllProduct = async() => {
+  const getAllProduct = async () => {
     let params = {
       sort: "-ratingsAverage",
       isActive: true,
@@ -32,7 +32,7 @@ export default function TopProducts() {
       </div>
       <div className="text-center text-white text-sm">
         <Link
-          href={{ pathname: '/shop', query: {sort: "-ratingsAverage"} }}
+          href={{ pathname: "/shop", query: { sort: "-ratingsAverage" } }}
           className="bg-primary px-8 py-3 rounded-lg hover:bg-lime-600 transition-all inline-block"
         >
           Xem thêm

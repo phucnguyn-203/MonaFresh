@@ -6,7 +6,7 @@ export default function IconOrder() {
       height="1em"
       viewBox="0 0 1024.00 1024.00"
       fill="currentColor"
-      class="icon"
+      className="icon"
       version="1.1"
       stroke="currentColor"
       strokeWidth="30.72"

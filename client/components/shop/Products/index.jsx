@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import ProductItem from "@/components/product/ProductItem";
 import Pagination from "@/components/shared/Pagination";
 
