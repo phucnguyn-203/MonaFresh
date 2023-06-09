@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import notificationSound from "./assets/sound/notification-sound.mp3";
 
 import io from "socket.io-client";
-const socket = io("http://localhost:8080");
+const socket = io(process.env.REACT_APP_SOCKET_SERVER_URL);
 
 function App() {
   const auth = useSelector((state) => state.auth);
