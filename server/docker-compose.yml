@@ -50,7 +50,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/MonaFres/server/dhparam/
+      device: /home/ubuntu/MonaFresh/server/dhparam/
       o: bind
 networks:
   app-network:
