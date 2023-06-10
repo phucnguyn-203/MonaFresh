@@ -44,13 +44,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/server/views/
+      device: /home/ubuntu/MonaFesh/server/views/
       o: bind
   dhparam:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/server/dhparam/
+      device: /home/ubuntu/MonaFres/server/dhparam/
       o: bind
 networks:
   app-network:
