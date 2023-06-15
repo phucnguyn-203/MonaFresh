@@ -1,7 +1,7 @@
 const sendToken = (res, { name, token, maxAge }) => {
     cookieOptions = {
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
     };
     if (process.env.NODE_ENV === "production") {
         cookieOptions.secure = true;
