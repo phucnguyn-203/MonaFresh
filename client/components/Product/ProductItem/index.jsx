@@ -62,8 +62,9 @@ export default function ProductItem({
         });
       }
     } catch (err) {
-      setIsLoading(false);
       console.log(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
