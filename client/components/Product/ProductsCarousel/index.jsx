@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.module.css";
 
-export default function ProductsCarousel({ products = [] }) {
+function ProductsCarousel({ products = [] }) {
   const settings = {
     dots: false,
     infinite: true,
@@ -65,3 +65,5 @@ export default function ProductsCarousel({ products = [] }) {
     </React.Fragment>
   );
 }
+
+export default ProductsCarousel;

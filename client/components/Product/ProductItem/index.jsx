@@ -10,7 +10,7 @@ import styles from "./styles.module.css";
 import Loading from "@/components/loading";
 import { useState } from "react";
 
-export default function ProductItem({
+function ProductItem({
   id,
   thumbnail,
   name,
@@ -134,3 +134,5 @@ export default function ProductItem({
     </Link>
   );
 }
+
+export default ProductItem;

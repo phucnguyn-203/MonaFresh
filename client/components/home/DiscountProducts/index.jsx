@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ProductsCarousel from "@/components/product/ProductsCarousel";
 import Link from "next/link";
+import ProductsCarousel from "@/components/product/ProductsCarousel";
 import productAPI from "@/api/productAPI";
 
 export default function DiscountProducts() {
