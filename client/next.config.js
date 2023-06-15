@@ -10,6 +10,9 @@ const nextConfig = {
       "res.cloudinary.com",
     ],
   },
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
