@@ -1,0 +1,20 @@
+
+
+.navbar {
+    overflow-y: scroll;
+    
+}
+/* .navbar:hover{
+    overflow-y: scroll;
+} */
+
+.navbar::-webkit-scrollbar {
+    width: 6px;
+    display: none;
+}
+  
+
+.navbar::-webkit-scrollbar-thumb {
+    background: #A7A7A733;
+    border-radius: 10px;
+}
