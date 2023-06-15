@@ -28,11 +28,11 @@ module.exports = (err, req, res, next) => {
         sendErrorDev(err, res);
     }
 
-    if (process.env.NODE_ENV === "production") {
-        let error = { ...err };
-        error.name = err.name;
-        error.message = err.message;
-        if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-        sendErrorPro(error, res);
-    }
+    // if (process.env.NODE_ENV === "production") {
+    //     let error = { ...err };
+    //     error.name = err.name;
+    //     error.message = err.message;
+    //     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    //     sendErrorPro(error, res);
+    // }
 };
