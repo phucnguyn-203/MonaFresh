@@ -109,36 +109,6 @@ router.post("/", authenticate, createCategory);
  */
 router.patch("/:id", authenticate, updateCategory);
 
-/**
- * @swagger
- * /api/v1/categories:
- *   patch:
- *     summary: Update multiple categories
- *     tags: [Categories]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               categories:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                     name:
- *                       type: string
- *                     description:
- *                       type: string
- *             required:
- *               - categories
- *     responses:
- *       '200':
- *         description: Updated categories
- */
 router.patch("/", authenticate, updateManyCategory);
 
 /**
@@ -161,30 +131,6 @@ router.patch("/", authenticate, updateManyCategory);
  *         description: Category not found
  */
 router.delete("/:id", authenticate, deleteCategory);
-
-/**
- * @swagger
- * /api/v1/categories:
- *   delete:
- *     summary: Delete multiple categories
- *     tags: [Categories]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               ids:
- *                 type: array
- *                 items:
- *                   type: string
- *             required:
- *               - ids
- *     responses:
- *       '204':
- *         description: Categories deleted
- */
 router.delete("/", authenticate, deleteManyCategory);
 
 module.exports = router;
