@@ -3,6 +3,8 @@ const app = express();
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
 //IMPORT ROUTES
@@ -42,6 +44,24 @@ app.use(cors(corsOptions));
 //BODY PARSER
 app.use(express.json({ limit: "50mb" }));
 
+const swaggerDefinition = {
+    openapi: "3.0.0",
+    info: {
+        title: "Express API for JSONPlaceholder",
+        version: "1.0.0",
+    },
+};
+
+const options = {
+    swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ["./routes/*.js"],
+};
+const swaggerSpec = swaggerJSDoc(options);
+
+//SWAGGER UI
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 //ROUTER
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/carts", cartRouter);
@@ -56,4 +76,5 @@ app.use("/api/v1/statistic", statisticRouter);
 app.use("/api/v1/notifications", notificationRouter);
 
 app.use(globalErrorHandler);
+
 module.exports = app;
